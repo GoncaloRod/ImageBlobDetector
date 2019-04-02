@@ -1,6 +1,8 @@
 #ifndef FILES_H_
 #define FILES_H_
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #define FM_R "r"
 #define FM_W "w"
 #define FM_A "a"
@@ -19,11 +21,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "../strucs.h"
-#include "lists.h"
 #include "functions.h"
 
-ImageList *readDefaultFormat(FILE *f);
+Image *readImageDefaultFormat(FILE *f);
 
 #endif // !FILES_H_

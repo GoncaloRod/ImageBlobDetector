@@ -16,11 +16,14 @@ int main(int argc, char *argv[])
 #endif
 
 	FILE *inputFile;
+	Image *image;
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
 
 	if (!validateArguments(argc, argv, &inputFile, &red, &green, &blue, &tolerance, mode))
 		return 0;
+
+	image = readImageDefaultFormat(inputFile);
 
 	fclose(inputFile);
 

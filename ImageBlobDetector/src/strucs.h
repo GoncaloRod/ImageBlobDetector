@@ -9,20 +9,8 @@ typedef struct _pixel
 typedef struct _image
 {
 	char fileName[20];
-	int width, height;
+	int width, height, channels;
 	Pixel **pixels;
 } Image;
-
-typedef struct _imageNode
-{
-	struct _imageNode *next;
-	Image *data;
-} ImageNode;
-
-typedef struct _imageList
-{
-	ImageNode *first, *last;
-	int count;
-} ImageList;
 
 #endif

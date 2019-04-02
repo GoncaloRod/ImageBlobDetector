@@ -13,9 +13,34 @@ void printUsageMessage(char *programName)
 	printf("\tmode:\t\t\tMode in which program will execute. Can be MENU, ALL or MEM\n");
 }
 
-void printError(char *message)
+void printError(const char *message, ...)
 {
-	printf("ERROR: %s\n\n", message);
+	va_list vargs;
+
+	va_start(vargs, message);
+
+	printf("[ERROR]: ");
+
+	vprintf(message, vargs);
+
+	printf("\n");
+
+	va_end(vargs);
+}
+
+void printInfo(const char *message, ...)
+{
+	va_list vargs;
+
+	va_start(vargs, message);
+
+	printf("[INFO]: ");
+
+	vprintf(message, vargs);
+
+	printf("\n");
+
+	va_end(vargs);
 }
 
 bool isNumeric(char *num)
@@ -95,7 +120,7 @@ int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r
 	return 1;
 }
 
-Image * createImage()
+Image *createImage()
 {
 	Image *i = (Image *)malloc(sizeof(Image));
 
@@ -103,4 +128,28 @@ Image * createImage()
 	i->width = 0;
 	i->height = 0;
 	i->pixels = NULL;
+}
+
+void freeImage(Image *image)
+{
+	if (!image) return;
+
+	// Free prixels matrix
+	if (image->pixels)
+	{
+		for (size_t i = 0; i < image->height; ++i)
+		{
+			free(image->pixels[i]);
+		}
+
+		free(image->pixels);
+	}
+	
+	// Free image structure
+	free(image);
+}
+
+double executionTime(clock_t start, clock_t end)
+{
+	return ((double)(end - start)) / CLOCKS_PER_SEC;
 }
