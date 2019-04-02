@@ -94,3 +94,13 @@ int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r
 
 	return 1;
 }
+
+Image * createImage()
+{
+	Image *i = (Image *)malloc(sizeof(Image));
+
+	strcpy(i->fileName, "");
+	i->width = 0;
+	i->height = 0;
+	i->pixels = NULL;
+}

@@ -133,11 +133,14 @@
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\utils\files.c" />
     <ClCompile Include="src\utils\functions.c" />
+    <ClCompile Include="src\utils\lists.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\strucs.h" />
     <ClInclude Include="src\utils\files.h" />
     <ClInclude Include="src\utils\functions.h" />
+    <ClInclude Include="src\utils\lists.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,4 +17,13 @@
 #define FM_WBP "wb+"
 #define FM_ABP "ab+"
 
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../strucs.h"
+#include "lists.h"
+#include "functions.h"
+
+ImageList *readDefaultFormat(FILE *f);
+
 #endif // !FILES_H_

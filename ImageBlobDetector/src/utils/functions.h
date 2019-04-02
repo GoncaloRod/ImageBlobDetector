@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "../strucs.h"
 #include "files.h"
 
 void printUsageMessage(char *programName);
@@ -20,5 +21,7 @@ bool inRange(int min, int max, int value);
 
 int validateArguments(int argc, char **argv, FILE **inputFile, unsigned char *r,
 					  unsigned char *g, unsigned char *b, unsigned char *t, char *mode);
+
+Image *createImage();
 
 #endif

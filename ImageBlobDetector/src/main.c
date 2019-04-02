@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
 #if 0
 	// Find memory leak, set to 1 to use
-	_CrtSetBreakAlloc(96);
+	_CrtSetBreakAlloc(75);
 #endif
 
 	FILE *inputFile;
