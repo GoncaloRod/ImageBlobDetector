@@ -17,9 +17,9 @@ int main(int argc, char *argv[])
 
 	FILE *inputFile;
 	unsigned char red, green, blue, tolerance;
-	char *mode;
+	char mode[5];
 
-	if (!validateArguments(argc, argv, &inputFile, &red, &green, &blue, &tolerance, &mode))
+	if (!validateArguments(argc, argv, &inputFile, &red, &green, &blue, &tolerance, mode))
 		return 0;
 
 	fclose(inputFile);

@@ -5,12 +5,12 @@ void printUsageMessage(char *programName)
 	printf("\nUsage: %s tests input_file red green blue tolerance mode\n\n", programName);
 
 	// TODO: Fix indentation
-	printf("  input_file: File to be precessed\n");
-	printf("  red: Desired red value of color to find\n");
-	printf("  green: Desired green value of color to find\n");
-	printf("  blue: Desired blue value of color to find\n");
-	printf("  tolerance: Tolerance in red, green and blue values to find\n");
-	printf("  mode: Mode in which program will execute. Can be menu, all or mem\n");
+	printf("\tinput_file:\t\tFile to be precessed\n");
+	printf("\tred:\t\t\tDesired red value of color to find\n");
+	printf("\tgreen:\t\t\tDesired green value of color to find\n");
+	printf("\tblue:\t\t\tDesired blue value of color to find\n");
+	printf("\ttolerance:\t\tTolerance in red, green and blue values to find\n");
+	printf("\tmode:\t\t\tMode in which program will execute. Can be MENU, ALL or MEM\n");
 }
 
 void printError(char *message)
@@ -47,7 +47,8 @@ bool inRange(int min, int max, int value)
 	return value >= min && value <= max;
 }
 
-int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *t, char **mode)
+int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r,
+					  unsigned char *g, unsigned char *b, unsigned char *t, char *mode)
 {
 	if (argc != 8 || strcmp(argv[1], "tests") != 0)
 	{
@@ -63,13 +64,15 @@ int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r
 		return 0;
 	}
 
-	if (!isNumeric(argv[3]) || !isNumeric(argv[4]) || !isNumeric(argv[5]) || !isNumeric(argv[6]))
+	if (!isNumeric(argv[3]) || !isNumeric(argv[4]) || !isNumeric(argv[5]) ||
+		!isNumeric(argv[6]))
 	{
 		printError("Red, Green, Blue and Tolerance must be numeric");
 		return 0;
 	}
 
-	if (!inRange(0, 255, stringToInt(argv[3])) || !inRange(0, 255, stringToInt(argv[4])) || !inRange(0, 255, stringToInt(argv[5])) || !inRange(0, 255, stringToInt(argv[6])))
+	if (!inRange(0, 255, stringToInt(argv[3])) || !inRange(0, 255, stringToInt(argv[4])) ||
+		!inRange(0, 255, stringToInt(argv[5])) || !inRange(0, 255, stringToInt(argv[6])))
 	{
 		printError("Red, Green, Blue and Tolerance values must be in range from 0 to 255");
 		return 0;
@@ -79,8 +82,9 @@ int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r
 	*g = (unsigned char)stringToInt(argv[4]);
 	*b = (unsigned char)stringToInt(argv[5]);
 	*t = (unsigned char)stringToInt(argv[6]);
-
-	if (strcmp(argv[7], "MENUS") != 0 || strcmp(argv[7], "ALL") != 0 || strcmp(argv[7], "MEM") != 0)
+	
+	if (strcmp(argv[7], "MENU") != 0 && strcmp(argv[7], "ALL") != 0 &&
+		strcmp(argv[7], "MEM") != 0)
 	{
 		printUsageMessage(argv[0]);
 		return 0;

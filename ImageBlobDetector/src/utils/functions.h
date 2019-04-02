@@ -1,5 +1,6 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -17,6 +18,7 @@ int stringToInt(char *num);
 
 bool inRange(int min, int max, int value);
 
-int validateArguments(int argc, char **argv, FILE **inputFile, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *t, char **mode);
+int validateArguments(int argc, char **argv, FILE **inputFile, unsigned char *r,
+					  unsigned char *g, unsigned char *b, unsigned char *t, char *mode);
 
 #endif
