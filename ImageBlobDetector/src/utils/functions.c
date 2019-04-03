@@ -13,74 +13,17 @@ void printUsageMessage(char *programName)
 	printf("\tmode:\t\t\tMode in which program will execute. Can be MENU, ALL or MEM\n");
 }
 
-void printError(const char *message, ...)
+int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r, unsigned char *g,
+					  unsigned char *b, unsigned char *t, char *mode)
 {
-	va_list vargs;
+	// Validate arguments count
+	if (argc != 8) return 0;
 
-	va_start(vargs, message);
-
-	printf("[ERROR]: ");
-
-	vprintf(message, vargs);
-
-	printf("\n");
-
-	va_end(vargs);
-}
-
-void printInfo(const char *message, ...)
-{
-	va_list vargs;
-
-	va_start(vargs, message);
-
-	printf("[INFO]: ");
-
-	vprintf(message, vargs);
-
-	printf("\n");
-
-	va_end(vargs);
-}
-
-bool isNumeric(char *num)
-{
-	bool numeric = true;
-
-	for (size_t i = 0; i < strlen(num) && numeric; ++i)
-		if (num[i] < '0' || num[i] > '9')
-			numeric = false;
-
-	return numeric;
-}
-
-int stringToInt(char *num)
-{
-	int value = 0;
-
-	for (size_t i = 0; i < strlen(num); ++i)
-	{
-		value *= 10;
-		value += num[i] - '0';
-	}
-
-	return value;
-}
-
-bool inRange(int min, int max, int value)
-{
-	return value >= min && value <= max;
-}
-
-int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r,
-					  unsigned char *g, unsigned char *b, unsigned char *t, char *mode)
-{
-	if (argc != 8 || strcmp(argv[1], "tests") != 0)
-	{
-		printUsageMessage(argv[0]);
+	// Validate required 'tests' flag (doesn't really do anything but it's required by teacher)
+	if (strcmp(argv[1], "tests") != 0)
 		return 0;
-	}
 
+	// Validate input file
 	*inputFile = fopen(argv[2], FM_R);
 
 	if (inputFile == NULL)
@@ -89,17 +32,17 @@ int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r
 		return 0;
 	}
 
+	// Validate red, green, blue and tolerance values are numeric
 	if (!isNumeric(argv[3]) || !isNumeric(argv[4]) || !isNumeric(argv[5]) ||
 		!isNumeric(argv[6]))
 	{
-		printError("Red, Green, Blue and Tolerance must be numeric");
 		return 0;
 	}
 
+	// Validate red, green, blue and tolerance values are in range of 0 to 255
 	if (!inRange(0, 255, stringToInt(argv[3])) || !inRange(0, 255, stringToInt(argv[4])) ||
 		!inRange(0, 255, stringToInt(argv[5])) || !inRange(0, 255, stringToInt(argv[6])))
 	{
-		printError("Red, Green, Blue and Tolerance values must be in range from 0 to 255");
 		return 0;
 	}
 
@@ -108,8 +51,8 @@ int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r
 	*b = (unsigned char)stringToInt(argv[5]);
 	*t = (unsigned char)stringToInt(argv[6]);
 	
-	if (strcmp(argv[7], "MENU") != 0 && strcmp(argv[7], "ALL") != 0 &&
-		strcmp(argv[7], "MEM") != 0)
+	// Validate mode
+	if (strcmp(argv[7], "MENU") != 0 && strcmp(argv[7], "ALL") != 0 && strcmp(argv[7], "MEM") != 0)
 	{
 		printUsageMessage(argv[0]);
 		return 0;
@@ -128,28 +71,28 @@ Image *createImage()
 	i->width = 0;
 	i->height = 0;
 	i->pixels = NULL;
+
+	return i;
+}
+
+void freePixelMatrix(Pixel **matrix, int height, int width)
+{
+	for (int i = 0; i < height; i++)
+	{
+		free(matrix[i]);
+	}
+	
+	free(matrix);
 }
 
 void freeImage(Image *image)
 {
 	if (!image) return;
 
-	// Free prixels matrix
+	// Free pixels matrix
 	if (image->pixels)
-	{
-		for (size_t i = 0; i < image->height; ++i)
-		{
-			free(image->pixels[i]);
-		}
-
-		free(image->pixels);
-	}
+		freePixelMatrix(image->pixels, image->height, image->width);
 	
 	// Free image structure
 	free(image);
-}
-
-double executionTime(clock_t start, clock_t end)
-{
-	return ((double)(end - start)) / CLOCKS_PER_SEC;
 }

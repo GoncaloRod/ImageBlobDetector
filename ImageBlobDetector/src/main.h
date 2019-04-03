@@ -5,5 +5,7 @@
 #include <stdlib.h>
 #include <crtdbg.h>	
 
+#include "utils/utils.h"
 #include "utils/functions.h"
 #include "utils/files.h"
+#include "strucs.h"

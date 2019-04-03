@@ -24,6 +24,9 @@
     <ClCompile Include="src\utils\files.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\strucs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

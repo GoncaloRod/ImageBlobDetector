@@ -16,18 +16,18 @@ Image *readImageDefaultFormat(FILE *f)
 	clock_t start, end;
 
 	Image *image;
-	char fileName[20];
+	char fileName[IMAGE_NAME_SIZE];
 	int height, width, channels;
 	Pixel **pixels;
 
 	int r, g, b;
 
-	fscanf(f, "%s\n", fileName);
-	fscanf(f, "%d %d %d", &height, &width, &channels);
+	fscanf(f, "%s\n", fileName);								// Read image file name
+	fscanf(f, "%d %d %d", &height, &width, &channels);			// Read height width and channel number
 
 	pixels = (Pixel **)malloc(height * sizeof(Pixel *));
 	
-	for (size_t i = 0; i < height; ++i)
+	for (int i = 0; i < height; ++i)
 	{
 		pixels[i] = (Pixel *)malloc(width * sizeof(Pixel));
 	}
@@ -36,28 +36,19 @@ Image *readImageDefaultFormat(FILE *f)
 
 	start = clock();
 
-	for (size_t i = 0; i < height; ++i)
+	for (int i = 0; i < height; ++i)
 	{
-		for (size_t j = 0; j < width; ++j)
+		for (int j = 0; j < width; ++j)
 		{
-			if (ftell(f) == fEnd)
-			{
-				printError("Missing pixel in %s", fileName);
-
-				free(pixels);
-
-				return;
-			}
-
 			fscanf(f, "%d\n%d\n%d\n", &r, &g, &b);
 
 			if (!inRange(0, 255, r) || !inRange(0, 255, g) || !inRange(0, 255, b))
 			{
 				printError("Pixel value not in range of 0 to 255 in %s", fileName);
 
-				free(pixels);
+				freePixelMatrix(pixels, height, width);
 
-				return;
+				return NULL;
 			}
 
 			pixels[i][j].red		= (char)r;
@@ -69,7 +60,7 @@ Image *readImageDefaultFormat(FILE *f)
 
 	end = clock();
 
-	printInfo("%s readed in %f seconds", executionTime(start, end));
+	printInfo("%s readed in %f seconds", fileName, executionTime(start, end));
 
 	image = createImage();
 
@@ -80,6 +71,8 @@ Image *readImageDefaultFormat(FILE *f)
 	image->channels = channels;
 
 	image->pixels = pixels;
+
+	freePixelMatrix(pixels, height, width);
 
 	return image;
 }

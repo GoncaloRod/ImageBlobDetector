@@ -21,11 +21,18 @@ int main(int argc, char *argv[])
 	char mode[5];
 
 	if (!validateArguments(argc, argv, &inputFile, &red, &green, &blue, &tolerance, mode))
+	{
+		printUsageMessage(argv[0]);
 		return 0;
+	}
 
 	image = readImageDefaultFormat(inputFile);
 
+	freeImage(image);
+
 	fclose(inputFile);
+
+	getchar();
 
 	_CrtDumpMemoryLeaks();
 }

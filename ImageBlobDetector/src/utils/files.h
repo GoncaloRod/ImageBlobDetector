@@ -23,8 +23,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "../strucs.h"
+#include "utils.h"
 #include "functions.h"
+#include "../strucs.h"
 
 Image *readImageDefaultFormat(FILE *f);
 
