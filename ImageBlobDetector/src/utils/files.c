@@ -42,7 +42,7 @@ Image *readImageDefaultFormat(FILE *f)
 			image->pixels[i][j].red			= (char)r;
 			image->pixels[i][j].green		= (char)g;
 			image->pixels[i][j].blue		= (char)b;
-			image->pixels[i][j].analized	= 0;
+			image->pixels[i][j].analysed	= 0;
 		}
 	}
 	

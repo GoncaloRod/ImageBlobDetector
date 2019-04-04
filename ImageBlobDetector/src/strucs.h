@@ -5,7 +5,7 @@
 
 typedef struct _pixel
 {
-	unsigned char red, green, blue, analized;
+	unsigned char red, green, blue, analysed;
 } Pixel;
 
 typedef struct _image
