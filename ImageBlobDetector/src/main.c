@@ -17,11 +17,12 @@ int main(int argc, char *argv[])
 
 	FILE *inputFile;
 	Image *image;
+	char fileName[50];
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
 	bool memTest;
 
-	if (!validateArguments(argc, argv, &inputFile, &red, &green, &blue, &tolerance, mode))
+	if (!validateArguments(argc, argv, fileName, &red, &green, &blue, &tolerance, mode))
 	{
 		printUsageMessage(argv[0]);
 		return 0;
@@ -32,17 +33,27 @@ int main(int argc, char *argv[])
 
 	do 
 	{
+		inputFile = fopen(fileName, FM_R);
+
+		if (!inputFile)
+		{
+			printError("File %s doesn't exist", fileName);
+			return 0;
+		}
+
 		while (!endOfFile(inputFile))
 		{
 			image = readImageDefaultFormat(inputFile);
 
+			// TODO: Analise image
+
 			freeImage(image);
 		}
+
+		fclose(inputFile);
 	} while (memTest);
 
 	getchar();
 	
-	fclose(inputFile);
-	 
 	_CrtDumpMemoryLeaks();
 }

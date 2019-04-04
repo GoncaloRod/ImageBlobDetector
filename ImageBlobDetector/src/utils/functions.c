@@ -13,7 +13,7 @@ void printUsageMessage(char *programName)
 	printf("\tmode:\t\t\tMode in which program will execute. Can be MENU, ALL or MEM\n");
 }
 
-int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r, unsigned char *g,
+int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, unsigned char *g,
 					  unsigned char *b, unsigned char *t, char *mode)
 {
 	// Validate arguments count
@@ -24,13 +24,8 @@ int validateArguments(int argc, char **argv,  FILE **inputFile, unsigned char *r
 		return 0;
 
 	// Validate input file
-	*inputFile = fopen(argv[2], FM_R);
-
-	if (inputFile == NULL)
-	{
-		printError("Failed to open input file");
+	if (argv[2][0] == '\0')
 		return 0;
-	}
 
 	// Validate red, green, blue and tolerance values are numeric
 	if (!isNumeric(argv[3]) || !isNumeric(argv[4]) || !isNumeric(argv[5]) ||

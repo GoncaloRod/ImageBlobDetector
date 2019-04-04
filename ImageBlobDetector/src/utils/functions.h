@@ -12,7 +12,7 @@
 
 void printUsageMessage(char *programName);
 
-int validateArguments(int argc, char **argv, FILE **inputFile, unsigned char *r, unsigned char *g,
+int validateArguments(int argc, char **argv, char *fileName, unsigned char *r, unsigned char *g,
 					  unsigned char *b, unsigned char *t, char *mode);
 
 Image *createImage();
