@@ -72,7 +72,5 @@ Image *readImageDefaultFormat(FILE *f)
 
 	image->pixels = pixels;
 
-	freePixelMatrix(pixels, height, width);
-
 	return image;
 }
