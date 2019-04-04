@@ -21,4 +21,6 @@ bool inRange(int min, int max, int value);
 
 double executionTime(clock_t start, clock_t end);
 
+bool endOfFile(FILE *f);
+
 #endif

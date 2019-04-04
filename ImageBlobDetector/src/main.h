@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <crtdbg.h>	
+#include <stdbool.h>
 
 #include "utils/utils.h"
 #include "utils/functions.h"

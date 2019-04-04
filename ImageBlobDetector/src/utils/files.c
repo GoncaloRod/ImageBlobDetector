@@ -3,15 +3,7 @@
 Image *readImageDefaultFormat(FILE *f)
 {
 	if (!f) return NULL;
-
-	// Check if file is not empty
-	fseek(f, SEEK_END, 0);
-
-	long fEnd = ftell(f);
-
-	fseek(f, SEEK_SET, 0);
-
-	if (ftell(f) == fEnd) return NULL;
+	if (endOfFile(f)) return NULL;
 
 	// Used to measure file loading time
 	clock_t start, end;
@@ -53,7 +45,7 @@ Image *readImageDefaultFormat(FILE *f)
 			image->pixels[i][j].analized	= 0;
 		}
 	}
-
+	
 	end = clock();
 
 	// Ended loading file

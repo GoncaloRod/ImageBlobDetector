@@ -19,20 +19,30 @@ int main(int argc, char *argv[])
 	Image *image;
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
+	bool memTest;
 
 	if (!validateArguments(argc, argv, &inputFile, &red, &green, &blue, &tolerance, mode))
 	{
 		printUsageMessage(argv[0]);
 		return 0;
 	}
+	
+	// If mode is in 'MEM' mode the program should run in infinite mode to test memory
+	memTest = strcmp(mode, "MEM") == 0;
 
-	image = readImageDefaultFormat(inputFile);
+	do 
+	{
+		while (!endOfFile(inputFile))
+		{
+			image = readImageDefaultFormat(inputFile);
 
-	freeImage(image);
-
-	fclose(inputFile);
+			freeImage(image);
+		}
+	} while (memTest);
 
 	getchar();
-
+	
+	fclose(inputFile);
+	 
 	_CrtDumpMemoryLeaks();
 }
