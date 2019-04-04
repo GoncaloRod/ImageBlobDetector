@@ -41,11 +41,11 @@ int main(int argc, char *argv[])
 			return 0;
 		}
 
-		while (!endOfFile(inputFile))
+		while (!feof(inputFile))
 		{
 			image = readImageDefaultFormat(inputFile);
 
-			// TODO: Analise image
+			// TODO: Analyze image
 
 			freeImage(image);
 		}

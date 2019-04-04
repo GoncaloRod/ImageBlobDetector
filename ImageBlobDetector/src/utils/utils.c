@@ -63,20 +63,3 @@ double executionTime(clock_t start, clock_t end)
 {
 	return ((double)(end - start)) / CLOCKS_PER_SEC;
 }
-
-bool endOfFile(FILE *f)
-{
-	if (!f) return;
-
-	long curPos, endPos;
-
-	curPos = ftell(f);
-
-	fseek(f, 0, SEEK_END);
-
-	endPos = ftell(f);
-
-	fseek(f, curPos, SEEK_SET);
-
-	return curPos == endPos;
-}

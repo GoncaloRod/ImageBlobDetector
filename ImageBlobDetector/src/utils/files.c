@@ -3,7 +3,7 @@
 Image *readImageDefaultFormat(FILE *f)
 {
 	if (!f) return NULL;
-	if (endOfFile(f)) return NULL;
+	if (feof(f)) return NULL;
 
 	// Used to measure file loading time
 	clock_t start, end;
@@ -29,15 +29,6 @@ Image *readImageDefaultFormat(FILE *f)
 		for (int j = 0; j < image->width; ++j)
 		{
 			fscanf(f, "%d\n%d\n%d\n", &r, &g, &b);
-
-			if (!inRange(0, 255, r) || !inRange(0, 255, g) || !inRange(0, 255, b))
-			{
-				printError("Pixel value not in range of 0 to 255 in %s", image->fileName);
-
-				freeImage(image);
-
-				return NULL;
-			}
 
 			image->pixels[i][j].red			= (char)r;
 			image->pixels[i][j].green		= (char)g;
