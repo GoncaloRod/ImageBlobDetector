@@ -27,6 +27,8 @@ int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, un
 	if (argv[2][0] == '\0')
 		return 0;
 
+	strcpy(fileName, argv[2]);
+
 	// Validate red, green, blue and tolerance values are numeric
 	if (!isNumeric(argv[3]) || !isNumeric(argv[4]) || !isNumeric(argv[5]) ||
 		!isNumeric(argv[6]))
