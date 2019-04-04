@@ -3,8 +3,8 @@
 void printUsageMessage(char *programName)
 {
 	printf("\nUsage: %s tests input_file red green blue tolerance mode\n\n", programName);
-
-	// TODO: Fix indentation
+	
+	// TODO: Better formating
 	printf("\tinput_file:\t\tFile to be precessed\n");
 	printf("\tred:\t\t\tDesired red value of color to find\n");
 	printf("\tgreen:\t\t\tDesired green value of color to find\n");
@@ -73,6 +73,18 @@ Image *createImage()
 	i->pixels = NULL;
 
 	return i;
+}
+
+Pixel **createPixelsMatrix(int height, int width)
+{
+	Pixel **pixels = (Pixel **)malloc(height * sizeof(Pixel *));
+
+	for (int i = 0; i < height; ++i)
+	{
+		pixels[i] = (Pixel *)malloc(width * sizeof(Pixel));
+	}
+
+	return pixels;
 }
 
 void freePixelMatrix(Pixel **matrix, int height, int width)

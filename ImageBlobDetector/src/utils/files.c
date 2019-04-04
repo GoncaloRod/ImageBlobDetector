@@ -13,64 +13,51 @@ Image *readImageDefaultFormat(FILE *f)
 
 	if (ftell(f) == fEnd) return NULL;
 
+	// Used to measure file loading time
 	clock_t start, end;
 
-	Image *image;
-	char fileName[IMAGE_NAME_SIZE];
-	int height, width, channels;
-	Pixel **pixels;
+	Image *image = createImage();
 
 	int r, g, b;
 
-	fscanf(f, "%s\n", fileName);								// Read image file name
-	fscanf(f, "%d %d %d", &height, &width, &channels);			// Read height width and channel number
+	// Read filename, height, width and channels from file
+	fscanf(f, "%s\n", image->fileName);
+	fscanf(f, "%d %d %d", &image->height, &image->width, &image->channels);
 
-	pixels = (Pixel **)malloc(height * sizeof(Pixel *));
+	// Allocate pixels matrix
+	image->pixels = createPixelsMatrix(image->height, image->width);
+
+	printInfo("Reading %s", image->fileName);
 	
-	for (int i = 0; i < height; ++i)
-	{
-		pixels[i] = (Pixel *)malloc(width * sizeof(Pixel));
-	}
-
-	printInfo("Reading %s", fileName);
-
+	// Start loading file
 	start = clock();
 
-	for (int i = 0; i < height; ++i)
+	for (int i = 0; i < image->height; ++i)
 	{
-		for (int j = 0; j < width; ++j)
+		for (int j = 0; j < image->width; ++j)
 		{
 			fscanf(f, "%d\n%d\n%d\n", &r, &g, &b);
 
 			if (!inRange(0, 255, r) || !inRange(0, 255, g) || !inRange(0, 255, b))
 			{
-				printError("Pixel value not in range of 0 to 255 in %s", fileName);
+				printError("Pixel value not in range of 0 to 255 in %s", image->fileName);
 
-				freePixelMatrix(pixels, height, width);
+				freeImage(image);
 
 				return NULL;
 			}
 
-			pixels[i][j].red		= (char)r;
-			pixels[i][j].green		= (char)g;
-			pixels[i][j].blue		= (char)b;
-			pixels[i][j].analized	= 0;
+			image->pixels[i][j].red			= (char)r;
+			image->pixels[i][j].green		= (char)g;
+			image->pixels[i][j].blue		= (char)b;
+			image->pixels[i][j].analized	= 0;
 		}
 	}
 
 	end = clock();
 
-	printInfo("%s readed in %f seconds", fileName, executionTime(start, end));
-
-	image = createImage();
-
-	strcpy(image->fileName, fileName);
-	
-	image->width = width;
-	image->height = height;
-	image->channels = channels;
-
-	image->pixels = pixels;
+	// Ended loading file
+	printInfo("%s readed in %f seconds", image->fileName, executionTime(start, end));
 
 	return image;
 }
