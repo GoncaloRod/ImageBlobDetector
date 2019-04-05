@@ -40,7 +40,7 @@ Image *readImageDefaultFormat(FILE *f)
 	end = clock();
 
 	// Ended loading file
-	printInfo("%s readed in %f seconds", image->fileName, executionTime(start, end));
+	printInfo("%s read in %f seconds", image->fileName, executionTime(start, end));
 
 	return image;
 }
