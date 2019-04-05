@@ -130,12 +130,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\analyzer.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\utils\files.c" />
     <ClCompile Include="src\utils\functions.c" />
     <ClCompile Include="src\utils\utils.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\analyzer.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\strucs.h" />
     <ClInclude Include="src\utils\files.h" />
