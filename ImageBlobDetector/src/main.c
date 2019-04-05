@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 		{
 			image = readImageDefaultFormat(inputFile);
 
-			// TODO: Analyze image
+			analyseImage(image, red, green, blue, tolerance);
 
 			freeImage(image);
 		}
