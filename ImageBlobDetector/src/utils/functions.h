@@ -17,9 +17,9 @@ int validateArguments(int argc, char **argv, char *fileName, unsigned char *r, u
 
 Image *createImage();
 
-Pixel **createPixelsMatrix(int heigth, int width);
+Pixel *createPixelsMatrix(int heigth, int width);
 
-void freePixelMatrix(Pixel **matrix, int height, int width);
+void freePixelMatrix(Pixel *matrix);
 
 void freeImage(Image *image);
 

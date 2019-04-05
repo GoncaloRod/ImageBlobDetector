@@ -72,25 +72,15 @@ Image *createImage()
 	return i;
 }
 
-Pixel **createPixelsMatrix(int height, int width)
+Pixel *createPixelsMatrix(int height, int width)
 {
-	Pixel **pixels = (Pixel **)malloc(height * sizeof(Pixel *));
-
-	for (int i = 0; i < height; ++i)
-	{
-		pixels[i] = (Pixel *)malloc(width * sizeof(Pixel));
-	}
+	Pixel *pixels = (Pixel *)malloc(height * width * sizeof(Pixel));
 
 	return pixels;
 }
 
-void freePixelMatrix(Pixel **matrix, int height, int width)
+void freePixelMatrix(Pixel *matrix)
 {
-	for (int i = 0; i < height; i++)
-	{
-		free(matrix[i]);
-	}
-	
 	free(matrix);
 }
 
@@ -100,7 +90,7 @@ void freeImage(Image *image)
 
 	// Free pixels matrix
 	if (image->pixels)
-		freePixelMatrix(image->pixels, image->height, image->width);
+		freePixelMatrix(image->pixels);
 	
 	// Free image structure
 	free(image);

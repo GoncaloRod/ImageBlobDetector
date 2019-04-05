@@ -5,6 +5,8 @@ Image *readImageDefaultFormat(FILE *f)
 	if (!f) return NULL;
 	if (feof(f)) return NULL;
 
+	Pixel *pixelsMat;
+
 	// Used to measure file loading time
 	clock_t start, end;
 
@@ -17,7 +19,7 @@ Image *readImageDefaultFormat(FILE *f)
 	fscanf(f, "%d %d %d", &image->height, &image->width, &image->channels);
 
 	// Allocate pixels matrix
-	image->pixels = createPixelsMatrix(image->height, image->width);
+	pixelsMat = image->pixels = createPixelsMatrix(image->height, image->width);
 
 	printInfo("Reading %s", image->fileName);
 	
@@ -26,14 +28,12 @@ Image *readImageDefaultFormat(FILE *f)
 
 	for (int i = 0; i < image->height; ++i)
 	{
-		for (int j = 0; j < image->width; ++j)
+		for (int j = 0; j < image->width; ++j, ++pixelsMat)
 		{
-			fscanf(f, "%d\n%d\n%d\n", &r, &g, &b);
+			// '%hhu' to read unsigned char
+			fscanf(f, "%hhu\n%hhu\n%hhu\n", &pixelsMat->red, &pixelsMat->green, &pixelsMat->blue);
 
-			image->pixels[i][j].red			= (char)r;
-			image->pixels[i][j].green		= (char)g;
-			image->pixels[i][j].blue		= (char)b;
-			image->pixels[i][j].analysed	= 0;
+			pixelsMat->analysed = 0;
 		}
 	}
 	

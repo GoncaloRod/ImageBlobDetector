@@ -12,7 +12,7 @@ typedef struct _image
 {
 	char fileName[IMAGE_NAME_SIZE];
 	int width, height, channels;
-	Pixel **pixels;
+	Pixel *pixels;
 } Image;
 
 #endif
