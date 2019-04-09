@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 
 	FILE *inputFile;
 	Image *image;
+	BlobList *blobs;
 	char fileName[50];
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
@@ -44,6 +45,8 @@ int main(int argc, char *argv[])
 		while (!feof(inputFile))
 		{
 			image = readImageDefaultFormat(inputFile);
+
+			// TODO: Create blobs list
 
 			analyseImage(image, red, green, blue, tolerance);
 

@@ -19,6 +19,26 @@ Image *createImage();
 
 Pixel *createPixelsMatrix(int heigth, int width);
 
+// Coords
+Coord *createCoord(int x, int y);
+void freeCoord(Coord *coord);
+
+// Blob Nodes
+CoordNode *createCoordNode();
+void freeCoordNode(CoordNode *node);
+
+// Blobs
+Blob *createBlob();
+void freeBloob(Blob *blob);
+
+// Blob Nodes
+BlobNode *createBlobNode();
+void freeBlobNode(BlobNode *node);
+
+// Blob Lists
+BlobList *createBlobList();
+void freeBlobList(BlobList *list);
+
 void freePixelMatrix(Pixel *matrix);
 
 void freeImage(Image *image);

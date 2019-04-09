@@ -15,4 +15,33 @@ typedef struct _image
 	Pixel *pixels;
 } Image;
 
+typedef struct _coord
+{
+	int x, y;
+} Coord;
+
+typedef struct _coordNode
+{
+	struct _coordNode *next;
+	Coord *data;
+} CoordNode;
+
+typedef struct _blob
+{
+	CoordNode *first, *last;
+	int count;
+} Blob;
+
+typedef struct _blobNode
+{
+	struct _blobNode *next;
+	Blob *data;
+} BlobNode;
+
+typedef struct _blobList
+{
+	BlobNode *first, *last;
+	int count;
+} BlobList;
+
 #endif
