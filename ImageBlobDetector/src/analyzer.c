@@ -6,21 +6,17 @@ void analyseImage(Image* image, unsigned char r, unsigned char g, unsigned char 
 
 	for (int i = 0; i < image->height; ++i)
 	{
-		for (int j = 0; j < image->height; ++j, ++pixels)
+		for (int j = 0; j < image->width; ++j, ++pixels)
 		{
 			if (pixels->analysed) continue;
 
+			pixels->analysed = 1;
 
+			if (inRange(r - t, r + t, pixels->red) && inRange(g - t, g + t, pixels->green) &&
+				inRange(b - t, b + t, pixels->blue))
+			{
+
+			}
 		}
-	}
-}
-
-void analysePizel(Pixel *pixel, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
-{
-	if ((pixel->red <= r + t && pixel->red <= r - t) &&
-		(pixel->green <= g + t && pixel->green <= g - t) &&
-		(pixel->blue <= b + t && pixel->blue <= b - t))
-	{
-
 	}
 }

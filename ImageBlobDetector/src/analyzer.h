@@ -7,9 +7,8 @@
 #include <string.h>
 
 #include "strucs.h"
+#include "utils/functions.h"
 
 void analyseImage(Image* image, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
-
-void analysePizel(Pixel *pixel, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
 
 #endif
