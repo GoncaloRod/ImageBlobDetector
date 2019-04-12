@@ -60,6 +60,52 @@ void freeCoordNode(CoordNode *node)
 	free(node);
 }
 
+CoordQueue *createCoordQueue()
+{
+	CoordQueue *queue = (CoordQueue *)malloc(sizeof(CoordQueue));
+
+	queue->first = queue->last = NULL;
+	queue->count = 0;
+}
+
+void freeCoordQueue(CoordQueue *queue)
+{
+	if (!queue);
+
+	for (int i = 0; i < queue->count; ++i)
+	{
+		freeCoord(coordDequeue(queue));
+	}
+
+	free(queue);
+}
+
+void coordEnqueue(CoordQueue *queue, Coord* coord)
+{
+	if (!queue) return;
+	if (!coord) return;
+
+	CoordNode *node = createCoordNode();
+	node->data = coord;
+
+	queue->last->next = node;
+	queue->last = node;
+}
+
+Coord *coordDequeue(CoordQueue *queue)
+{
+	if (!queue) return;
+
+	CoordNode *node = queue->first;
+	queue->first = node->next;
+
+	Coord *coord = node->data;
+
+	free(node);
+
+	return coord;
+}
+
 Blob *createBlob()
 {
 	Blob *blob = (Blob *)malloc(sizeof(Blob));
@@ -86,6 +132,48 @@ void freeBloob(Blob *blob)
 	}
 
 	free(blob);
+}
+
+void blobAddStart(Blob *blob, Coord *coord)
+{
+	if (!blob) return;
+	if (!coord) return;
+
+	CoordNode *node = createCoordNode();
+
+	node->data = coord;
+
+	if (blob->first == NULL)
+	{
+		blob->first = blob->last == node;
+		return;
+	}
+
+	node->next = blob->first;
+	blob->first = node;
+
+	blob->count++;
+}
+
+void blobAddEnd(Blob *blob, Coord *coord)
+{
+	if (!blob) return;
+	if (!coord) return;
+
+	if (blob->first == NULL)
+	{
+		blobAddStart(blob, coord);
+		return;
+	}
+
+	BlobNode *node = createBlobNode();
+
+	node->data = coord;
+
+	blob->last->next = node;
+	blob->last = node;
+
+	blob->count++;
 }
 
 BlobNode *createBlobNode()

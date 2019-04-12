@@ -32,6 +32,12 @@ typedef struct _coordNode
 	Coord *data;
 } CoordNode;
 
+typedef struct _coordQueue
+{
+	CoordNode *first, *last;
+	int count;
+} CoordQueue;
+
 typedef struct _blob
 {
 	CoordNode *first, *last;
@@ -61,17 +67,31 @@ void freeImage(Image *image);
 
 // Coords
 Coord *createCoord(int x, int y);
+
 void freeCoord(Coord *coord);
 
-// Blob Nodes
+// Coord Nodes
 CoordNode *createCoordNode();
 
 void freeCoordNode(CoordNode *node);
+
+// Coord Queue
+CoordQueue *createCoordQueue();
+
+void freeCoordQueue(CoordQueue *queue);
+
+void coordEnqueue(CoordQueue *queue, Coord* coord);
+
+Coord *coordDequeue(CoordQueue *queue);
 
 // Blobs
 Blob *createBlob();
 
 void freeBloob(Blob *blob);
+
+void blobAddStart(Blob *blob, Coord *coord);
+
+void blobAddEnd(Blob *blob, Coord *coord);
 
 // Blob Nodes
 BlobNode *createBlobNode();
