@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
 			printError("File %s doesn't exist", fileName);
 			return 0;
 		}
+		
+		blobs = createBlobList();
 
 		while (!feof(inputFile))
 		{
 			image = readImageDefaultFormat(inputFile);
 
-			// TODO: Create blobs list
-
-			analyseImage(image, red, green, blue, tolerance);
+			analyseImage(blobs, image, red, green, blue, tolerance);
 
 			freeImage(image);
 		}

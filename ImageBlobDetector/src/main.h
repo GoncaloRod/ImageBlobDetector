@@ -9,4 +9,5 @@
 #include "utils/utils.h"
 #include "utils/functions.h"
 #include "utils/files.h"
-#include "strucs.h"
+#include "analyzer.h"
+#include "structs.h"

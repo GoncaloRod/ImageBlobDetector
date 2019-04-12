@@ -7,7 +7,7 @@
 #include <stdarg.h>
 #include <time.h>
 
-#include "../strucs.h"
+#include "../structs.h"
 
 void printError(const char *message, ...);
 

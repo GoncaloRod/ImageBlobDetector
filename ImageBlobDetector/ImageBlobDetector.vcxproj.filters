@@ -30,6 +30,9 @@
     <ClCompile Include="src\analyzer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\structs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main.h">
@@ -41,13 +44,13 @@
     <ClInclude Include="src\utils\files.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\strucs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\analyzer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

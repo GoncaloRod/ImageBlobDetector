@@ -6,9 +6,11 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "strucs.h"
+#include "structs.h"
 #include "utils/functions.h"
 
-void analyseImage(Image* image, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
+void analyseImage(BlobList *blobls, Image* image, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
+
+void findBlob();
 
 #endif

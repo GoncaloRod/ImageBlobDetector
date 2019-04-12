@@ -135,11 +135,12 @@
     <ClCompile Include="src\utils\files.c" />
     <ClCompile Include="src\utils\functions.c" />
     <ClCompile Include="src\utils\utils.c" />
+    <ClCompile Include="src\structs.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\analyzer.h" />
     <ClInclude Include="src\main.h" />
-    <ClInclude Include="src\strucs.h" />
+    <ClInclude Include="src\structs.h" />
     <ClInclude Include="src\utils\files.h" />
     <ClInclude Include="src\utils\functions.h" />
     <ClInclude Include="src\utils\utils.h" />

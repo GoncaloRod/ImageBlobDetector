@@ -25,7 +25,7 @@
 
 #include "utils.h"
 #include "functions.h"
-#include "../strucs.h"
+#include "../structs.h"
 
 Image *readImageDefaultFormat(FILE *f);
 

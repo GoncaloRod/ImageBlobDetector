@@ -1,6 +1,6 @@
 #include "analyzer.h"
 
-void analyseImage(Image* image, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
+void analyseImage(BlobList *blobls, Image* image, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
 {
 	Pixel *pixels = image->pixels;
 
@@ -15,7 +15,7 @@ void analyseImage(Image* image, unsigned char r, unsigned char g, unsigned char 
 			if (inRange(r - t, r + t, pixels->red) && inRange(g - t, g + t, pixels->green) &&
 				inRange(b - t, b + t, pixels->blue))
 			{
-
+				
 			}
 		}
 	}
