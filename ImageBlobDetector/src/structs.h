@@ -60,22 +60,40 @@ typedef struct _blobList
 
 #pragma region Functions
 
-// Images
+#pragma region Pixel
+
+Pixel *createPixelMatrix(int heigth, int width);
+
+void freePixelMatrix(Pixel* matrix);
+
+#pragma endregion Pixel
+
+#pragma region Image
+
 Image *createImage();
 
-void freeImage(Image *image);
+void freeImage(Image* image);
 
-// Coords
+#pragma endregion Image
+
+#pragma region Coord
+
 Coord *createCoord(int x, int y);
 
 void freeCoord(Coord *coord);
 
-// Coord Nodes
+#pragma endregion Coord
+
+#pragma region CoordNode
+
 CoordNode *createCoordNode();
 
 void freeCoordNode(CoordNode *node);
 
-// Coord Queue
+#pragma endregion CoordNode
+
+#pragma region CoordQueue
+
 CoordQueue *createCoordQueue();
 
 void freeCoordQueue(CoordQueue *queue);
@@ -84,7 +102,10 @@ void coordEnqueue(CoordQueue *queue, Coord* coord);
 
 Coord *coordDequeue(CoordQueue *queue);
 
-// Blobs
+#pragma endregion CoordQueue
+
+#pragma region Blob
+
 Blob *createBlob();
 
 void freeBloob(Blob *blob);
@@ -93,15 +114,27 @@ void blobAddStart(Blob *blob, Coord *coord);
 
 void blobAddEnd(Blob *blob, Coord *coord);
 
-// Blob Nodes
+#pragma endregion Blob
+
+#pragma region BlobNode
+
 BlobNode *createBlobNode();
 
 void freeBlobNode(BlobNode *node);
 
-// Blob Lists
+#pragma endregion BlobNode
+
+#pragma region BlobList
+
 BlobList *createBlobList();
 
 void freeBlobList(BlobList *list);
+
+void blobListAddStart(BlobList* list, Blob* blob);
+
+void blobListAddEnd(BlobList* list, Blob* blob);
+
+#pragma endregion BlobList
 
 #pragma endregion
 

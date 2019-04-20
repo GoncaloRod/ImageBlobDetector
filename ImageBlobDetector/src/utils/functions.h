@@ -12,11 +12,8 @@
 
 void printUsageMessage(char *programName);
 
-int validateArguments(int argc, char **argv, char *fileName, unsigned char *r, unsigned char *g,
-					  unsigned char *b, unsigned char *t, char *mode);
+int validateArguments(int argc, char **argv, char *fileName, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *t, char *mode);
 
-Pixel *createPixelsMatrix(int heigth, int width);
-
-void freePixelMatrix(Pixel *matrix);
+Pixel *getPixelFromCoord(Image *image, int x, int y);
 
 #endif

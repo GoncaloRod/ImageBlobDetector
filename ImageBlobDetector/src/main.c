@@ -11,8 +11,9 @@
 int main(int argc, char *argv[])
 {
 #if 0
+
 	// Find memory leak, set to 1 to use
-	_CrtSetBreakAlloc(75);
+	_CrtSetBreakAlloc(99);
 #endif
 
 	FILE *inputFile;
@@ -42,15 +43,21 @@ int main(int argc, char *argv[])
 			return 0;
 		}
 		
-		blobs = createBlobList();
-
 		while (!feof(inputFile))
 		{
+			blobs = createBlobList();
+
 			image = readImageDefaultFormat(inputFile);
+
+			// TODO: Start performance counter
 
 			analyseImage(image, blobs, red, green, blue, tolerance);
 
+			// TODO: Show result
+
 			freeImage(image);
+
+			freeBlobList(blobs);
 		}
 
 		fclose(inputFile);

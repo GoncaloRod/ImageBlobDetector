@@ -1,8 +1,28 @@
 #include "structs.h"
 
+#pragma region Pixel
+
+Pixel *createPixelMatrix(int heigth, int width)
+{
+	Pixel *pixels = (Pixel *)malloc(heigth * width * sizeof(Pixel));
+
+	return pixels;
+}
+
+void freePixelMatrix(Pixel* matrix)
+{
+	free(matrix);
+}
+
+#pragma endregion Pixel
+
+#pragma region Image
+
 Image *createImage()
 {
 	Image *i = (Image *)malloc(sizeof(Image));
+
+	if (!i) return NULL;
 
 	strcpy(i->fileName, "");
 	i->width = 0;
@@ -16,17 +36,21 @@ void freeImage(Image *image)
 {
 	if (!image) return;
 
-	// Free pixels matrix
 	if (image->pixels)
 		freePixelMatrix(image->pixels);
 
-	// Free image structure
 	free(image);
 }
+
+#pragma endregion Image
+
+#pragma region Coord
 
 Coord *createCoord(int x, int y)
 {
 	Coord *coord = (Coord *)malloc(sizeof(Coord));
+
+	if (!coord) return NULL;
 
 	coord->x = x;
 	coord->y = y;
@@ -41,9 +65,15 @@ void freeCoord(Coord *coord)
 	free(coord);
 }
 
+#pragma endregion Coord
+
+#pragma region CoordNode
+
 CoordNode *createCoordNode()
 {
 	CoordNode *node = (CoordNode *)malloc(sizeof(CoordNode));
+
+	if (!node) return NULL;
 
 	node->next = NULL;
 	node->data = NULL;
@@ -55,24 +85,33 @@ void freeCoordNode(CoordNode *node)
 {
 	if (!node) return;
 
-	freeCoord(node->data);
+	if (node->data)
+		freeCoord(node->data);
 
 	free(node);
 }
+
+#pragma endregion CoordNode
+
+#pragma region CoordQueue
 
 CoordQueue *createCoordQueue()
 {
 	CoordQueue *queue = (CoordQueue *)malloc(sizeof(CoordQueue));
 
+	if (!queue) return NULL;
+
 	queue->first = queue->last = NULL;
 	queue->count = 0;
+
+	return queue;
 }
 
 void freeCoordQueue(CoordQueue *queue)
 {
-	if (!queue);
+	if (!queue) return;
 
-	for (int i = 0; i < queue->count; ++i)
+	for (int i = 0; i < queue->count; i++)
 	{
 		freeCoord(coordDequeue(queue));
 	}
@@ -88,16 +127,29 @@ void coordEnqueue(CoordQueue *queue, Coord* coord)
 	CoordNode *node = createCoordNode();
 	node->data = coord;
 
+	if (queue->first == NULL)
+	{
+		queue->first = queue->last = node;
+		queue->count++;
+
+		return;
+	}
+
 	queue->last->next = node;
 	queue->last = node;
+
+	queue->count++;
 }
 
 Coord *coordDequeue(CoordQueue *queue)
 {
-	if (!queue) return;
+	if (!queue) return NULL;
+	if (!queue->first) return NULL;
 
 	CoordNode *node = queue->first;
 	queue->first = node->next;
+
+	queue->count--;
 
 	Coord *coord = node->data;
 
@@ -106,12 +158,20 @@ Coord *coordDequeue(CoordQueue *queue)
 	return coord;
 }
 
+#pragma endregion CoordQueue
+
+#pragma region Blob
+
 Blob *createBlob()
 {
 	Blob *blob = (Blob *)malloc(sizeof(Blob));
 
+	if (!blob) return NULL;
+
 	blob->first = blob->last = NULL;
 	blob->count = 0;
+
+	return blob;
 }
 
 void freeBloob(Blob *blob)
@@ -121,14 +181,14 @@ void freeBloob(Blob *blob)
 	CoordNode *current, *next;
 
 	current = blob->first;
-	next = current->next;
 
 	while (current)
 	{
+		next = current->next;
+
 		freeCoordNode(current);
 
 		current = next;
-		next = current->next;
 	}
 
 	free(blob);
@@ -145,7 +205,9 @@ void blobAddStart(Blob *blob, Coord *coord)
 
 	if (blob->first == NULL)
 	{
-		blob->first = blob->last == node;
+		blob->first = blob->last = node;
+		blob->count++;
+
 		return;
 	}
 
@@ -166,7 +228,7 @@ void blobAddEnd(Blob *blob, Coord *coord)
 		return;
 	}
 
-	BlobNode *node = createBlobNode();
+	CoordNode *node = createCoordNode();
 
 	node->data = coord;
 
@@ -176,29 +238,45 @@ void blobAddEnd(Blob *blob, Coord *coord)
 	blob->count++;
 }
 
+#pragma endregion Blob
+
+#pragma region BlobNode
+
 BlobNode *createBlobNode()
 {
 	BlobNode *node = (BlobNode *)malloc(sizeof(BlobNode));
 
+	if (!node) return NULL;
+
 	node->next = NULL;
 	node->data = NULL;
+
+	return node;
 }
 
 void freeBlobNode(BlobNode *node)
 {
 	if (!node) return;
 
-	freeBloob(node->next);
+	freeBloob(node->data);
 
 	free(node);
 }
+
+#pragma endregion BlobNode
+
+#pragma region BlobList
 
 BlobList *createBlobList()
 {
 	BlobList *list = (BlobList *)malloc(sizeof(BlobList));
 
+	if (!list) return NULL;
+
 	list->first = list->last = NULL;
 	list->count = 0;
+
+	return list;
 }
 
 void freeBlobList(BlobList *list)
@@ -208,15 +286,61 @@ void freeBlobList(BlobList *list)
 	BlobNode *current, *next;
 
 	current = list->first;
-	next = current->next;
 
 	while (current)
 	{
+		next = current->next;
+
 		freeBlobNode(current);
 
 		current = next;
-		next = current->next;
 	}
 
 	free(list);
 }
+
+void blobListAddStart(BlobList* list, Blob* blob)
+{
+	if (!list) return;
+	if (!blob) return;
+
+	BlobNode *node = createBlobNode();
+
+	node->data = blob;
+
+	if (list->first == NULL)
+	{
+		list->first = list->last = node;
+		list->count++;
+
+		return;
+	}
+
+	node->next = list->first;
+	list->first = node;
+
+	list->count++;
+}
+
+void blobListAddEnd(BlobList* list, Blob* blob)
+{
+	if (!list) return;
+	if (!blob) return;
+
+	if (list->first == NULL)
+	{
+		blobListAddStart(list, blob);
+		return;
+	}
+
+	BlobNode* node = createBlobNode();
+
+	node->data = blob;
+
+	list->last->next = node;
+	list->last = node;
+
+	list->count++;
+}
+
+#pragma endregion BlobList

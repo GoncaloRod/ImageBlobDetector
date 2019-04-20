@@ -13,8 +13,7 @@ void printUsageMessage(char *programName)
 	printf("\tmode:\t\t\tMode in which program will execute. Can be MENU, ALL or MEM\n");
 }
 
-int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, unsigned char *g,
-					  unsigned char *b, unsigned char *t, char *mode)
+int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *t, char *mode)
 {
 	// Validate arguments count
 	if (argc != 8) return 0;
@@ -30,15 +29,13 @@ int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, un
 	strcpy(fileName, argv[2]);
 
 	// Validate red, green, blue and tolerance values are numeric
-	if (!isNumeric(argv[3]) || !isNumeric(argv[4]) || !isNumeric(argv[5]) ||
-		!isNumeric(argv[6]))
+	if (!isNumeric(argv[3]) || !isNumeric(argv[4]) || !isNumeric(argv[5]) || !isNumeric(argv[6]))
 	{
 		return 0;
 	}
 
 	// Validate red, green, blue and tolerance values are in range of 0 to 255
-	if (!inRange(0, 255, stringToInt(argv[3])) || !inRange(0, 255, stringToInt(argv[4])) ||
-		!inRange(0, 255, stringToInt(argv[5])) || !inRange(0, 255, stringToInt(argv[6])))
+	if (!inRange(0, 255, stringToInt(argv[3])) || !inRange(0, 255, stringToInt(argv[4])) || !inRange(0, 255, stringToInt(argv[5])) || !inRange(0, 255, stringToInt(argv[6])))
 	{
 		return 0;
 	}
@@ -60,14 +57,7 @@ int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, un
 	return 1;
 }
 
-Pixel *createPixelsMatrix(int height, int width)
+Pixel *getPixelFromCoord(Image *image, int x, int y)
 {
-	Pixel *pixels = (Pixel *)malloc(height * width * sizeof(Pixel));
-
-	return pixels;
-}
-
-void freePixelMatrix(Pixel *matrix)
-{
-	free(matrix);
+	return &image->pixels[(image->width * y) + x];
 }

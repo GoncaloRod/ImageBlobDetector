@@ -12,14 +12,12 @@ Image *readImageDefaultFormat(FILE *f)
 
 	Image *image = createImage();
 
-	int r, g, b;
-
 	// Read filename, height, width and channels from file
 	fscanf(f, "%s\n", image->fileName);
 	fscanf(f, "%d %d %d", &image->height, &image->width, &image->channels);
 
 	// Allocate pixels matrix
-	pixelsMat = image->pixels = createPixelsMatrix(image->height, image->width);
+	pixelsMat = image->pixels = createPixelMatrix(image->height, image->width);
 
 	printInfo("Reading %s", image->fileName);
 	
