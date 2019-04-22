@@ -130,9 +130,11 @@ BlobList *createBlobList();
 
 void freeBlobList(BlobList *list);
 
-void blobListAddStart(BlobList* list, Blob* blob);
+void blobListAddStart(BlobList *list, Blob *blob);
 
-void blobListAddEnd(BlobList* list, Blob* blob);
+void blobListAddEnd(BlobList *list, Blob *blob);
+
+void blobListAddSorted(BlobList *list, Blob *blob);
 
 #pragma endregion BlobList
 

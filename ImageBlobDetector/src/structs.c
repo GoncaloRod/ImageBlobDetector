@@ -299,7 +299,7 @@ void freeBlobList(BlobList *list)
 	free(list);
 }
 
-void blobListAddStart(BlobList* list, Blob* blob)
+void blobListAddStart(BlobList *list, Blob *blob)
 {
 	if (!list) return;
 	if (!blob) return;
@@ -322,7 +322,7 @@ void blobListAddStart(BlobList* list, Blob* blob)
 	list->count++;
 }
 
-void blobListAddEnd(BlobList* list, Blob* blob)
+void blobListAddEnd(BlobList *list, Blob *blob)
 {
 	if (!list) return;
 	if (!blob) return;
@@ -341,6 +341,21 @@ void blobListAddEnd(BlobList* list, Blob* blob)
 	list->last = node;
 
 	list->count++;
+}
+
+void blobListAddSorted(BlobList *list, Blob *blob)
+{
+	if (!list) return;
+	if (!blob) return;
+
+	if (!list->first)
+	{
+		blobListAddStart(list, blob);
+
+		return;
+	}
+	
+	
 }
 
 #pragma endregion BlobList
