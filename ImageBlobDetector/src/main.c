@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 	FILE *inputFile;
 	Image *image;
 	BlobList *blobs;
+	clock_t analyzeStart, analyzeEnd;
 	char fileName[50];
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
@@ -49,11 +50,17 @@ int main(int argc, char *argv[])
 
 			image = readImageDefaultFormat(inputFile);
 
-			// TODO: Start performance counter
+			printInfo("Analyzing %s", image->fileName);
+
+			analyzeStart = clock();
 
 			analyseImage(image, blobs, red, green, blue, tolerance);
 
-			// TODO: Show result
+			analyzeEnd = clock();
+
+			printInfo("%s analyzed in %f seconds", image->fileName, executionTime(analyzeStart, analyzeEnd));
+
+			printBlobList(blobs);
 
 			freeImage(image);
 

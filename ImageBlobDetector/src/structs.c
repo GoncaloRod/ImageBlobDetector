@@ -355,7 +355,44 @@ void blobListAddSorted(BlobList *list, Blob *blob)
 		return;
 	}
 	
-	
+	BlobNode *newBlob;
+	BlobNode *previous = NULL;
+	BlobNode *current = list->first;
+	char stop = 0;
+
+	while (current && !stop)
+	{
+		if (blob->count < current->data->count)
+		{
+			stop = 1;
+		}
+		else
+		{
+			previous = current;
+			current = current->next;
+		}
+	}
+
+	if (!previous)
+	{
+		blobListAddStart(list, blob);
+	}
+	else
+	{
+		newBlob = createBlobNode();
+		newBlob->data = blob;
+		
+		newBlob->next = current;
+
+		previous->next = newBlob;
+
+		list->count++;
+	}
+}
+
+void printBlobList(BlobList* list)
+{
+	// TODO: Function
 }
 
 #pragma endregion BlobList

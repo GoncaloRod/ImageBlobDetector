@@ -30,7 +30,7 @@ void analyseImage(Image* image, BlobList *blobls, unsigned char r, unsigned char
 					continue;
 				}
 
-				blobListAddEnd(blobls, blob);		// TODO: Sorted insert
+				blobListAddSorted(blobls, blob);
 			}
 		}
 	}

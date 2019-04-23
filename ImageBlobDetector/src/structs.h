@@ -136,6 +136,8 @@ void blobListAddEnd(BlobList *list, Blob *blob);
 
 void blobListAddSorted(BlobList *list, Blob *blob);
 
+void printBlobList(BlobList *list);
+
 #pragma endregion BlobList
 
 #pragma endregion
