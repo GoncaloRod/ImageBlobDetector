@@ -114,6 +114,8 @@ void blobAddStart(Blob *blob, Coord *coord);
 
 void blobAddEnd(Blob *blob, Coord *coord);
 
+Coord getBlobCenter(Blob *blob);
+
 #pragma endregion Blob
 
 #pragma region BlobNode
@@ -136,7 +138,7 @@ void blobListAddEnd(BlobList *list, Blob *blob);
 
 void blobListAddSorted(BlobList *list, Blob *blob);
 
-void printBlobList(BlobList *list);
+void printBlobList(BlobList *list, Image *image);
 
 #pragma endregion BlobList
 

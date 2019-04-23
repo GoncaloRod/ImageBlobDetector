@@ -238,6 +238,18 @@ void blobAddEnd(Blob *blob, Coord *coord)
 	blob->count++;
 }
 
+Coord getBlobCenter(Blob *blob)
+{
+	// TODO: This function
+
+	Coord coord;
+
+	coord.x = 10;
+	coord.y = 100;
+
+	return coord;
+}
+
 #pragma endregion Blob
 
 #pragma region BlobNode
@@ -362,7 +374,7 @@ void blobListAddSorted(BlobList *list, Blob *blob)
 
 	while (current && !stop)
 	{
-		if (blob->count < current->data->count)
+		if (blob->count > current->data->count)
 		{
 			stop = 1;
 		}
@@ -390,9 +402,21 @@ void blobListAddSorted(BlobList *list, Blob *blob)
 	}
 }
 
-void printBlobList(BlobList* list)
+void printBlobList(BlobList *list, Image *image)
 {
-	// TODO: Function
+	if (!list) return;
+	if (!list->first) return;
+
+	BlobNode *current = list->first;
+
+	printInfo("%d blobs found in %s", list->count, image->fileName);
+
+	while (current)
+	{
+		printf("(%d, %d) | %d pixels | Standard Deviation ( , , )\n", current->data->count);
+
+		current = current->next;
+	}
 }
 
 #pragma endregion BlobList

@@ -4,6 +4,11 @@ void analyseImage(Image* image, BlobList *blobls, unsigned char r, unsigned char
 {
 	Pixel *currentPixel = image->pixels;
 	Blob *blob;
+	clock_t start, end;
+
+	printInfo("Analyzing %s", image->fileName);
+
+	start = clock();
 
 	// Go through pixel matrix to find blobs
 	for (int i = 0; i < image->height; ++i)									// Lines
@@ -34,6 +39,10 @@ void analyseImage(Image* image, BlobList *blobls, unsigned char r, unsigned char
 			}
 		}
 	}
+
+	end = clock();
+
+	printInfo("%s analyzed in %f seconds", image->fileName, executionTime(start, end));
 }
 
 void findBlob(Image *image, Blob *blob, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
