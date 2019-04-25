@@ -17,9 +17,21 @@ typedef struct _pixel
 typedef struct _image
 {
 	char fileName[IMAGE_NAME_SIZE];
-	int width, height, channels;
-	Pixel *pixels;
+	int width, height, channels, blobs;
+	Pixel* pixels;
 } Image;
+
+typedef struct _imageNode
+{
+	struct _imageNode* next;
+	Image* data;
+} ImageNode;
+
+typedef struct _imageList
+{
+	ImageNode* first, * last;
+	int count;
+} ImageList;
 
 typedef struct _coord
 {
@@ -28,31 +40,31 @@ typedef struct _coord
 
 typedef struct _coordNode
 {
-	struct _coordNode *next;
-	Coord *data;
+	struct _coordNode* next;
+	Coord* data;
 } CoordNode;
 
 typedef struct _coordQueue
 {
-	CoordNode *first, *last;
+	CoordNode* first, * last;
 	int count;
 } CoordQueue;
 
 typedef struct _blob
 {
-	CoordNode *first, *last;
+	CoordNode* first, * last;
 	int count;
 } Blob;
 
 typedef struct _blobNode
 {
-	struct _blobNode *next;
-	Blob *data;
+	struct _blobNode* next;
+	Blob* data;
 } BlobNode;
 
 typedef struct _blobList
 {
-	BlobNode *first, *last;
+	BlobNode* first, * last;
 	int count;
 } BlobList;
 
@@ -62,7 +74,7 @@ typedef struct _blobList
 
 #pragma region Pixel
 
-Pixel *createPixelMatrix(int heigth, int width);
+Pixel* createPixelMatrix(int heigth, int width);
 
 void freePixelMatrix(Pixel* matrix);
 
@@ -70,75 +82,95 @@ void freePixelMatrix(Pixel* matrix);
 
 #pragma region Image
 
-Image *createImage();
+Image* createImage();
 
 void freeImage(Image* image);
 
 #pragma endregion Image
 
+#pragma region ImageNode
+
+ImageNode* createImageNode();
+
+void freeImageNode(ImageNode* node);
+
+#pragma endregion ImageNode
+
+#pragma region ImageList
+
+ImageList* createImageList();
+
+void freeImageList(ImageList* list);
+
+void imageListAddStart(ImageList* list, Image* image);
+
+void imageListAddEnd(ImageList* list, Image* image);
+
+#pragma endregion ImageList
+
 #pragma region Coord
 
-Coord *createCoord(int x, int y);
+Coord* createCoord(int x, int y);
 
-void freeCoord(Coord *coord);
+void freeCoord(Coord* coord);
 
 #pragma endregion Coord
 
 #pragma region CoordNode
 
-CoordNode *createCoordNode();
+CoordNode* createCoordNode();
 
-void freeCoordNode(CoordNode *node);
+void freeCoordNode(CoordNode* node);
 
 #pragma endregion CoordNode
 
 #pragma region CoordQueue
 
-CoordQueue *createCoordQueue();
+CoordQueue* createCoordQueue();
 
-void freeCoordQueue(CoordQueue *queue);
+void freeCoordQueue(CoordQueue* queue);
 
-void coordEnqueue(CoordQueue *queue, Coord* coord);
+void coordEnqueue(CoordQueue* queue, Coord* coord);
 
-Coord *coordDequeue(CoordQueue *queue);
+Coord* coordDequeue(CoordQueue* queue);
 
 #pragma endregion CoordQueue
 
 #pragma region Blob
 
-Blob *createBlob();
+Blob* createBlob();
 
-void freeBloob(Blob *blob);
+void freeBloob(Blob* blob);
 
-void blobAddStart(Blob *blob, Coord *coord);
+void blobAddStart(Blob* blob, Coord* coord);
 
-void blobAddEnd(Blob *blob, Coord *coord);
+void blobAddEnd(Blob* blob, Coord* coord);
 
-Coord getBlobCenter(Blob *blob);
+Coord getBlobCenter(Blob* blob);
 
 #pragma endregion Blob
 
 #pragma region BlobNode
 
-BlobNode *createBlobNode();
+BlobNode* createBlobNode();
 
-void freeBlobNode(BlobNode *node);
+void freeBlobNode(BlobNode* node);
 
 #pragma endregion BlobNode
 
 #pragma region BlobList
 
-BlobList *createBlobList();
+BlobList* createBlobList();
 
-void freeBlobList(BlobList *list);
+void freeBlobList(BlobList* list);
 
-void blobListAddStart(BlobList *list, Blob *blob);
+void blobListAddStart(BlobList* list, Blob* blob);
 
-void blobListAddEnd(BlobList *list, Blob *blob);
+void blobListAddEnd(BlobList* list, Blob* blob);
 
-void blobListAddSorted(BlobList *list, Blob *blob);
+void blobListAddSorted(BlobList* list, Blob* blob);
 
-void printBlobList(BlobList *list, Image *image);
+void printBlobList(BlobList* list, Image* image);
 
 #pragma endregion BlobList
 

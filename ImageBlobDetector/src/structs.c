@@ -2,53 +2,153 @@
 
 #pragma region Pixel
 
-Pixel *createPixelMatrix(int heigth, int width)
+Pixel* createPixelMatrix(int heigth, int width)
 {
-	Pixel *pixels = (Pixel *)malloc(heigth * width * sizeof(Pixel));
+	Pixel* pixels = (Pixel*)malloc(heigth * width * sizeof(Pixel));
 
 	return pixels;
 }
 
-void freePixelMatrix(Pixel* matrix)
-{
-	free(matrix);
-}
+void freePixelMatrix(Pixel* matrix) { free(matrix); }
 
 #pragma endregion Pixel
 
 #pragma region Image
 
-Image *createImage()
+Image* createImage()
 {
-	Image *i = (Image *)malloc(sizeof(Image));
+	Image* i = (Image*)malloc(sizeof(Image));
 
 	if (!i) return NULL;
 
 	strcpy(i->fileName, "");
 	i->width = 0;
 	i->height = 0;
+	i->blobs = 0;
 	i->pixels = NULL;
 
 	return i;
 }
 
-void freeImage(Image *image)
+void freeImage(Image* image)
 {
 	if (!image) return;
 
-	if (image->pixels)
-		freePixelMatrix(image->pixels);
+	if (image->pixels) freePixelMatrix(image->pixels);
 
 	free(image);
 }
 
 #pragma endregion Image
 
+#pragma region ImageNode
+
+ImageNode* createImageNode()
+{
+	ImageNode* node = (ImageNode*)malloc(sizeof(ImageNode));
+
+	if (!node) return NULL;
+
+	node->next = NULL;
+	node->data = NULL;
+
+	return node;
+}
+
+void freeImageNode(ImageNode* node)
+{
+	if (!node) return;
+
+	if (node->data) freeImage(node->data);
+
+	free(node);
+}
+
+#pragma endregion ImageNode
+
+#pragma region ImageList
+
+ImageList* createImageList()
+{
+	ImageList* list = (ImageList*)malloc(sizeof(ImageList));
+
+	if (!list) return NULL;
+
+	list->first = NULL;
+	list->count = 0;
+
+	return list;
+}
+
+void freeImageList(ImageList* list)
+{
+	if (!list) return;
+
+	ImageNode* current, * next;
+
+	current = list->first;
+
+	while (current)
+	{
+		next = current->next;
+
+		freeImageNode(current);
+
+		current = next;
+	}
+
+	free(list);
+}
+
+void imageListAddStart(ImageList* list, Image* image)
+{
+	if (!list) return;
+	if (!image) return;
+
+	ImageNode* node = createImageNode();
+
+	if (!list->first)
+	{
+		list->first = list->last = node;
+		list->count++;
+
+		return;
+	}
+
+	node->next = list->first;
+	list->first = node;
+
+	list->count++;
+}
+
+void imageListAddEnd(ImageList* list, Image* image)
+{
+	if (!list) return;
+	if (!image) return;
+
+	if (!list->first)
+	{
+		imageListAddStart(list, image);
+		return;
+	}
+
+	ImageNode* node = createCoordNode();
+
+	node->data = image;
+
+	list->last->next = node;
+	list->last = node;
+
+	list->count++;
+}
+
+#pragma endregion ImageList
+
 #pragma region Coord
 
-Coord *createCoord(int x, int y)
+Coord* createCoord(int x, int y)
 {
-	Coord *coord = (Coord *)malloc(sizeof(Coord));
+	Coord* coord = (Coord*)malloc(sizeof(Coord));
 
 	if (!coord) return NULL;
 
@@ -58,7 +158,7 @@ Coord *createCoord(int x, int y)
 	return coord;
 }
 
-void freeCoord(Coord *coord)
+void freeCoord(Coord* coord)
 {
 	if (!coord) return;
 
@@ -69,9 +169,9 @@ void freeCoord(Coord *coord)
 
 #pragma region CoordNode
 
-CoordNode *createCoordNode()
+CoordNode* createCoordNode()
 {
-	CoordNode *node = (CoordNode *)malloc(sizeof(CoordNode));
+	CoordNode* node = (CoordNode*)malloc(sizeof(CoordNode));
 
 	if (!node) return NULL;
 
@@ -81,12 +181,11 @@ CoordNode *createCoordNode()
 	return node;
 }
 
-void freeCoordNode(CoordNode *node)
+void freeCoordNode(CoordNode* node)
 {
 	if (!node) return;
 
-	if (node->data)
-		freeCoord(node->data);
+	if (node->data) freeCoord(node->data);
 
 	free(node);
 }
@@ -95,9 +194,9 @@ void freeCoordNode(CoordNode *node)
 
 #pragma region CoordQueue
 
-CoordQueue *createCoordQueue()
+CoordQueue* createCoordQueue()
 {
-	CoordQueue *queue = (CoordQueue *)malloc(sizeof(CoordQueue));
+	CoordQueue* queue = (CoordQueue*)malloc(sizeof(CoordQueue));
 
 	if (!queue) return NULL;
 
@@ -107,7 +206,7 @@ CoordQueue *createCoordQueue()
 	return queue;
 }
 
-void freeCoordQueue(CoordQueue *queue)
+void freeCoordQueue(CoordQueue* queue)
 {
 	if (!queue) return;
 
@@ -119,12 +218,12 @@ void freeCoordQueue(CoordQueue *queue)
 	free(queue);
 }
 
-void coordEnqueue(CoordQueue *queue, Coord* coord)
+void coordEnqueue(CoordQueue* queue, Coord* coord)
 {
 	if (!queue) return;
 	if (!coord) return;
 
-	CoordNode *node = createCoordNode();
+	CoordNode* node = createCoordNode();
 	node->data = coord;
 
 	if (queue->first == NULL)
@@ -141,17 +240,17 @@ void coordEnqueue(CoordQueue *queue, Coord* coord)
 	queue->count++;
 }
 
-Coord *coordDequeue(CoordQueue *queue)
+Coord* coordDequeue(CoordQueue* queue)
 {
 	if (!queue) return NULL;
 	if (!queue->first) return NULL;
 
-	CoordNode *node = queue->first;
+	CoordNode* node = queue->first;
 	queue->first = node->next;
 
 	queue->count--;
 
-	Coord *coord = node->data;
+	Coord* coord = node->data;
 
 	free(node);
 
@@ -162,9 +261,9 @@ Coord *coordDequeue(CoordQueue *queue)
 
 #pragma region Blob
 
-Blob *createBlob()
+Blob* createBlob()
 {
-	Blob *blob = (Blob *)malloc(sizeof(Blob));
+	Blob* blob = (Blob*)malloc(sizeof(Blob));
 
 	if (!blob) return NULL;
 
@@ -174,11 +273,11 @@ Blob *createBlob()
 	return blob;
 }
 
-void freeBloob(Blob *blob)
+void freeBloob(Blob* blob)
 {
 	if (!blob) return;
 
-	CoordNode *current, *next;
+	CoordNode* current, * next;
 
 	current = blob->first;
 
@@ -194,12 +293,12 @@ void freeBloob(Blob *blob)
 	free(blob);
 }
 
-void blobAddStart(Blob *blob, Coord *coord)
+void blobAddStart(Blob* blob, Coord* coord)
 {
 	if (!blob) return;
 	if (!coord) return;
 
-	CoordNode *node = createCoordNode();
+	CoordNode* node = createCoordNode();
 
 	node->data = coord;
 
@@ -217,7 +316,7 @@ void blobAddStart(Blob *blob, Coord *coord)
 	blob->count++;
 }
 
-void blobAddEnd(Blob *blob, Coord *coord)
+void blobAddEnd(Blob* blob, Coord* coord)
 {
 	if (!blob) return;
 	if (!coord) return;
@@ -228,7 +327,7 @@ void blobAddEnd(Blob *blob, Coord *coord)
 		return;
 	}
 
-	CoordNode *node = createCoordNode();
+	CoordNode* node = createCoordNode();
 
 	node->data = coord;
 
@@ -238,7 +337,7 @@ void blobAddEnd(Blob *blob, Coord *coord)
 	blob->count++;
 }
 
-Coord getBlobCenter(Blob *blob)
+Coord getBlobCenter(Blob* blob)
 {
 	// TODO: This function
 
@@ -254,9 +353,9 @@ Coord getBlobCenter(Blob *blob)
 
 #pragma region BlobNode
 
-BlobNode *createBlobNode()
+BlobNode* createBlobNode()
 {
-	BlobNode *node = (BlobNode *)malloc(sizeof(BlobNode));
+	BlobNode* node = (BlobNode*)malloc(sizeof(BlobNode));
 
 	if (!node) return NULL;
 
@@ -266,7 +365,7 @@ BlobNode *createBlobNode()
 	return node;
 }
 
-void freeBlobNode(BlobNode *node)
+void freeBlobNode(BlobNode* node)
 {
 	if (!node) return;
 
@@ -279,9 +378,9 @@ void freeBlobNode(BlobNode *node)
 
 #pragma region BlobList
 
-BlobList *createBlobList()
+BlobList* createBlobList()
 {
-	BlobList *list = (BlobList *)malloc(sizeof(BlobList));
+	BlobList* list = (BlobList*)malloc(sizeof(BlobList));
 
 	if (!list) return NULL;
 
@@ -291,11 +390,11 @@ BlobList *createBlobList()
 	return list;
 }
 
-void freeBlobList(BlobList *list)
+void freeBlobList(BlobList* list)
 {
 	if (!list) return;
 
-	BlobNode *current, *next;
+	BlobNode* current, * next;
 
 	current = list->first;
 
@@ -311,12 +410,11 @@ void freeBlobList(BlobList *list)
 	free(list);
 }
 
-void blobListAddStart(BlobList *list, Blob *blob)
-{
+void blobListAddStart(BlobList* list, Blob* blob) {
 	if (!list) return;
 	if (!blob) return;
 
-	BlobNode *node = createBlobNode();
+	BlobNode* node = createBlobNode();
 
 	node->data = blob;
 
@@ -334,8 +432,7 @@ void blobListAddStart(BlobList *list, Blob *blob)
 	list->count++;
 }
 
-void blobListAddEnd(BlobList *list, Blob *blob)
-{
+void blobListAddEnd(BlobList* list, Blob* blob) {
 	if (!list) return;
 	if (!blob) return;
 
@@ -355,8 +452,7 @@ void blobListAddEnd(BlobList *list, Blob *blob)
 	list->count++;
 }
 
-void blobListAddSorted(BlobList *list, Blob *blob)
-{
+void blobListAddSorted(BlobList* list, Blob* blob) {
 	if (!list) return;
 	if (!blob) return;
 
@@ -366,10 +462,10 @@ void blobListAddSorted(BlobList *list, Blob *blob)
 
 		return;
 	}
-	
-	BlobNode *newBlob;
-	BlobNode *previous = NULL;
-	BlobNode *current = list->first;
+
+	BlobNode* newBlob;
+	BlobNode* previous = NULL;
+	BlobNode* current = list->first;
 	char stop = 0;
 
 	while (current && !stop)
@@ -393,7 +489,7 @@ void blobListAddSorted(BlobList *list, Blob *blob)
 	{
 		newBlob = createBlobNode();
 		newBlob->data = blob;
-		
+
 		newBlob->next = current;
 
 		previous->next = newBlob;
@@ -402,18 +498,19 @@ void blobListAddSorted(BlobList *list, Blob *blob)
 	}
 }
 
-void printBlobList(BlobList *list, Image *image)
+void printBlobList(BlobList* list, Image* image)
 {
 	if (!list) return;
 	if (!list->first) return;
 
-	BlobNode *current = list->first;
+	BlobNode* current = list->first;
 
 	printInfo("%d blobs found in %s", list->count, image->fileName);
 
 	while (current)
 	{
-		printf("(%d, %d) | %d pixels | Standard Deviation ( , , )\n", current->data->count);
+		printf("(%d, %d) | %d pixels | Standard Deviation ( , , )\n",
+			current->data->count);
 
 		current = current->next;
 	}
