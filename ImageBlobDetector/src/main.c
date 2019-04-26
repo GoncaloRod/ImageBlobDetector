@@ -8,7 +8,7 @@
 #define DBG_NEW new
 #endif
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 #if 0
 
@@ -16,9 +16,10 @@ int main(int argc, char *argv[])
 	_CrtSetBreakAlloc(99);
 #endif
 
-	FILE *inputFile;
-	Image *image;
-	BlobList *blobs;
+	FILE* inputFile;
+	ImageList* images;
+	Image* image;
+	BlobList* blobs;
 	char fileName[50];
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
@@ -29,11 +30,11 @@ int main(int argc, char *argv[])
 		printUsageMessage(argv[0]);
 		return 0;
 	}
-	
+
 	// If mode is in 'MEM' mode the program should run in infinite mode to test memory
 	memTest = strcmp(mode, "MEM") == 0;
 
-	do 
+	do
 	{
 		inputFile = fopen(fileName, FM_R);
 
@@ -42,26 +43,45 @@ int main(int argc, char *argv[])
 			printError("File %s doesn't exist", fileName);
 			return 0;
 		}
-		
+
+		images = createImageList();
+
 		while (!feof(inputFile))
 		{
+			// Read image from file to memory
 			image = readImageDefaultFormat(inputFile);
 
+			// Create list to store all blobs from image
 			blobs = createBlobList();
 
+			// Analyse image
 			analyseImage(image, blobs, red, green, blue, tolerance);
 
+			// Store blob count in image
+			image->blobs = blobs->count;
+
+			// Show all blobs found
 			printBlobList(blobs, image);
 
-			freeImage(image);
+			// Free pixel matrix from image
+			freePixelMatrix(image->pixels);
+			image->pixels = NULL;
 
+			// Free blobs
 			freeBlobList(blobs);
+
+			// Add image to images list
+			imageListAddEnd(images, image);
 		}
 
+		// Free all images
+		freeImageList(images);
+
+		// Close input file
 		fclose(inputFile);
 	} while (memTest);
 
 	getchar();
-	
+
 	_CrtDumpMemoryLeaks();
 }

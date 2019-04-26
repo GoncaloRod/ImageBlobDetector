@@ -9,7 +9,10 @@ Pixel* createPixelMatrix(int heigth, int width)
 	return pixels;
 }
 
-void freePixelMatrix(Pixel* matrix) { free(matrix); }
+void freePixelMatrix(Pixel* matrix)
+{
+	free(matrix);
+}
 
 #pragma endregion Pixel
 
@@ -339,8 +342,8 @@ void blobAddEnd(Blob* blob, Coord* coord)
 
 Coord getBlobCenter(Blob* blob)
 {
-	// TODO: This function
-
+	if (!blob) return;
+	
 	Coord coord;
 
 	coord.x = 10;
