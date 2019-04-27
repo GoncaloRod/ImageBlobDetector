@@ -27,8 +27,8 @@ Image* createImage()
 	strcpy(i->fileName, "");
 	i->width = 0;
 	i->height = 0;
-	i->blobs = 0;
 	i->pixels = NULL;
+	i->blobs = NULL;
 
 	return i;
 }
@@ -38,6 +38,7 @@ void freeImage(Image* image)
 	if (!image) return;
 
 	if (image->pixels) freePixelMatrix(image->pixels);
+	if (image->blobs) freeBlobList(image->blobs);
 
 	free(image);
 }
@@ -498,24 +499,6 @@ void blobListAddSorted(BlobList* list, Blob* blob) {
 		previous->next = newBlob;
 
 		list->count++;
-	}
-}
-
-void printBlobList(BlobList* list, Image* image)
-{
-	if (!list) return;
-	if (!list->first) return;
-
-	BlobNode* current = list->first;
-
-	printInfo("%d blobs found in %s", list->count, image->fileName);
-
-	while (current)
-	{
-		printf("(%d, %d) | %d pixels | Standard Deviation ( , , )\n",
-			current->data->count);
-
-		current = current->next;
 	}
 }
 

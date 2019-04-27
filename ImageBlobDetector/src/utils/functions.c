@@ -61,3 +61,20 @@ Pixel *getPixelFromCoord(Image *image, int x, int y)
 {
 	return &image->pixels[(image->width * y) + x];
 }
+
+void printImageInformation(Image* image)
+{
+	if (!image->blobs) return;
+	if (!image->blobs->first) return;
+
+	BlobNode* current = image->blobs->first;
+
+	printInfo("%d blobs found in %s", image->blobs->count, image->fileName);
+
+	while (current)
+	{
+		printf("(%d, %d) | %d pixels | Standard Deviation ( , , )\n", 1, 1, current->data->count);
+
+		current = current->next;
+	}
+}

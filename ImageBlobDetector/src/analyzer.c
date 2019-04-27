@@ -1,10 +1,14 @@
 #include "analyzer.h"
 
-void analyseImage(Image* image, BlobList *blobls, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
+void analyzeImage(Image* image, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
 {
+	if (!image) return;
+
 	Pixel *currentPixel = image->pixels;
 	Blob *blob;
 	clock_t start, end;
+
+	image->blobs = createBlobList();
 
 	printInfo("Analyzing %s", image->fileName);
 
@@ -35,7 +39,7 @@ void analyseImage(Image* image, BlobList *blobls, unsigned char r, unsigned char
 					continue;
 				}
 
-				blobListAddSorted(blobls, blob);
+				blobListAddSorted(image->blobs, blob);
 			}
 		}
 	}

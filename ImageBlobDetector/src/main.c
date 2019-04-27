@@ -19,7 +19,6 @@ int main(int argc, char* argv[])
 	FILE* inputFile;
 	ImageList* images;
 	Image* image;
-	BlobList* blobs;
 	char fileName[50];
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
@@ -51,24 +50,15 @@ int main(int argc, char* argv[])
 			// Read image from file to memory
 			image = readImageDefaultFormat(inputFile);
 
-			// Create list to store all blobs from image
-			blobs = createBlobList();
-
-			// Analyse image
-			analyseImage(image, blobs, red, green, blue, tolerance);
-
-			// Store blob count in image
-			image->blobs = blobs->count;
+			// Analyze image
+			analyzeImage(image, red, green, blue, tolerance);
 
 			// Show all blobs found
-			printBlobList(blobs, image);
+			printImageInformation(image);
 
 			// Free pixel matrix from image
 			freePixelMatrix(image->pixels);
 			image->pixels = NULL;
-
-			// Free blobs
-			freeBlobList(blobs);
 
 			// Add image to images list
 			imageListAddEnd(images, image);

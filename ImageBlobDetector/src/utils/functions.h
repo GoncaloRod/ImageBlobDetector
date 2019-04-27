@@ -16,4 +16,6 @@ int validateArguments(int argc, char **argv, char *fileName, unsigned char *r, u
 
 Pixel *getPixelFromCoord(Image *image, int x, int y);
 
+void printImageInformation(Image* image);
+
 #endif

@@ -10,7 +10,7 @@
 #include "utils/functions.h"
 #include "utils/utils.h"
 
-void analyseImage(Image* image, BlobList *blobls, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
+void analyzeImage(Image* image, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
 
 void findBlob(Image *image, Blob *blob, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
 

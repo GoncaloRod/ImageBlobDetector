@@ -9,30 +9,6 @@
 
 #pragma region Structs
 
-typedef struct _pixel
-{
-	unsigned char red, green, blue, analysed;
-} Pixel;
-
-typedef struct _image
-{
-	char fileName[IMAGE_NAME_SIZE];
-	int width, height, channels, blobs;
-	Pixel* pixels;
-} Image;
-
-typedef struct _imageNode
-{
-	struct _imageNode* next;
-	Image* data;
-} ImageNode;
-
-typedef struct _imageList
-{
-	ImageNode* first, * last;
-	int count;
-} ImageList;
-
 typedef struct _coord
 {
 	int x, y;
@@ -67,6 +43,31 @@ typedef struct _blobList
 	BlobNode* first, * last;
 	int count;
 } BlobList;
+
+typedef struct _pixel
+{
+	unsigned char red, green, blue, analysed;
+} Pixel;
+
+typedef struct _image
+{
+	char fileName[IMAGE_NAME_SIZE];
+	int width, height, channels;
+	Pixel* pixels;
+	BlobList* blobs;
+} Image;
+
+typedef struct _imageNode
+{
+	struct _imageNode* next;
+	Image* data;
+} ImageNode;
+
+typedef struct _imageList
+{
+	ImageNode* first, * last;
+	int count;
+} ImageList;
 
 #pragma endregion
 
@@ -169,8 +170,6 @@ void blobListAddStart(BlobList* list, Blob* blob);
 void blobListAddEnd(BlobList* list, Blob* blob);
 
 void blobListAddSorted(BlobList* list, Blob* blob);
-
-void printBlobList(BlobList* list, Image* image);
 
 #pragma endregion BlobList
 
