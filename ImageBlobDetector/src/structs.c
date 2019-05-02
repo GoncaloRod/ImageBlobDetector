@@ -136,7 +136,7 @@ void imageListAddEnd(ImageList* list, Image* image)
 		return;
 	}
 
-	ImageNode* node = createCoordNode();
+	ImageNode* node = createVector2IntNode();
 
 	node->data = image;
 
@@ -150,9 +150,9 @@ void imageListAddEnd(ImageList* list, Image* image)
 
 #pragma region Coord
 
-Coord* createCoord(int x, int y)
+Vector2Int* createVector2Int(int x, int y)
 {
-	Coord* coord = (Coord*)malloc(sizeof(Coord));
+	Vector2Int* coord = (Vector2Int*)malloc(sizeof(Vector2Int));
 
 	if (!coord) return NULL;
 
@@ -162,20 +162,20 @@ Coord* createCoord(int x, int y)
 	return coord;
 }
 
-void freeCoord(Coord* coord)
+void freeVector2Int(Vector2Int* vector)
 {
-	if (!coord) return;
+	if (!vector) return;
 
-	free(coord);
+	free(vector);
 }
 
 #pragma endregion Coord
 
 #pragma region CoordNode
 
-CoordNode* createCoordNode()
+Vector2IntNode* createVector2IntNode()
 {
-	CoordNode* node = (CoordNode*)malloc(sizeof(CoordNode));
+	Vector2IntNode* node = (Vector2IntNode*)malloc(sizeof(Vector2IntNode));
 
 	if (!node) return NULL;
 
@@ -185,11 +185,11 @@ CoordNode* createCoordNode()
 	return node;
 }
 
-void freeCoordNode(CoordNode* node)
+void freeVector2IntNode(Vector2IntNode* node)
 {
 	if (!node) return;
 
-	if (node->data) freeCoord(node->data);
+	if (node->data) freeVector2Int(node->data);
 
 	free(node);
 }
@@ -198,9 +198,9 @@ void freeCoordNode(CoordNode* node)
 
 #pragma region CoordQueue
 
-CoordQueue* createCoordQueue()
+Vector2IntQueue* createVector2IntQueue()
 {
-	CoordQueue* queue = (CoordQueue*)malloc(sizeof(CoordQueue));
+	Vector2IntQueue* queue = (Vector2IntQueue*)malloc(sizeof(Vector2IntQueue));
 
 	if (!queue) return NULL;
 
@@ -210,24 +210,24 @@ CoordQueue* createCoordQueue()
 	return queue;
 }
 
-void freeCoordQueue(CoordQueue* queue)
+void freeVector2IntQueue(Vector2IntQueue* queue)
 {
 	if (!queue) return;
 
 	for (int i = 0; i < queue->count; i++)
 	{
-		freeCoord(coordDequeue(queue));
+		freeVector2Int(vector2IntDequeue(queue));
 	}
 
 	free(queue);
 }
 
-void coordEnqueue(CoordQueue* queue, Coord* coord)
+void vector2IntEnqueue(Vector2IntQueue* queue, Vector2Int* coord)
 {
 	if (!queue) return;
 	if (!coord) return;
 
-	CoordNode* node = createCoordNode();
+	Vector2IntNode* node = createVector2IntNode();
 	node->data = coord;
 
 	if (queue->first == NULL)
@@ -244,17 +244,17 @@ void coordEnqueue(CoordQueue* queue, Coord* coord)
 	queue->count++;
 }
 
-Coord* coordDequeue(CoordQueue* queue)
+Vector2Int* vector2IntDequeue(Vector2IntQueue* queue)
 {
 	if (!queue) return NULL;
 	if (!queue->first) return NULL;
 
-	CoordNode* node = queue->first;
+	Vector2IntNode* node = queue->first;
 	queue->first = node->next;
 
 	queue->count--;
 
-	Coord* coord = node->data;
+	Vector2Int* coord = node->data;
 
 	free(node);
 
@@ -281,7 +281,7 @@ void freeBloob(Blob* blob)
 {
 	if (!blob) return;
 
-	CoordNode* current, * next;
+	Vector2IntNode* current, * next;
 
 	current = blob->first;
 
@@ -289,7 +289,7 @@ void freeBloob(Blob* blob)
 	{
 		next = current->next;
 
-		freeCoordNode(current);
+		freeVector2IntNode(current);
 
 		current = next;
 	}
@@ -297,12 +297,12 @@ void freeBloob(Blob* blob)
 	free(blob);
 }
 
-void blobAddStart(Blob* blob, Coord* coord)
+void blobAddStart(Blob* blob, Vector2Int* coord)
 {
 	if (!blob) return;
 	if (!coord) return;
 
-	CoordNode* node = createCoordNode();
+	Vector2IntNode* node = createVector2IntNode();
 
 	node->data = coord;
 
@@ -320,7 +320,7 @@ void blobAddStart(Blob* blob, Coord* coord)
 	blob->count++;
 }
 
-void blobAddEnd(Blob* blob, Coord* coord)
+void blobAddEnd(Blob* blob, Vector2Int* coord)
 {
 	if (!blob) return;
 	if (!coord) return;
@@ -331,7 +331,7 @@ void blobAddEnd(Blob* blob, Coord* coord)
 		return;
 	}
 
-	CoordNode* node = createCoordNode();
+	Vector2IntNode* node = createVector2IntNode();
 
 	node->data = coord;
 
@@ -341,11 +341,11 @@ void blobAddEnd(Blob* blob, Coord* coord)
 	blob->count++;
 }
 
-Coord getBlobCenter(Blob* blob)
+Vector2Int getBlobCenter(Blob* blob)
 {
 	if (!blob) return;
 	
-	Coord coord;
+	Vector2Int coord;
 
 	coord.x = 10;
 	coord.y = 100;

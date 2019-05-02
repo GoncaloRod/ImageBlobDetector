@@ -14,7 +14,7 @@ void printUsageMessage(char *programName);
 
 int validateArguments(int argc, char **argv, char *fileName, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *t, char *mode);
 
-Pixel *getPixelFromCoord(Image *image, int x, int y);
+Pixel *getPixelFromVector2Int(Image *image, int x, int y);
 
 void printImageInformation(Image* image);
 

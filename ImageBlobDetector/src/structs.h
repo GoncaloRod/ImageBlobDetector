@@ -9,26 +9,26 @@
 
 #pragma region Structs
 
-typedef struct _coord
+typedef struct _vector2Int
 {
 	int x, y;
-} Coord;
+} Vector2Int;
 
-typedef struct _coordNode
+typedef struct _vector2IntNode
 {
-	struct _coordNode* next;
-	Coord* data;
-} CoordNode;
+	struct _vector2IntNode* next;
+	Vector2Int* data;
+} Vector2IntNode;
 
-typedef struct _coordQueue
+typedef struct _vector2IntQueue
 {
-	CoordNode* first, * last;
+	Vector2IntNode* first, * last;
 	int count;
-} CoordQueue;
+} Vector2IntQueue;
 
 typedef struct _blob
 {
-	CoordNode* first, * last;
+	Vector2IntNode* first, * last;
 	int count;
 } Blob;
 
@@ -109,33 +109,33 @@ void imageListAddEnd(ImageList* list, Image* image);
 
 #pragma endregion ImageList
 
-#pragma region Coord
+#pragma region Vector2Int
 
-Coord* createCoord(int x, int y);
+Vector2Int* createVector2Int(int x, int y);
 
-void freeCoord(Coord* coord);
+void freeVector2Int(Vector2Int* vector);
 
-#pragma endregion Coord
+#pragma endregion Vector2Int
 
-#pragma region CoordNode
+#pragma region Vector2IntNode
 
-CoordNode* createCoordNode();
+Vector2IntNode* createVector2IntNode();
 
-void freeCoordNode(CoordNode* node);
+void freeVector2IntNode(Vector2IntNode* node);
 
-#pragma endregion CoordNode
+#pragma endregion Vector2IntNode
 
-#pragma region CoordQueue
+#pragma region Vector2IntQueue
 
-CoordQueue* createCoordQueue();
+Vector2IntQueue* createVector2IntQueue();
 
-void freeCoordQueue(CoordQueue* queue);
+void freeVector2IntQueue(Vector2IntQueue* queue);
 
-void coordEnqueue(CoordQueue* queue, Coord* coord);
+void vector2IntEnqueue(Vector2IntQueue* queue, Vector2Int* coord);
 
-Coord* coordDequeue(CoordQueue* queue);
+Vector2Int* vector2IntDequeue(Vector2IntQueue* queue);
 
-#pragma endregion CoordQueue
+#pragma endregion Vector2IntQueue
 
 #pragma region Blob
 
@@ -143,11 +143,11 @@ Blob* createBlob();
 
 void freeBloob(Blob* blob);
 
-void blobAddStart(Blob* blob, Coord* coord);
+void blobAddStart(Blob* blob, Vector2Int* coord);
 
-void blobAddEnd(Blob* blob, Coord* coord);
+void blobAddEnd(Blob* blob, Vector2Int* coord);
 
-Coord getBlobCenter(Blob* blob);
+Vector2Int getBlobCenter(Blob* blob);
 
 #pragma endregion Blob
 
