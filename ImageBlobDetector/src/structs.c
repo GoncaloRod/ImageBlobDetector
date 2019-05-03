@@ -380,6 +380,21 @@ Vector2I getBlobCenter(Blob* blob)
 	return center;
 }
 
+Vector3F getBlobStdDeviation(Blob* blob)
+{
+	if (!blob) return;
+	if (!blob->first) return;
+
+	Vector3F stdDeviation;
+
+	// TODO: Calculate blob Std. Deviation
+	stdDeviation.x = 1;
+	stdDeviation.y = 1;
+	stdDeviation.z = 1;
+
+	return stdDeviation;
+}
+
 #pragma endregion Blob
 
 #pragma region BlobNode

@@ -9,6 +9,11 @@
 
 #pragma region Structs
 
+typedef struct _vector3F
+{
+	float x, y, z;
+} Vector3F;
+
 typedef struct _vector2I
 {
 	int x, y;
@@ -148,6 +153,8 @@ void blobAddStart(Blob* blob, Vector2I* coord);
 void blobAddEnd(Blob* blob, Vector2I* coord);
 
 Vector2I getBlobCenter(Blob* blob);
+
+Vector3F getBlobStdDeviation(Blob* blob);
 
 #pragma endregion Blob
 
