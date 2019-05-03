@@ -9,26 +9,26 @@
 
 #pragma region Structs
 
-typedef struct _vector2Int
+typedef struct _vector2I
 {
 	int x, y;
-} Vector2Int;
+} Vector2I;
 
-typedef struct _vector2IntNode
+typedef struct _vector2INode
 {
-	struct _vector2IntNode* next;
-	Vector2Int* data;
-} Vector2IntNode;
+	struct _vector2INode* next;
+	Vector2I* data;
+} Vector2INode;
 
-typedef struct _vector2IntQueue
+typedef struct _vector2IQueue
 {
-	Vector2IntNode* first, * last;
+	Vector2INode* first, * last;
 	int count;
-} Vector2IntQueue;
+} Vector2IQueue;
 
 typedef struct _blob
 {
-	Vector2IntNode* first, * last;
+	Vector2INode* first, * last;
 	int count;
 } Blob;
 
@@ -109,33 +109,33 @@ void imageListAddEnd(ImageList* list, Image* image);
 
 #pragma endregion ImageList
 
-#pragma region Vector2Int
+#pragma region Vector2I
 
-Vector2Int* createVector2Int(int x, int y);
+Vector2I* createVector2I(int x, int y);
 
-void freeVector2Int(Vector2Int* vector);
+void freeVector2I(Vector2I* vector);
 
-#pragma endregion Vector2Int
+#pragma endregion Vector2I
 
-#pragma region Vector2IntNode
+#pragma region Vector2INode
 
-Vector2IntNode* createVector2IntNode();
+Vector2INode* createVector2INode();
 
-void freeVector2IntNode(Vector2IntNode* node);
+void freeVector2INode(Vector2INode* node);
 
-#pragma endregion Vector2IntNode
+#pragma endregion Vector2INode
 
-#pragma region Vector2IntQueue
+#pragma region Vector2IQueue
 
-Vector2IntQueue* createVector2IntQueue();
+Vector2IQueue* createVector2IQueue();
 
-void freeVector2IntQueue(Vector2IntQueue* queue);
+void freeVector2IQueue(Vector2IQueue* queue);
 
-void vector2IntEnqueue(Vector2IntQueue* queue, Vector2Int* coord);
+void vector2IEnqueue(Vector2IQueue* queue, Vector2I* coord);
 
-Vector2Int* vector2IntDequeue(Vector2IntQueue* queue);
+Vector2I* vector2IDequeue(Vector2IQueue* queue);
 
-#pragma endregion Vector2IntQueue
+#pragma endregion Vector2IQueue
 
 #pragma region Blob
 
@@ -143,11 +143,11 @@ Blob* createBlob();
 
 void freeBloob(Blob* blob);
 
-void blobAddStart(Blob* blob, Vector2Int* coord);
+void blobAddStart(Blob* blob, Vector2I* coord);
 
-void blobAddEnd(Blob* blob, Vector2Int* coord);
+void blobAddEnd(Blob* blob, Vector2I* coord);
 
-Vector2Int getBlobCenter(Blob* blob);
+Vector2I getBlobCenter(Blob* blob);
 
 #pragma endregion Blob
 

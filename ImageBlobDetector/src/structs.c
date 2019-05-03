@@ -136,7 +136,7 @@ void imageListAddEnd(ImageList* list, Image* image)
 		return;
 	}
 
-	ImageNode* node = createVector2IntNode();
+	ImageNode* node = createVector2INode();
 
 	node->data = image;
 
@@ -150,9 +150,9 @@ void imageListAddEnd(ImageList* list, Image* image)
 
 #pragma region Coord
 
-Vector2Int* createVector2Int(int x, int y)
+Vector2I* createVector2I(int x, int y)
 {
-	Vector2Int* coord = (Vector2Int*)malloc(sizeof(Vector2Int));
+	Vector2I* coord = (Vector2I*)malloc(sizeof(Vector2I));
 
 	if (!coord) return NULL;
 
@@ -162,7 +162,7 @@ Vector2Int* createVector2Int(int x, int y)
 	return coord;
 }
 
-void freeVector2Int(Vector2Int* vector)
+void freeVector2I(Vector2I* vector)
 {
 	if (!vector) return;
 
@@ -173,9 +173,9 @@ void freeVector2Int(Vector2Int* vector)
 
 #pragma region CoordNode
 
-Vector2IntNode* createVector2IntNode()
+Vector2INode* createVector2INode()
 {
-	Vector2IntNode* node = (Vector2IntNode*)malloc(sizeof(Vector2IntNode));
+	Vector2INode* node = (Vector2INode*)malloc(sizeof(Vector2INode));
 
 	if (!node) return NULL;
 
@@ -185,11 +185,11 @@ Vector2IntNode* createVector2IntNode()
 	return node;
 }
 
-void freeVector2IntNode(Vector2IntNode* node)
+void freeVector2INode(Vector2INode* node)
 {
 	if (!node) return;
 
-	if (node->data) freeVector2Int(node->data);
+	if (node->data) freeVector2I(node->data);
 
 	free(node);
 }
@@ -198,9 +198,9 @@ void freeVector2IntNode(Vector2IntNode* node)
 
 #pragma region CoordQueue
 
-Vector2IntQueue* createVector2IntQueue()
+Vector2IQueue* createVector2IQueue()
 {
-	Vector2IntQueue* queue = (Vector2IntQueue*)malloc(sizeof(Vector2IntQueue));
+	Vector2IQueue* queue = (Vector2IQueue*)malloc(sizeof(Vector2IQueue));
 
 	if (!queue) return NULL;
 
@@ -210,24 +210,24 @@ Vector2IntQueue* createVector2IntQueue()
 	return queue;
 }
 
-void freeVector2IntQueue(Vector2IntQueue* queue)
+void freeVector2IQueue(Vector2IQueue* queue)
 {
 	if (!queue) return;
 
 	for (int i = 0; i < queue->count; i++)
 	{
-		freeVector2Int(vector2IntDequeue(queue));
+		freeVector2I(vector2IDequeue(queue));
 	}
 
 	free(queue);
 }
 
-void vector2IntEnqueue(Vector2IntQueue* queue, Vector2Int* coord)
+void vector2IEnqueue(Vector2IQueue* queue, Vector2I* coord)
 {
 	if (!queue) return;
 	if (!coord) return;
 
-	Vector2IntNode* node = createVector2IntNode();
+	Vector2INode* node = createVector2INode();
 	node->data = coord;
 
 	if (queue->first == NULL)
@@ -244,17 +244,17 @@ void vector2IntEnqueue(Vector2IntQueue* queue, Vector2Int* coord)
 	queue->count++;
 }
 
-Vector2Int* vector2IntDequeue(Vector2IntQueue* queue)
+Vector2I* vector2IDequeue(Vector2IQueue* queue)
 {
 	if (!queue) return NULL;
 	if (!queue->first) return NULL;
 
-	Vector2IntNode* node = queue->first;
+	Vector2INode* node = queue->first;
 	queue->first = node->next;
 
 	queue->count--;
 
-	Vector2Int* coord = node->data;
+	Vector2I* coord = node->data;
 
 	free(node);
 
@@ -281,7 +281,7 @@ void freeBloob(Blob* blob)
 {
 	if (!blob) return;
 
-	Vector2IntNode* current, * next;
+	Vector2INode* current, * next;
 
 	current = blob->first;
 
@@ -289,7 +289,7 @@ void freeBloob(Blob* blob)
 	{
 		next = current->next;
 
-		freeVector2IntNode(current);
+		freeVector2INode(current);
 
 		current = next;
 	}
@@ -297,12 +297,12 @@ void freeBloob(Blob* blob)
 	free(blob);
 }
 
-void blobAddStart(Blob* blob, Vector2Int* coord)
+void blobAddStart(Blob* blob, Vector2I* coord)
 {
 	if (!blob) return;
 	if (!coord) return;
 
-	Vector2IntNode* node = createVector2IntNode();
+	Vector2INode* node = createVector2INode();
 
 	node->data = coord;
 
@@ -320,7 +320,7 @@ void blobAddStart(Blob* blob, Vector2Int* coord)
 	blob->count++;
 }
 
-void blobAddEnd(Blob* blob, Vector2Int* coord)
+void blobAddEnd(Blob* blob, Vector2I* coord)
 {
 	if (!blob) return;
 	if (!coord) return;
@@ -331,7 +331,7 @@ void blobAddEnd(Blob* blob, Vector2Int* coord)
 		return;
 	}
 
-	Vector2IntNode* node = createVector2IntNode();
+	Vector2INode* node = createVector2INode();
 
 	node->data = coord;
 
@@ -341,11 +341,11 @@ void blobAddEnd(Blob* blob, Vector2Int* coord)
 	blob->count++;
 }
 
-Vector2Int getBlobCenter(Blob* blob)
+Vector2I getBlobCenter(Blob* blob)
 {
 	if (!blob) return;
 	
-	Vector2Int coord;
+	Vector2I coord;
 
 	coord.x = 10;
 	coord.y = 100;

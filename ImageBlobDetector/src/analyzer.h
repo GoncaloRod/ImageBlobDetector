@@ -14,7 +14,7 @@ void analyzeImage(Image* image, unsigned char r, unsigned char g, unsigned char 
 
 void findBlob(Image *image, Blob *blob, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
 
-void addNeighbors(Image *image, Vector2IntQueue *destination, Vector2Int coord);
+void addNeighbors(Image *image, Vector2IQueue *destination, Vector2I coord);
 
 int pixelInRange(Pixel *pixel, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
 

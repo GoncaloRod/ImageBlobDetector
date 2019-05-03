@@ -28,7 +28,7 @@ void analyzeImage(Image* image, unsigned char r, unsigned char g, unsigned char 
 			{
 				blob = createBlob();
 
-				blobAddEnd(blob, createVector2Int(j, i));
+				blobAddEnd(blob, createVector2I(j, i));
 
 				findBlob(image, blob, r, g, b, t);
 
@@ -51,21 +51,21 @@ void analyzeImage(Image* image, unsigned char r, unsigned char g, unsigned char 
 
 void findBlob(Image *image, Blob *blob, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
 {
-	Vector2IntQueue *toAnalyse = createVector2IntQueue();
-	Vector2Int *current = blob->first->data;
+	Vector2IQueue *toAnalyse = createVector2IQueue();
+	Vector2I *current = blob->first->data;
 	Pixel *pixel;
 
 	addNeighbors(image, toAnalyse, *current);
 
 	while (toAnalyse->count > 0)
 	{
-		current = vector2IntDequeue(toAnalyse);
+		current = vector2IDequeue(toAnalyse);
 
 		pixel = getPixelFromVector2Int(image, current->x, current->y);
 
 		if (pixel->analysed)
 		{
-			freeVector2Int(current);
+			freeVector2I(current);
 
 			continue;
 		}
@@ -80,30 +80,30 @@ void findBlob(Image *image, Blob *blob, unsigned char r, unsigned char g, unsign
 		}
 		else
 		{
-			freeVector2Int(current);
+			freeVector2I(current);
 		}
 	}
 
-	freeVector2IntQueue(toAnalyse);
+	freeVector2IQueue(toAnalyse);
 }
 
-void addNeighbors(Image *image, Vector2IntQueue *destination, Vector2Int coord)
+void addNeighbors(Image *image, Vector2IQueue *destination, Vector2I coord)
 {
 	// Top
 	if (coord.y > 0 && !getPixelFromVector2Int(image, coord.x, coord.y - 1)->analysed)
-		vector2IntEnqueue(destination, createVector2Int(coord.x, coord.y - 1));
+		vector2IEnqueue(destination, createVector2I(coord.x, coord.y - 1));
 
 	// Bottom
 	if (coord.y < image->height - 1 && !getPixelFromVector2Int(image, coord.x, coord.y + 1)->analysed)
-		vector2IntEnqueue(destination, createVector2Int(coord.x, coord.y + 1));
+		vector2IEnqueue(destination, createVector2I(coord.x, coord.y + 1));
 
 	// Left
 	if (coord.x > 0 && !getPixelFromVector2Int(image, coord.x - 1, coord.y)->analysed)
-		vector2IntEnqueue(destination, createVector2Int(coord.x - 1, coord.y));
+		vector2IEnqueue(destination, createVector2I(coord.x - 1, coord.y));
 
 	// Right
 	if (coord.x < image->width - 1 && !getPixelFromVector2Int(image, coord.x + 1, coord.y)->analysed)
-		vector2IntEnqueue(destination, createVector2Int(coord.x + 1, coord.y));
+		vector2IEnqueue(destination, createVector2I(coord.x + 1, coord.y));
 }
 
 int pixelInRange(Pixel* pixel, unsigned char r, unsigned char g, unsigned char b, unsigned char t)

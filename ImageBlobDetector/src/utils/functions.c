@@ -67,13 +67,18 @@ void printImageInformation(Image* image)
 	if (!image->blobs) return;
 	if (!image->blobs->first) return;
 
-	BlobNode* current = image->blobs->first;
+	BlobNode* current;
+	Vector2I center;
 
 	printInfo("%d blobs found in %s", image->blobs->count, image->fileName);
 
+	current = image->blobs->first;
+
 	while (current)
 	{
-		printf("(%d, %d) | %d pixels | Standard Deviation ( , , )\n", 1, 1, current->data->count);
+		center = getBlobCenter(current->data);
+
+		printf("(%d, %d) | %d pixels | Standard Deviation ( , , )\n", center.x, center.y, current->data->count);
 
 		current = current->next;
 	}
