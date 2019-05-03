@@ -344,13 +344,40 @@ void blobAddEnd(Blob* blob, Vector2I* coord)
 Vector2I getBlobCenter(Blob* blob)
 {
 	if (!blob) return;
-	
-	Vector2I coord;
+	if (!blob->first) return;
 
-	coord.x = 10;
-	coord.y = 100;
+	Vector2I center;
+	Vector2INode* current;
+	int minX, maxX, minY, maxY;
 
-	return coord;
+	// Find blob boundaries
+	current = blob->first;
+
+	minX = maxX = current->data->x;
+	minY = maxY = current->data->y;
+
+	current = current->next;
+
+	while (current)
+	{
+		// X boundary
+		if (current->data->x > maxX) maxX = current->data->x;
+		else if (current->data->x < minX) minX = current->data->x;
+
+		// Y boundary
+		if (current->data->y > maxY) maxY = current->data->y;
+		else if (current->data->y < minY) minY = current->data->y;
+
+		// Update current node
+		current = current->next;
+	}
+
+	// Calculate center
+	// TODO: Find right way to round the center
+	center.x = (minX + maxX) / 2;
+	center.y = (minY + maxY) / 2;
+
+	return center;
 }
 
 #pragma endregion Blob
