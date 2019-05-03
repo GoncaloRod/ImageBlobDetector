@@ -148,7 +148,7 @@ void imageListAddEnd(ImageList* list, Image* image)
 
 #pragma endregion ImageList
 
-#pragma region Coord
+#pragma region Vector2I
 
 Vector2I* createVector2I(int x, int y)
 {
@@ -169,9 +169,9 @@ void freeVector2I(Vector2I* vector)
 	free(vector);
 }
 
-#pragma endregion Coord
+#pragma endregion Vector2I
 
-#pragma region CoordNode
+#pragma region Vector2IdNode
 
 Vector2INode* createVector2INode()
 {
@@ -194,9 +194,9 @@ void freeVector2INode(Vector2INode* node)
 	free(node);
 }
 
-#pragma endregion CoordNode
+#pragma endregion Vector2INode
 
-#pragma region CoordQueue
+#pragma region Vector2IQueue
 
 Vector2IQueue* createVector2IQueue()
 {
@@ -261,7 +261,7 @@ Vector2I* vector2IDequeue(Vector2IQueue* queue)
 	return coord;
 }
 
-#pragma endregion CoordQueue
+#pragma endregion Vector2IQueue
 
 #pragma region Blob
 
