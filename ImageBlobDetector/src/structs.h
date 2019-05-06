@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #pragma region Structs
 
@@ -154,7 +155,7 @@ void blobAddEnd(Blob* blob, Vector2I* coord);
 
 Vector2I getBlobCenter(Blob* blob);
 
-Vector3F getBlobStdDeviation(Blob* blob);
+Vector3F getBlobStdDeviation(Blob* blob, Image* image);
 
 #pragma endregion Blob
 

@@ -380,17 +380,46 @@ Vector2I getBlobCenter(Blob* blob)
 	return center;
 }
 
-Vector3F getBlobStdDeviation(Blob* blob)
+Vector3F getBlobStdDeviation(Blob* blob, Image* image)
 {
 	if (!blob) return;
 	if (!blob->first) return;
 
-	Vector3F stdDeviation;
+	Vector3F stdDeviation, mean;
+	Pixel* pixel;
 
-	// TODO: Calculate blob Std. Deviation
-	stdDeviation.x = 1;
-	stdDeviation.y = 1;
-	stdDeviation.z = 1;
+	mean.x = mean.y = mean.z = 0;
+	stdDeviation.x = stdDeviation.y = stdDeviation.z = 0;
+	
+	// Calculate blob's mean
+	for (Vector2INode* node = blob->first; node; node = node->next)
+	{
+		pixel = getPixelFromVector2Int(image, node->data->x, node->data->y);
+		
+		mean.x += pixel->red;
+		mean.y += pixel->green;
+		mean.z += pixel->blue;
+	}
+
+	mean.x /= blob->count;
+	mean.y /= blob->count;
+	mean.z /= blob->count;
+
+	// Calculate Std. Deviation
+	for (Vector2INode* node = blob->first; node; node = node->next)
+	{
+		pixel = getPixelFromVector2Int(image, node->data->x, node->data->y);
+
+		stdDeviation.x += pow(pixel->red - mean.x, 2);
+		stdDeviation.y += pow(pixel->green - mean.y, 2);
+		stdDeviation.z += pow(pixel->blue - mean.z, 2);
+	}
+
+	stdDeviation.x = sqrt(stdDeviation.x / 10);
+	stdDeviation.y = sqrt(stdDeviation.y / 10);
+	stdDeviation.z = sqrt(stdDeviation.z / 10);
+
+	// TODO: Fix this
 
 	return stdDeviation;
 }
