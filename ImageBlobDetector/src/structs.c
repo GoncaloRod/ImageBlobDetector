@@ -410,16 +410,16 @@ Vector3F getBlobStdDeviation(Blob* blob, Image* image)
 	{
 		pixel = getPixelFromVector2Int(image, node->data->x, node->data->y);
 
-		stdDeviation.x += pow(pixel->red - mean.x, 2);
-		stdDeviation.y += pow(pixel->green - mean.y, 2);
-		stdDeviation.z += pow(pixel->blue - mean.z, 2);
+		stdDeviation.x += pow(pixel->red - (double)mean.x, 2);
+		stdDeviation.y += pow(pixel->green - (double)mean.y, 2);
+		stdDeviation.z += pow(pixel->blue - (double)mean.z, 2);
 	}
 
-	stdDeviation.x = sqrt(stdDeviation.x / 10);
-	stdDeviation.y = sqrt(stdDeviation.y / 10);
-	stdDeviation.z = sqrt(stdDeviation.z / 10);
+	stdDeviation.x = sqrt(stdDeviation.x / blob->count);
+	stdDeviation.y = sqrt(stdDeviation.y / blob->count);
+	stdDeviation.z = sqrt(stdDeviation.z / blob->count);
 
-	// TODO: Fix this
+	// TODO: Currently we have a very small difference in comparison to original project. Why?
 
 	return stdDeviation;
 }
