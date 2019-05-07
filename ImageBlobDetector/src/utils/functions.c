@@ -80,7 +80,7 @@ void printImageInformation(Image* image)
 		center = getBlobCenter(current->data);
 		stdDeviation = getBlobStdDeviation(current->data, image);
 
-		printf("(%d, %d) | %d pixels | Standard Deviation (%f ,%f ,%f )\n", center.x, center.y, current->data->count, stdDeviation.x, stdDeviation.y, stdDeviation.z);
+		printf("(%d, %d) | %d pixels | Standard Deviation (%f, %f, %f)\n", center.x, center.y, current->data->count, stdDeviation.x, stdDeviation.y, stdDeviation.z);
 
 		current = current->next;
 	}
