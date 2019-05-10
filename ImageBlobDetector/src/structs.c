@@ -419,7 +419,7 @@ Vector3F getBlobStdDeviation(Blob* blob, Image* image)
 	stdDeviation.y = sqrt(stdDeviation.y / blob->count);
 	stdDeviation.z = sqrt(stdDeviation.z / blob->count);
 
-	// TODO: Currently we have a very small difference in comparison to original project. Why?
+	// TODO: Currently we have a very small difference in comparison to original project. Why? Is this a problem?
 
 	return stdDeviation;
 }
