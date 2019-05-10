@@ -35,6 +35,8 @@ typedef struct _vector2IQueue
 typedef struct _blob
 {
 	Vector2INode* first, * last;
+	Vector3F minStdDeviation;
+	Vector2I minStdDeviationCenter;
 	int count;
 } Blob;
 

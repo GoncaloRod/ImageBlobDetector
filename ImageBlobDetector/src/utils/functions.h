@@ -18,4 +18,5 @@ Pixel *getPixelFromVector2I(Image *image, int x, int y);
 
 void printImageInformation(Image* image);
 
+Image* getImageWithMoreBlobs(ImageList* images);
 #endif

@@ -85,3 +85,21 @@ void printImageInformation(Image* image)
 		current = current->next;
 	}
 }
+
+Image* getImageWithMoreBlobs(ImageList* images)
+{
+	if (!images) return NULL;
+	if (!images->first) return NULL;
+
+	ImageNode* topImage = images->first;
+
+	for (ImageNode* node = images->first->next; node; node = node->next)
+	{
+		if (node->data->blobs->count > topImage->data->blobs->count)
+		{
+			topImage = node;
+		}
+	}
+
+	return topImage->data;
+}

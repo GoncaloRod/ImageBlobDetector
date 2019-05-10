@@ -272,6 +272,8 @@ Blob* createBlob()
 	if (!blob) return NULL;
 
 	blob->first = blob->last = NULL;
+	blob->minStdDeviation.x = blob->minStdDeviation.y = blob->minStdDeviation.z = 0;
+	blob->minStdDeviationCenter.x = blob->minStdDeviationCenter.y = 0;
 	blob->count = 0;
 
 	return blob;

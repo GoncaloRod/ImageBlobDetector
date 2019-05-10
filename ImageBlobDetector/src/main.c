@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 
 	FILE* inputFile;
 	ImageList* images;
-	Image* image;
+	Image* image, * topImage;
 	char fileName[50];
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
@@ -63,6 +63,11 @@ int main(int argc, char* argv[])
 			// Add image to images list
 			imageListAddEnd(images, image);
 		}
+
+		// Find image with more blobs
+		topImage = getImageWithMoreBlobs(images);
+
+		if (topImage) printInfo("Image with more blobs: %s with %d blobs", topImage->fileName, topImage->blobs->count);
 
 		// Free all images
 		freeImageList(images);
