@@ -61,7 +61,7 @@ void findBlob(Image *image, Blob *blob, unsigned char r, unsigned char g, unsign
 	{
 		current = vector2IDequeue(toAnalyse);
 
-		pixel = getPixelFromVector2Int(image, current->x, current->y);
+		pixel = getPixelFromVector2I(image, current->x, current->y);
 
 		if (pixel->analysed)
 		{
@@ -90,19 +90,19 @@ void findBlob(Image *image, Blob *blob, unsigned char r, unsigned char g, unsign
 void addNeighbors(Image *image, Vector2IQueue *destination, Vector2I coord)
 {
 	// Top
-	if (coord.y > 0 && !getPixelFromVector2Int(image, coord.x, coord.y - 1)->analysed)
+	if (coord.y > 0 && !getPixelFromVector2I(image, coord.x, coord.y - 1)->analysed)
 		vector2IEnqueue(destination, createVector2I(coord.x, coord.y - 1));
 
 	// Bottom
-	if (coord.y < image->height - 1 && !getPixelFromVector2Int(image, coord.x, coord.y + 1)->analysed)
+	if (coord.y < image->height - 1 && !getPixelFromVector2I(image, coord.x, coord.y + 1)->analysed)
 		vector2IEnqueue(destination, createVector2I(coord.x, coord.y + 1));
 
 	// Left
-	if (coord.x > 0 && !getPixelFromVector2Int(image, coord.x - 1, coord.y)->analysed)
+	if (coord.x > 0 && !getPixelFromVector2I(image, coord.x - 1, coord.y)->analysed)
 		vector2IEnqueue(destination, createVector2I(coord.x - 1, coord.y));
 
 	// Right
-	if (coord.x < image->width - 1 && !getPixelFromVector2Int(image, coord.x + 1, coord.y)->analysed)
+	if (coord.x < image->width - 1 && !getPixelFromVector2I(image, coord.x + 1, coord.y)->analysed)
 		vector2IEnqueue(destination, createVector2I(coord.x + 1, coord.y));
 }
 

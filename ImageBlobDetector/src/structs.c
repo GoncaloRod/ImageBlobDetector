@@ -394,7 +394,7 @@ Vector3F getBlobStdDeviation(Blob* blob, Image* image)
 	// Calculate blob's mean
 	for (Vector2INode* node = blob->first; node; node = node->next)
 	{
-		pixel = getPixelFromVector2Int(image, node->data->x, node->data->y);
+		pixel = getPixelFromVector2I(image, node->data->x, node->data->y);
 		
 		mean.x += pixel->red;
 		mean.y += pixel->green;
@@ -408,7 +408,7 @@ Vector3F getBlobStdDeviation(Blob* blob, Image* image)
 	// Calculate Std. Deviation
 	for (Vector2INode* node = blob->first; node; node = node->next)
 	{
-		pixel = getPixelFromVector2Int(image, node->data->x, node->data->y);
+		pixel = getPixelFromVector2I(image, node->data->x, node->data->y);
 
 		stdDeviation.x += pow(pixel->red - (double)mean.x, 2);
 		stdDeviation.y += pow(pixel->green - (double)mean.y, 2);

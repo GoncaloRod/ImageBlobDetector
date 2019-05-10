@@ -57,7 +57,7 @@ int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, un
 	return 1;
 }
 
-Pixel * getPixelFromVector2Int(Image *image, int x, int y)
+Pixel * getPixelFromVector2I(Image *image, int x, int y)
 {
 	return &image->pixels[(image->width * y) + x];
 }
