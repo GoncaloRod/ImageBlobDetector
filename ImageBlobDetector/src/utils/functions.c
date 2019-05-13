@@ -93,7 +93,7 @@ Image* getImageWithMoreBlobs(ImageList* images)
 
 	ImageNode* topImage = images->first;
 
-	for (ImageNode* node = images->first->next; node; node = node->next)
+	for (ImageNode* node = images->first; node; node = node->next)
 	{
 		if (node->data->blobs->count > topImage->data->blobs->count)
 		{

@@ -136,7 +136,7 @@ void imageListAddEnd(ImageList* list, Image* image)
 		return;
 	}
 
-	ImageNode* node = createVector2INode();
+	ImageNode* node = createImageNode();
 
 	node->data = image;
 
