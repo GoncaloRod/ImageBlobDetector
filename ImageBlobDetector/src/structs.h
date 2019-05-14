@@ -35,8 +35,6 @@ typedef struct _vector2IQueue
 typedef struct _blob
 {
 	Vector2INode* first, * last;
-	Vector3F minStdDeviation;
-	Vector2I minStdDeviationCenter;
 	int count;
 } Blob;
 
@@ -63,6 +61,8 @@ typedef struct _image
 	int width, height, channels;
 	Pixel* pixels;
 	BlobList* blobs;
+	Vector3F minStdDeviation;
+	Vector2I minStdDeviationCenter;
 } Image;
 
 typedef struct _imageNode

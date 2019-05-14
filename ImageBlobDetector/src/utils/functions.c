@@ -75,12 +75,21 @@ void printImageInformation(Image* image)
 
 	current = image->blobs->first;
 
+	image->minStdDeviationCenter = getBlobCenter(current->data);
+	image->minStdDeviation = getBlobStdDeviation(current->data, image);
+
 	while (current)
 	{
 		center = getBlobCenter(current->data);
 		stdDeviation = getBlobStdDeviation(current->data, image);
 
 		printf("(%d, %d) | %d pixels | Standard Deviation (%f, %f, %f)\n", center.x, center.y, current->data->count, stdDeviation.x, stdDeviation.y, stdDeviation.z);
+
+		if (compareBlobStdDeviation(stdDeviation, image->minStdDeviation) < 0)
+		{
+			image->minStdDeviationCenter = center;
+			image->minStdDeviation = stdDeviation;
+		}
 
 		current = current->next;
 	}
@@ -102,4 +111,15 @@ Image* getImageWithMoreBlobs(ImageList* images)
 	}
 
 	return topImage->data;
+}
+
+int compareBlobStdDeviation(Vector3F value1, Vector3F value2)
+{
+	// TODO: Find a better way to compare std. deviation
+	if (value1.x < value2.x && value1.y < value2.y && value1.z < value2.z)
+		return -1;
+	else if (value1.x > value2.x && value1.y > value2.y && value1.z > value2.z)
+		return 1;
+	else
+		return 0;
 }

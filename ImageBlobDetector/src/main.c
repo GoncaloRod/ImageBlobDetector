@@ -11,7 +11,6 @@
 int main(int argc, char* argv[])
 {
 #if 0
-
 	// Find memory leak, set to 1 to use
 	_CrtSetBreakAlloc(99);
 #endif
