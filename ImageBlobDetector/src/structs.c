@@ -111,6 +111,8 @@ void imageListAddStart(ImageList* list, Image* image)
 
 	ImageNode* node = createImageNode();
 
+	node->data = image;
+
 	if (!list->first)
 	{
 		list->first = list->last = node;
