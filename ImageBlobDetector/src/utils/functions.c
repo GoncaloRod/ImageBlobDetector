@@ -113,6 +113,16 @@ Image* getImageWithMoreBlobs(ImageList* images)
 	return topImage->data;
 }
 
+Image* getImageWithLessStdDeviation(ImageList* images)
+{
+	if (!images) return NULL;
+	if (!images->first) return NULL;
+
+	// TODO: This function
+
+	return NULL;
+}
+
 int compareBlobStdDeviation(Vector3F value1, Vector3F value2)
 {
 	// TODO: Find a better way to compare std. deviation

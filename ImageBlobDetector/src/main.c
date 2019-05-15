@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 
 	FILE* inputFile;
 	ImageList* images;
-	Image* image, * topImage;
+	Image* image, * topImage, * minStdDeviationImage; // TODO: Rename this variables
 	char fileName[50];
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
