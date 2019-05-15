@@ -29,6 +29,8 @@ Image* createImage()
 	i->height = 0;
 	i->pixels = NULL;
 	i->blobs = NULL;
+	i->minStdDeviation.x = i->minStdDeviation.y = i->minStdDeviation.z = 0;
+	i->minStdDeviationCenter.x = i->minStdDeviationCenter.y = 0;
 
 	return i;
 }
@@ -274,8 +276,6 @@ Blob* createBlob()
 	if (!blob) return NULL;
 
 	blob->first = blob->last = NULL;
-	blob->minStdDeviation.x = blob->minStdDeviation.y = blob->minStdDeviation.z = 0;
-	blob->minStdDeviationCenter.x = blob->minStdDeviationCenter.y = 0;
 	blob->count = 0;
 
 	return blob;
