@@ -15,8 +15,6 @@ void printInfo(const char *message, ...);
 
 bool isNumeric(char *num);
 
-int stringToInt(char *num);
-
 bool inRange(int min, int max, int value);
 
 double executionTime(clock_t start, clock_t end);

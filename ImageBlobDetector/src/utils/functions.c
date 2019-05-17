@@ -35,15 +35,15 @@ int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, un
 	}
 
 	// Validate red, green, blue and tolerance values are in range of 0 to 255
-	if (!inRange(0, 255, stringToInt(argv[3])) || !inRange(0, 255, stringToInt(argv[4])) || !inRange(0, 255, stringToInt(argv[5])) || !inRange(0, 255, stringToInt(argv[6])))
+	if (!inRange(0, 255, atoi(argv[3])) || !inRange(0, 255, atoi(argv[4])) || !inRange(0, 255, atoi(argv[5])) || !inRange(0, 255, atoi(argv[6])))
 	{
 		return 0;
 	}
 
-	*r = (unsigned char)stringToInt(argv[3]);
-	*g = (unsigned char)stringToInt(argv[4]);
-	*b = (unsigned char)stringToInt(argv[5]);
-	*t = (unsigned char)stringToInt(argv[6]);
+	*r = (unsigned char)atoi(argv[3]);
+	*g = (unsigned char)atoi(argv[4]);
+	*b = (unsigned char)atoi(argv[5]);
+	*t = (unsigned char)atoi(argv[6]);
 	
 	// Validate mode
 	if (strcmp(argv[7], "MENU") != 0 && strcmp(argv[7], "ALL") != 0 && strcmp(argv[7], "MEM") != 0)

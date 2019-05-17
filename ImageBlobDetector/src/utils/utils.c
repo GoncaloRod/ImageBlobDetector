@@ -41,19 +41,6 @@ bool isNumeric(char *num)
 	return numeric;
 }
 
-int stringToInt(char *num)
-{
-	int value = 0;
-
-	for (int i = 0; i < (int)strlen(num); ++i)
-	{
-		value *= 10;
-		value += num[i] - '0';
-	}
-
-	return value;
-}
-
 bool inRange(int min, int max, int value)
 {
 	return value >= min && value <= max;
