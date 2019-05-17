@@ -45,7 +45,7 @@ void FreeImage(Image* pImage)
 	if (!pImage) return;
 
 	if (pImage->pPixels) FreePixelMatrix(pImage->pPixels);
-	if (pImage->pBlobs) freeBlobList(pImage->pBlobs);
+	if (pImage->pBlobs) FreeBlobList(pImage->pBlobs);
 
 	free(pImage);
 }
@@ -227,61 +227,66 @@ void FreeVector2INode(Vector2INode* pNode)
 
 #pragma region Vector2IQueue
 
-Vector2IQueue* createVector2IQueue()
+Vector2IQueue* CreateVector2IQueue()
 {
-	Vector2IQueue* queue = (Vector2IQueue*)malloc(sizeof(Vector2IQueue));
+	Vector2IQueue* pQueue = (Vector2IQueue*)malloc(sizeof(Vector2IQueue));
 
-	if (!queue) return NULL;
-
-	queue->pHead = queue->pTail = NULL;
-	queue->count = 0;
-
-	return queue;
-}
-
-void freeVector2IQueue(Vector2IQueue* queue)
-{
-	if (!queue) return;
-
-	for (int i = 0; i < queue->count; i++)
+	if (!pQueue)
 	{
-		FreeVector2I(vector2IDequeue(queue));
+		PrintError("Failed to allocate memory!");
+
+		exit(EXIT_FAILURE);
 	}
 
-	free(queue);
+	pQueue->pHead = pQueue->pTail = NULL;
+	pQueue->count = 0;
+
+	return pQueue;
 }
 
-void vector2IEnqueue(Vector2IQueue* queue, Vector2I* coord)
+void FreeVector2IQueue(Vector2IQueue* pQueue)
 {
-	if (!queue) return;
-	if (!coord) return;
+	if (!pQueue) return;
+
+	for (int i = 0; i < pQueue->count; i++)
+	{
+		FreeVector2I(Vector2IDequeue(pQueue));
+	}
+
+	free(pQueue);
+}
+
+void Vector2IEnqueue(Vector2IQueue* pQueue, Vector2I* pCoord)
+{
+	if (!pQueue) return;
+	if (!pCoord) return;
 
 	Vector2INode* node = CreateVector2INode();
-	node->pData = coord;
+	node->pData = pCoord;
 
-	if (queue->pHead == NULL)
+	if (pQueue->pHead == NULL)
 	{
-		queue->pHead = queue->pTail = node;
-		queue->count++;
+		pQueue->pHead = pQueue->pTail = node;
+		pQueue->count++;
 
 		return;
 	}
 
-	queue->pTail->pNext = node;
-	queue->pTail = node;
+	pQueue->pTail->pNext = node;
+	pQueue->pTail = node;
 
-	queue->count++;
+	pQueue->count++;
 }
 
-Vector2I* vector2IDequeue(Vector2IQueue* queue)
+Vector2I* Vector2IDequeue(Vector2IQueue* pQueue)
 {
-	if (!queue) return NULL;
-	if (!queue->pHead) return NULL;
+	if (!pQueue) return NULL;
+	if (!pQueue->pHead) return NULL;
 
-	Vector2INode* node = queue->pHead;
-	queue->pHead = node->pNext;
+	Vector2INode* node = pQueue->pHead;
+	pQueue->pHead = node->pNext;
 
-	queue->count--;
+	pQueue->count--;
 
 	Vector2I* coord = node->pData;
 
@@ -294,161 +299,163 @@ Vector2I* vector2IDequeue(Vector2IQueue* queue)
 
 #pragma region Blob
 
-Blob* createBlob()
+Blob* CreateBlob()
 {
-	Blob* blob = (Blob*)malloc(sizeof(Blob));
+	Blob* pBlob = (Blob*)malloc(sizeof(Blob));
 
-	if (!blob) return NULL;
-
-	blob->pHead = blob->pTail = NULL;
-	blob->count = 0;
-
-	return blob;
-}
-
-void freeBloob(Blob* blob)
-{
-	if (!blob) return;
-
-	Vector2INode* current, * next;
-
-	current = blob->pHead;
-
-	while (current)
+	if (!pBlob)
 	{
-		next = current->pNext;
+		PrintError("Failed to allocate memory!");
 
-		FreeVector2INode(current);
-
-		current = next;
+		exit(EXIT_FAILURE);
 	}
 
-	free(blob);
+	pBlob->pHead = pBlob->pTail = NULL;
+	pBlob->count = 0;
+
+	return pBlob;
 }
 
-void blobAddStart(Blob* blob, Vector2I* coord)
+void FreeBloob(Blob* pBlob)
 {
-	if (!blob) return;
-	if (!coord) return;
+	if (!pBlob) return;
 
-	Vector2INode* node = CreateVector2INode();
+	Vector2INode* pCurrent, * pNext;
 
-	node->pData = coord;
+	pCurrent = pBlob->pHead;
 
-	if (blob->pHead == NULL)
+	while (pCurrent)
 	{
-		blob->pHead = blob->pTail = node;
-		blob->count++;
+		pNext = pCurrent->pNext;
+
+		FreeVector2INode(pCurrent);
+
+		pCurrent = pNext;
+	}
+
+	free(pBlob);
+}
+
+void BlobAddStart(Blob* pBlob, Vector2I* pCoord)
+{
+	if (!pBlob) return;
+	if (!pCoord) return;
+
+	Vector2INode* pNode = CreateVector2INode();
+
+	pNode->pData = pCoord;
+
+	if (pBlob->pHead == NULL)
+	{
+		pBlob->pHead = pBlob->pTail = pNode;
+		pBlob->count++;
 
 		return;
 	}
 
-	node->pNext = blob->pHead;
-	blob->pHead = node;
+	pNode->pNext = pBlob->pHead;
+	pBlob->pHead = pNode;
 
-	blob->count++;
+	pBlob->count++;
 }
 
-void blobAddEnd(Blob* blob, Vector2I* coord)
+void BlobAddEnd(Blob* pBlob, Vector2I* pCoord)
 {
-	if (!blob) return;
-	if (!coord) return;
+	if (!pBlob) return;
+	if (!pCoord) return;
 
-	if (blob->pHead == NULL)
+	if (pBlob->pHead == NULL)
 	{
-		blobAddStart(blob, coord);
+		BlobAddStart(pBlob, pCoord);
 		return;
 	}
 
-	Vector2INode* node = CreateVector2INode();
+	Vector2INode* pNode = CreateVector2INode();
 
-	node->pData = coord;
+	pNode->pData = pCoord;
 
-	blob->pTail->pNext = node;
-	blob->pTail = node;
+	pBlob->pTail->pNext = pNode;
+	pBlob->pTail = pNode;
 
-	blob->count++;
+	pBlob->count++;
 }
 
-Vector2I getBlobCenter(Blob* blob)
+Vector2I GetBlobCenter(Blob* pBlob)
 {
-	if (!blob) return;
-	if (!blob->pHead) return;
+	if (!pBlob) return;
+	if (!pBlob->pHead) return;
 
 	Vector2I center;
-	Vector2INode* current;
+	Vector2INode* pCurrent;
 	int minX, maxX, minY, maxY;
 
 	// Find blob boundaries
-	current = blob->pHead;
+	pCurrent = pBlob->pHead;
 
-	minX = maxX = current->pData->x;
-	minY = maxY = current->pData->y;
+	minX = maxX = pCurrent->pData->x;
+	minY = maxY = pCurrent->pData->y;
 
-	current = current->pNext;
+	pCurrent = pCurrent->pNext;
 
-	while (current)
+	while (pCurrent)
 	{
 		// X boundary
-		if (current->pData->x > maxX) maxX = current->pData->x;
-		else if (current->pData->x < minX) minX = current->pData->x;
+		if (pCurrent->pData->x > maxX) maxX = pCurrent->pData->x;
+		else if (pCurrent->pData->x < minX) minX = pCurrent->pData->x;
 
 		// Y boundary
-		if (current->pData->y > maxY) maxY = current->pData->y;
-		else if (current->pData->y < minY) minY = current->pData->y;
+		if (pCurrent->pData->y > maxY) maxY = pCurrent->pData->y;
+		else if (pCurrent->pData->y < minY) minY = pCurrent->pData->y;
 
 		// Update current node
-		current = current->pNext;
+		pCurrent = pCurrent->pNext;
 	}
 
 	// Calculate center
-	// TODO: Find right way to round the center
 	center.x = (minX + maxX) / 2;
 	center.y = (minY + maxY) / 2;
 
 	return center;
 }
 
-Vector3F getBlobStdDeviation(Blob* blob, Image* image)
+Vector3F GetBlobStdDeviation(Blob * pBlob, Image * pImage)
 {
-	if (!blob) return;
-	if (!blob->pHead) return;
+	if (!pBlob) return;
+	if (!pBlob->pHead) return;
 
 	Vector3F stdDeviation, mean;
-	Pixel* pixel;
+	Pixel* pPixel;
 
 	mean.x = mean.y = mean.z = 0;
 	stdDeviation.x = stdDeviation.y = stdDeviation.z = 0;
-	
+
 	// Calculate blob's mean
-	for (Vector2INode* node = blob->pHead; node; node = node->pNext)
+	for (Vector2INode* pNode = pBlob->pHead; pNode; pNode = pNode->pNext)
 	{
-		pixel = GetPixelFromVector2I(image, node->pData->x, node->pData->y);
-		
-		mean.x += pixel->red;
-		mean.y += pixel->green;
-		mean.z += pixel->blue;
+		pPixel = GetPixelFromVector2I(pImage, pNode->pData->x, pNode->pData->y);
+
+		mean.x += pPixel->red;
+		mean.y += pPixel->green;
+		mean.z += pPixel->blue;
 	}
 
-	mean.x /= blob->count;
-	mean.y /= blob->count;
-	mean.z /= blob->count;
+	mean.x /= pBlob->count;
+	mean.y /= pBlob->count;
+	mean.z /= pBlob->count;
 
 	// Calculate Std. Deviation
-	for (Vector2INode* node = blob->pHead; node; node = node->pNext)
+	for (Vector2INode* pNode = pBlob->pHead; pNode; pNode = pNode->pNext)
 	{
-		pixel = GetPixelFromVector2I(image, node->pData->x, node->pData->y);
+		pPixel = GetPixelFromVector2I(pImage, pNode->pData->x, pNode->pData->y);
 
-		stdDeviation.x += pow(pixel->red - (double)mean.x, 2);
-		stdDeviation.y += pow(pixel->green - (double)mean.y, 2);
-		stdDeviation.z += pow(pixel->blue - (double)mean.z, 2);
+		stdDeviation.x += pow(pPixel->red - (double)mean.x, 2);
+		stdDeviation.y += pow(pPixel->green - (double)mean.y, 2);
+		stdDeviation.z += pow(pPixel->blue - (double)mean.z, 2);
 	}
 
-	stdDeviation.x = sqrt(stdDeviation.x / blob->count);
-	stdDeviation.y = sqrt(stdDeviation.y / blob->count);
-	stdDeviation.z = sqrt(stdDeviation.z / blob->count);
-
-	// TODO: Currently we have a very small difference in comparison to original project. Why? Is this a problem?
+	stdDeviation.x = sqrt(stdDeviation.x / pBlob->count);
+	stdDeviation.y = sqrt(stdDeviation.y / pBlob->count);
+	stdDeviation.z = sqrt(stdDeviation.z / pBlob->count);
 
 	return stdDeviation;
 }
@@ -457,148 +464,161 @@ Vector3F getBlobStdDeviation(Blob* blob, Image* image)
 
 #pragma region BlobNode
 
-BlobNode* createBlobNode()
+BlobNode * CreateBlobNode()
 {
-	BlobNode* node = (BlobNode*)malloc(sizeof(BlobNode));
+	BlobNode* pNode = (BlobNode*)malloc(sizeof(BlobNode));
 
-	if (!node) return NULL;
+	if (!pNode)
+	{
+		PrintError("Failed to allocate memory!");
 
-	node->pNext = NULL;
-	node->pData = NULL;
+		exit(EXIT_FAILURE);
+	}
 
-	return node;
+	pNode->pNext = NULL;
+	pNode->pData = NULL;
+
+	return pNode;
 }
 
-void freeBlobNode(BlobNode* node)
+void FreeBlobNode(BlobNode * pNode)
 {
-	if (!node) return;
+	if (!pNode) return;
 
-	freeBloob(node->pData);
+	FreeBloob(pNode->pData);
 
-	free(node);
+	free(pNode);
 }
 
 #pragma endregion BlobNode
 
 #pragma region BlobList
 
-BlobList* createBlobList()
+BlobList* CreateBlobList()
 {
-	BlobList* list = (BlobList*)malloc(sizeof(BlobList));
+	BlobList* pList = (BlobList*)malloc(sizeof(BlobList));
 
-	if (!list) return NULL;
+	if (!pList)
+	{
+		PrintError("Failed to allocate memory!");
 
-	list->pHead = list->pTail = NULL;
-	list->count = 0;
+		exit(EXIT_FAILURE);
+	}
 
-	return list;
+	pList->pHead = pList->pTail = NULL;
+	pList->count = 0;
+
+	return pList;
 }
 
-void freeBlobList(BlobList* list)
+void FreeBlobList(BlobList * pList)
 {
-	if (!list) return;
+	if (!pList) return;
 
-	BlobNode* current, * next;
+	BlobNode* pCurrent, * pNext;
 
-	current = list->pHead;
+	pCurrent = pList->pHead;
 
-	while (current)
+	while (pCurrent)
 	{
-		next = current->pNext;
+		pNext = pCurrent->pNext;
 
-		freeBlobNode(current);
+		FreeBlobNode(pCurrent);
 
-		current = next;
+		pCurrent = pNext;
 	}
 
-	free(list);
+	free(pList);
 }
 
-void blobListAddStart(BlobList* list, Blob* blob) {
-	if (!list) return;
-	if (!blob) return;
+void BlobListAddStart(BlobList* pList, Blob* pBlob)
+{
+	if (!pList) return;
+	if (!pBlob) return;
 
-	BlobNode* node = createBlobNode();
+	BlobNode* pNode = CreateBlobNode();
 
-	node->pData = blob;
+	pNode->pData = pBlob;
 
-	if (list->pHead == NULL)
+	if (pList->pHead == NULL)
 	{
-		list->pHead = list->pTail = node;
-		list->count++;
+		pList->pHead = pList->pTail = pNode;
+		pList->count++;
 
 		return;
 	}
 
-	node->pNext = list->pHead;
-	list->pHead = node;
+	pNode->pNext = pList->pHead;
+	pList->pHead = pNode;
 
-	list->count++;
+	pList->count++;
 }
 
-void blobListAddEnd(BlobList* list, Blob* blob) {
-	if (!list) return;
-	if (!blob) return;
+void BlobListAddEnd(BlobList* pList, Blob* pBlob)
+{
+	if (!pList) return;
+	if (!pBlob) return;
 
-	if (list->pHead == NULL)
+	if (pList->pHead == NULL)
 	{
-		blobListAddStart(list, blob);
+		BlobListAddStart(pList, pBlob);
 		return;
 	}
 
-	BlobNode* node = createBlobNode();
+	BlobNode* pNode = CreateBlobNode();
 
-	node->pData = blob;
+	pNode->pData = pBlob;
 
-	list->pTail->pNext = node;
-	list->pTail = node;
+	pList->pTail->pNext = pNode;
+	pList->pTail = pNode;
 
-	list->count++;
+	pList->count++;
 }
 
-void blobListAddSorted(BlobList* list, Blob* blob) {
-	if (!list) return;
-	if (!blob) return;
+void BlobListAddSorted(BlobList* pList, Blob* pBlob)
+{
+	if (!pList) return;
+	if (!pBlob) return;
 
-	if (!list->pHead)
+	if (!pList->pHead)
 	{
-		blobListAddStart(list, blob);
+		BlobListAddStart(pList, pBlob);
 
 		return;
 	}
 
-	BlobNode* newBlob;
-	BlobNode* previous = NULL;
-	BlobNode* current = list->pHead;
+	BlobNode* pNewBlob;
+	BlobNode* pPrevious = NULL;
+	BlobNode* pCurrent = pList->pHead;
 	char stop = 0;
 
-	while (current && !stop)
+	while (pCurrent && !stop)
 	{
-		if (blob->count > current->pData->count)
+		if (pBlob->count > pCurrent->pData->count)
 		{
 			stop = 1;
 		}
 		else
 		{
-			previous = current;
-			current = current->pNext;
+			pPrevious = pCurrent;
+			pCurrent = pCurrent->pNext;
 		}
 	}
 
-	if (!previous)
+	if (!pPrevious)
 	{
-		blobListAddStart(list, blob);
+		BlobListAddStart(pList, pBlob);
 	}
 	else
 	{
-		newBlob = createBlobNode();
-		newBlob->pData = blob;
+		pNewBlob = CreateBlobNode();
+		pNewBlob->pData = pBlob;
 
-		newBlob->pNext = current;
+		pNewBlob->pNext = pCurrent;
 
-		previous->pNext = newBlob;
+		pPrevious->pNext = pNewBlob;
 
-		list->count++;
+		pList->count++;
 	}
 }
 

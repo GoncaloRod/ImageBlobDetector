@@ -72,14 +72,14 @@ void PrintImageInformation(Image* pImage)
 	// Print image's blob count
 	PrintInfo("%d blobs found in %s", pImage->pBlobs->count, pImage->fileName);
 
-	pImage->minStdDeviationCenter = getBlobCenter(pImage->pBlobs->pHead->pData);
-	pImage->minStdDeviation = getBlobStdDeviation(pImage->pBlobs->pHead->pData, pImage);
+	pImage->minStdDeviationCenter = GetBlobCenter(pImage->pBlobs->pHead->pData);
+	pImage->minStdDeviation = GetBlobStdDeviation(pImage->pBlobs->pHead->pData, pImage);
 
 	// Print center, pixel count and std.deviation for every pixel
 	for (BlobNode* pNode = pImage->pBlobs->pHead; pNode; pNode = pNode->pNext)
 	{
-		center = getBlobCenter(pNode->pData);
-		stdDeviation = getBlobStdDeviation(pNode->pData, pImage);
+		center = GetBlobCenter(pNode->pData);
+		stdDeviation = GetBlobStdDeviation(pNode->pData, pImage);
 
 		printf("(%d, %d) | %d pixels | Standard Deviation (%f, %f, %f)\n", center.x, center.y, pNode->pData->count, stdDeviation.x, stdDeviation.y, stdDeviation.z);
 

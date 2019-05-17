@@ -135,51 +135,51 @@ void FreeVector2INode(Vector2INode* pNode);
 
 #pragma region Vector2IQueue
 
-Vector2IQueue* createVector2IQueue();
+Vector2IQueue* CreateVector2IQueue();
 
-void freeVector2IQueue(Vector2IQueue* queue);
+void FreeVector2IQueue(Vector2IQueue* pQueue);
 
-void vector2IEnqueue(Vector2IQueue* queue, Vector2I* coord);
+void Vector2IEnqueue(Vector2IQueue* pQueue, Vector2I* pCoord);
 
-Vector2I* vector2IDequeue(Vector2IQueue* queue);
+Vector2I* Vector2IDequeue(Vector2IQueue* pQueue);
 
 #pragma endregion Vector2IQueue
 
 #pragma region Blob
 
-Blob* createBlob();
+Blob* CreateBlob();
 
-void freeBloob(Blob* blob);
+void FreeBloob(Blob* pBlob);
 
-void blobAddStart(Blob* blob, Vector2I* coord);
+void BlobAddStart(Blob* blob, Vector2I* coord);
 
-void blobAddEnd(Blob* blob, Vector2I* coord);
+void BlobAddEnd(Blob* pBlob, Vector2I* pCoord);
 
-Vector2I getBlobCenter(Blob* blob);
+Vector2I GetBlobCenter(Blob* pBlob);
 
-Vector3F getBlobStdDeviation(Blob* blob, Image* image);
+Vector3F GetBlobStdDeviation(Blob* pBlob, Image* pImage);
 
 #pragma endregion Blob
 
 #pragma region BlobNode
 
-BlobNode* createBlobNode();
+BlobNode* CreateBlobNode();
 
-void freeBlobNode(BlobNode* node);
+void FreeBlobNode(BlobNode* pNode);
 
 #pragma endregion BlobNode
 
 #pragma region BlobList
 
-BlobList* createBlobList();
+BlobList* CreateBlobList();
 
-void freeBlobList(BlobList* list);
+void FreeBlobList(BlobList* pList);
 
-void blobListAddStart(BlobList* list, Blob* blob);
+void BlobListAddStart(BlobList* pList, Blob* pBlob);
 
-void blobListAddEnd(BlobList* list, Blob* blob);
+void BlobListAddEnd(BlobList* pList, Blob* pBlob);
 
-void blobListAddSorted(BlobList* list, Blob* blob);
+void BlobListAddSorted(BlobList* pList, Blob* pBlob);
 
 #pragma endregion BlobList
 
