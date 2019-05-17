@@ -1,19 +1,18 @@
 #include "functions.h"
 
-void printUsageMessage(char *programName)
+void PrintUsageMessage(char *pProgramName)
 {
-	printf("\nUsage: %s tests input_file red green blue tolerance mode\n\n", programName);
+	printf("\nUsage: %s tests input_file red green blue tolerance mode\n\n", pProgramName);
 	
-	// TODO: Better formating
-	printf("\tinput_file:\t\tFile to be precessed\n");
-	printf("\tred:\t\t\tDesired red value of color to find\n");
-	printf("\tgreen:\t\t\tDesired green value of color to find\n");
-	printf("\tblue:\t\t\tDesired blue value of color to find\n");
-	printf("\ttolerance:\t\tTolerance in red, green and blue values to find\n");
-	printf("\tmode:\t\t\tMode in which program will execute. Can be MENU, ALL or MEM\n");
+	printf("    %-15sFile to be precessed\n", "input_file:");
+	printf("    %-15sDesired red value of color to find\n", "red:");
+	printf("    %-15sDesired green value of color to find\n", "green:");
+	printf("    %-15sDesired blue value of color to find\n", "blue:");
+	printf("    %-15sTolerance in red, green and blue values to find\n", "tolerance:");
+	printf("    %-15sMode in which program will execute. Can be MENU, ALL or MEM\n", "mode:");
 }
 
-int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *t, char *mode)
+int ValidateArguments(int argc, char **argv,char *pFileName, unsigned char *pR, unsigned char *pG, unsigned char *pB, unsigned char *pT, char *pMode)
 {
 	// Validate arguments count
 	if (argc != 8) return 0;
@@ -26,112 +25,110 @@ int validateArguments(int argc, char **argv,char *fileName, unsigned char *r, un
 	if (argv[2][0] == '\0')
 		return 0;
 
-	strcpy(fileName, argv[2]);
+	strcpy(pFileName, argv[2]);
 
 	// Validate red, green, blue and tolerance values are numeric
-	if (!isNumeric(argv[3]) || !isNumeric(argv[4]) || !isNumeric(argv[5]) || !isNumeric(argv[6]))
+	if (!IsNumeric(argv[3]) || !IsNumeric(argv[4]) || !IsNumeric(argv[5]) || !IsNumeric(argv[6]))
 	{
 		return 0;
 	}
 
 	// Validate red, green, blue and tolerance values are in range of 0 to 255
-	if (!inRange(0, 255, atoi(argv[3])) || !inRange(0, 255, atoi(argv[4])) || !inRange(0, 255, atoi(argv[5])) || !inRange(0, 255, atoi(argv[6])))
+	if (!InRange(0, 255, atoi(argv[3])) || !InRange(0, 255, atoi(argv[4])) || !InRange(0, 255, atoi(argv[5])) || !InRange(0, 255, atoi(argv[6])))
 	{
 		return 0;
 	}
 
-	*r = (unsigned char)atoi(argv[3]);
-	*g = (unsigned char)atoi(argv[4]);
-	*b = (unsigned char)atoi(argv[5]);
-	*t = (unsigned char)atoi(argv[6]);
+	*pR = (unsigned char)atoi(argv[3]);
+	*pG = (unsigned char)atoi(argv[4]);
+	*pB = (unsigned char)atoi(argv[5]);
+	*pT = (unsigned char)atoi(argv[6]);
 	
 	// Validate mode
 	if (strcmp(argv[7], "MENU") != 0 && strcmp(argv[7], "ALL") != 0 && strcmp(argv[7], "MEM") != 0)
 	{
-		printUsageMessage(argv[0]);
+		PrintUsageMessage(argv[0]);
 		return 0;
 	}
 
-	strcpy(mode, argv[7]);
+	strcpy(pMode, argv[7]);
 
 	return 1;
 }
 
-Pixel * getPixelFromVector2I(Image *image, int x, int y)
+Pixel* GetPixelFromVector2I(Image *pImage, int x, int y)
 {
-	return &image->pixels[(image->width * y) + x];
+	return &pImage->pPixels[(pImage->width * y) + x];
 }
 
-void printImageInformation(Image* image)
+void PrintImageInformation(Image* pImage)
 {
-	if (!image->blobs) return;
-	if (!image->blobs->first) return;
+	if (!pImage->pBlobs) return;
+	if (!pImage->pBlobs->pHead) return;
 
-	BlobNode* current;
 	Vector2I center;
 	Vector3F stdDeviation;
 
-	printInfo("%d blobs found in %s", image->blobs->count, image->fileName);
+	// Print image's blob count
+	PrintInfo("%d blobs found in %s", pImage->pBlobs->count, pImage->fileName);
 
-	current = image->blobs->first;
+	pImage->minStdDeviationCenter = getBlobCenter(pImage->pBlobs->pHead->pData);
+	pImage->minStdDeviation = getBlobStdDeviation(pImage->pBlobs->pHead->pData, pImage);
 
-	image->minStdDeviationCenter = getBlobCenter(current->data);
-	image->minStdDeviation = getBlobStdDeviation(current->data, image);
-
-	while (current)
+	// Print center, pixel count and std.deviation for every pixel
+	for (BlobNode* pNode = pImage->pBlobs->pHead; pNode; pNode = pNode->pNext)
 	{
-		center = getBlobCenter(current->data);
-		stdDeviation = getBlobStdDeviation(current->data, image);
+		center = getBlobCenter(pNode->pData);
+		stdDeviation = getBlobStdDeviation(pNode->pData, pImage);
 
-		printf("(%d, %d) | %d pixels | Standard Deviation (%f, %f, %f)\n", center.x, center.y, current->data->count, stdDeviation.x, stdDeviation.y, stdDeviation.z);
+		printf("(%d, %d) | %d pixels | Standard Deviation (%f, %f, %f)\n", center.x, center.y, pNode->pData->count, stdDeviation.x, stdDeviation.y, stdDeviation.z);
 
-		if (compareBlobStdDeviation(stdDeviation, image->minStdDeviation) < 0)
+		// Update image's less std.deviation blob
+		if (CompareStdDeviation(stdDeviation, pImage->minStdDeviation) < 0)
 		{
-			image->minStdDeviationCenter = center;
-			image->minStdDeviation = stdDeviation;
+			pImage->minStdDeviationCenter = center;
+			pImage->minStdDeviation = stdDeviation;
 		}
-
-		current = current->next;
 	}
 }
 
-Image* getImageWithMoreBlobs(ImageList* images)
+Image* GetImageMoreBlobs(ImageList* pImages)
 {
-	if (!images) return NULL;
-	if (!images->first) return NULL;
+	if (!pImages) return NULL;
+	if (!pImages->pHead) return NULL;
 
-	ImageNode* topNode = images->first;
+	ImageNode* pTopNode = pImages->pHead;
 
-	for (ImageNode* node = topNode->next; node; node = node->next)
+	for (ImageNode* pNode = pTopNode->pNext; pNode; pNode = pNode->pNext)
 	{
-		if (node->data->blobs->count > topNode->data->blobs->count)
+		if (pNode->pData->pBlobs->count > pTopNode->pData->pBlobs->count)
 		{
-			topNode = node;
+			pTopNode = pNode;
 		}
 	}
 
-	return topNode->data;
+	return pTopNode->pData;
 }
 
-Image* getImageWithLessStdDeviation(ImageList* images)
+Image* GetImageLessStdDeviation(ImageList* pImages)
 {
-	if (!images) return NULL;
-	if (!images->first) return NULL;
+	if (!pImages) return NULL;
+	if (!pImages->pHead) return NULL;
 
-	ImageNode* topNode = images->first;
+	ImageNode* pTopNode = pImages->pHead;
 
-	for (ImageNode* node = topNode->next; node; node = node->next)
+	for (ImageNode* pNode = pTopNode->pNext; pNode; pNode = pNode->pNext)
 	{
-		if (compareBlobStdDeviation(node->data->minStdDeviation, topNode->data->minStdDeviation) < 0)
+		if (CompareStdDeviation(pNode->pData->minStdDeviation, pTopNode->pData->minStdDeviation) < 0)
 		{
-			topNode = node;
+			pTopNode = pNode;
 		}
 	}
 
-	return topNode->data;
+	return pTopNode->pData;
 }
 
-int compareBlobStdDeviation(Vector3F value1, Vector3F value2)
+int CompareStdDeviation(Vector3F value1, Vector3F value2)
 {
 	// TODO: Find a better way to compare std. deviation
 	if (value1.x < value2.x && value1.y < value2.y && value1.z < value2.z)

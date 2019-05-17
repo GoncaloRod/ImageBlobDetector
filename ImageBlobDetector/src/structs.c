@@ -2,200 +2,225 @@
 
 #pragma region Pixel
 
-Pixel* createPixelMatrix(int heigth, int width)
+Pixel* CreatePixelMatrix(int heigth, int width)
 {
-	Pixel* pixels = (Pixel*)malloc(heigth * width * sizeof(Pixel));
+	Pixel* pPixels = (Pixel*)malloc(heigth * width * sizeof(Pixel));
 
-	return pixels;
+	return pPixels;
 }
 
-void freePixelMatrix(Pixel* matrix)
+void FreePixelMatrix(Pixel* pMatrix)
 {
-	free(matrix);
+	free(pMatrix);
 }
 
 #pragma endregion Pixel
 
 #pragma region Image
 
-Image* createImage()
+Image* CreateImage()
 {
-	Image* i = (Image*)malloc(sizeof(Image));
+	Image* pImage = (Image*)malloc(sizeof(Image));
 
-	if (!i) return NULL;
+	if (!pImage)
+	{
+		PrintError("Failed to allocate memory!");
 
-	strcpy(i->fileName, "");
-	i->width = 0;
-	i->height = 0;
-	i->pixels = NULL;
-	i->blobs = NULL;
-	i->minStdDeviation.x = i->minStdDeviation.y = i->minStdDeviation.z = 0;
-	i->minStdDeviationCenter.x = i->minStdDeviationCenter.y = 0;
+		exit(EXIT_FAILURE);
+	}
 
-	return i;
+	strcpy(pImage->fileName, "");
+	pImage->width = 0;
+	pImage->height = 0;
+	pImage->pPixels = NULL;
+	pImage->pBlobs = NULL;
+	pImage->minStdDeviation.x = pImage->minStdDeviation.y = pImage->minStdDeviation.z = 0;
+	pImage->minStdDeviationCenter.x = pImage->minStdDeviationCenter.y = 0;
+
+	return pImage;
 }
 
-void freeImage(Image* image)
+void FreeImage(Image* pImage)
 {
-	if (!image) return;
+	if (!pImage) return;
 
-	if (image->pixels) freePixelMatrix(image->pixels);
-	if (image->blobs) freeBlobList(image->blobs);
+	if (pImage->pPixels) FreePixelMatrix(pImage->pPixels);
+	if (pImage->pBlobs) freeBlobList(pImage->pBlobs);
 
-	free(image);
+	free(pImage);
 }
 
 #pragma endregion Image
 
 #pragma region ImageNode
 
-ImageNode* createImageNode()
+ImageNode* CreateImageNode()
 {
-	ImageNode* node = (ImageNode*)malloc(sizeof(ImageNode));
+	ImageNode* pNode = (ImageNode*)malloc(sizeof(ImageNode));
 
-	if (!node) return NULL;
+	if (!pNode)
+	{
+		PrintError("Failed to allocate memory!");
 
-	node->next = NULL;
-	node->data = NULL;
+		exit(EXIT_FAILURE);
+	}
 
-	return node;
+	pNode->pNext = NULL;
+	pNode->pData = NULL;
+
+	return pNode;
 }
 
-void freeImageNode(ImageNode* node)
+void FreeImageNode(ImageNode* pNode)
 {
-	if (!node) return;
+	if (!pNode) return;
 
-	if (node->data) freeImage(node->data);
+	if (pNode->pData) FreeImage(pNode->pData);
 
-	free(node);
+	free(pNode);
 }
 
 #pragma endregion ImageNode
 
 #pragma region ImageList
 
-ImageList* createImageList()
+ImageList* CreateImageList()
 {
-	ImageList* list = (ImageList*)malloc(sizeof(ImageList));
+	ImageList* pList = (ImageList*)malloc(sizeof(ImageList));
 
-	if (!list) return NULL;
-
-	list->first = NULL;
-	list->count = 0;
-
-	return list;
-}
-
-void freeImageList(ImageList* list)
-{
-	if (!list) return;
-
-	ImageNode* current, * next;
-
-	current = list->first;
-
-	while (current)
+	if (!pList)
 	{
-		next = current->next;
+		PrintError("Failed to allocate memory!");
 
-		freeImageNode(current);
-
-		current = next;
+		exit(EXIT_FAILURE);
 	}
 
-	free(list);
+	pList->pHead = NULL;
+	pList->count = 0;
+
+	return pList;
 }
 
-void imageListAddStart(ImageList* list, Image* image)
+void FreeImageList(ImageList* pList)
 {
-	if (!list) return;
-	if (!image) return;
+	if (!pList) return;
 
-	ImageNode* node = createImageNode();
+	ImageNode* pCurrent, * pNext;
 
-	node->data = image;
+	pCurrent = pList->pHead;
 
-	if (!list->first)
+	while (pCurrent)
 	{
-		list->first = list->last = node;
-		list->count++;
+		pNext = pCurrent->pNext;
+
+		FreeImageNode(pCurrent);
+
+		pCurrent = pNext;
+	}
+
+	free(pList);
+}
+
+void ImageListAddStart(ImageList* pList, Image* pImage)
+{
+	if (!pList) return;
+	if (!pImage) return;
+
+	ImageNode* pNode = CreateImageNode();
+
+	pNode->pData = pImage;
+
+	if (!pList->pHead)
+	{
+		pList->pHead = pList->pTail = pNode;
+		pList->count++;
 
 		return;
 	}
 
-	node->next = list->first;
-	list->first = node;
+	pNode->pNext = pList->pHead;
+	pList->pHead = pNode;
 
-	list->count++;
+	pList->count++;
 }
 
-void imageListAddEnd(ImageList* list, Image* image)
+void pImageListAddEnd(ImageList* pList, Image* pImage)
 {
-	if (!list) return;
-	if (!image) return;
+	if (!pList) return;
+	if (!pImage) return;
 
-	if (!list->first)
+	if (!pList->pHead)
 	{
-		imageListAddStart(list, image);
+		ImageListAddStart(pList, pImage);
 		return;
 	}
 
-	ImageNode* node = createImageNode();
+	ImageNode* pNode = CreateImageNode();
 
-	node->data = image;
+	pNode->pData = pImage;
 
-	list->last->next = node;
-	list->last = node;
+	pList->pTail->pNext = pNode;
+	pList->pTail = pNode;
 
-	list->count++;
+	pList->count++;
 }
 
 #pragma endregion ImageList
 
 #pragma region Vector2I
 
-Vector2I* createVector2I(int x, int y)
+Vector2I* CreateVector2I(int x, int y)
 {
-	Vector2I* coord = (Vector2I*)malloc(sizeof(Vector2I));
+	Vector2I* pVector = (Vector2I*)malloc(sizeof(Vector2I));
 
-	if (!coord) return NULL;
+	if (!pVector)
+	{
+		PrintError("Failed to allocate memory!");
 
-	coord->x = x;
-	coord->y = y;
+		exit(EXIT_FAILURE);
+	}
 
-	return coord;
+	pVector->x = x;
+	pVector->y = y;
+
+	return pVector;
 }
 
-void freeVector2I(Vector2I* vector)
+void FreeVector2I(Vector2I* pVector)
 {
-	if (!vector) return;
+	if (!pVector) return;
 
-	free(vector);
+	free(pVector);
 }
 
 #pragma endregion Vector2I
 
 #pragma region Vector2IdNode
 
-Vector2INode* createVector2INode()
+Vector2INode* CreateVector2INode()
 {
-	Vector2INode* node = (Vector2INode*)malloc(sizeof(Vector2INode));
+	Vector2INode* pNode = (Vector2INode*)malloc(sizeof(Vector2INode));
 
-	if (!node) return NULL;
+	if (!pNode)
+	{
+		PrintError("Failed to allocate memory!");
 
-	node->next = NULL;
-	node->data = NULL;
+		exit(EXIT_FAILURE);
+	}
 
-	return node;
+	pNode->pNext = NULL;
+	pNode->pData = NULL;
+
+	return pNode;
 }
 
-void freeVector2INode(Vector2INode* node)
+void FreeVector2INode(Vector2INode* pNode)
 {
-	if (!node) return;
+	if (!pNode) return;
 
-	if (node->data) freeVector2I(node->data);
+	if (pNode->pData) FreeVector2I(pNode->pData);
 
-	free(node);
+	free(pNode);
 }
 
 #pragma endregion Vector2INode
@@ -208,7 +233,7 @@ Vector2IQueue* createVector2IQueue()
 
 	if (!queue) return NULL;
 
-	queue->first = queue->last = NULL;
+	queue->pHead = queue->pTail = NULL;
 	queue->count = 0;
 
 	return queue;
@@ -220,7 +245,7 @@ void freeVector2IQueue(Vector2IQueue* queue)
 
 	for (int i = 0; i < queue->count; i++)
 	{
-		freeVector2I(vector2IDequeue(queue));
+		FreeVector2I(vector2IDequeue(queue));
 	}
 
 	free(queue);
@@ -231,19 +256,19 @@ void vector2IEnqueue(Vector2IQueue* queue, Vector2I* coord)
 	if (!queue) return;
 	if (!coord) return;
 
-	Vector2INode* node = createVector2INode();
-	node->data = coord;
+	Vector2INode* node = CreateVector2INode();
+	node->pData = coord;
 
-	if (queue->first == NULL)
+	if (queue->pHead == NULL)
 	{
-		queue->first = queue->last = node;
+		queue->pHead = queue->pTail = node;
 		queue->count++;
 
 		return;
 	}
 
-	queue->last->next = node;
-	queue->last = node;
+	queue->pTail->pNext = node;
+	queue->pTail = node;
 
 	queue->count++;
 }
@@ -251,14 +276,14 @@ void vector2IEnqueue(Vector2IQueue* queue, Vector2I* coord)
 Vector2I* vector2IDequeue(Vector2IQueue* queue)
 {
 	if (!queue) return NULL;
-	if (!queue->first) return NULL;
+	if (!queue->pHead) return NULL;
 
-	Vector2INode* node = queue->first;
-	queue->first = node->next;
+	Vector2INode* node = queue->pHead;
+	queue->pHead = node->pNext;
 
 	queue->count--;
 
-	Vector2I* coord = node->data;
+	Vector2I* coord = node->pData;
 
 	free(node);
 
@@ -275,7 +300,7 @@ Blob* createBlob()
 
 	if (!blob) return NULL;
 
-	blob->first = blob->last = NULL;
+	blob->pHead = blob->pTail = NULL;
 	blob->count = 0;
 
 	return blob;
@@ -287,13 +312,13 @@ void freeBloob(Blob* blob)
 
 	Vector2INode* current, * next;
 
-	current = blob->first;
+	current = blob->pHead;
 
 	while (current)
 	{
-		next = current->next;
+		next = current->pNext;
 
-		freeVector2INode(current);
+		FreeVector2INode(current);
 
 		current = next;
 	}
@@ -306,20 +331,20 @@ void blobAddStart(Blob* blob, Vector2I* coord)
 	if (!blob) return;
 	if (!coord) return;
 
-	Vector2INode* node = createVector2INode();
+	Vector2INode* node = CreateVector2INode();
 
-	node->data = coord;
+	node->pData = coord;
 
-	if (blob->first == NULL)
+	if (blob->pHead == NULL)
 	{
-		blob->first = blob->last = node;
+		blob->pHead = blob->pTail = node;
 		blob->count++;
 
 		return;
 	}
 
-	node->next = blob->first;
-	blob->first = node;
+	node->pNext = blob->pHead;
+	blob->pHead = node;
 
 	blob->count++;
 }
@@ -329,18 +354,18 @@ void blobAddEnd(Blob* blob, Vector2I* coord)
 	if (!blob) return;
 	if (!coord) return;
 
-	if (blob->first == NULL)
+	if (blob->pHead == NULL)
 	{
 		blobAddStart(blob, coord);
 		return;
 	}
 
-	Vector2INode* node = createVector2INode();
+	Vector2INode* node = CreateVector2INode();
 
-	node->data = coord;
+	node->pData = coord;
 
-	blob->last->next = node;
-	blob->last = node;
+	blob->pTail->pNext = node;
+	blob->pTail = node;
 
 	blob->count++;
 }
@@ -348,32 +373,32 @@ void blobAddEnd(Blob* blob, Vector2I* coord)
 Vector2I getBlobCenter(Blob* blob)
 {
 	if (!blob) return;
-	if (!blob->first) return;
+	if (!blob->pHead) return;
 
 	Vector2I center;
 	Vector2INode* current;
 	int minX, maxX, minY, maxY;
 
 	// Find blob boundaries
-	current = blob->first;
+	current = blob->pHead;
 
-	minX = maxX = current->data->x;
-	minY = maxY = current->data->y;
+	minX = maxX = current->pData->x;
+	minY = maxY = current->pData->y;
 
-	current = current->next;
+	current = current->pNext;
 
 	while (current)
 	{
 		// X boundary
-		if (current->data->x > maxX) maxX = current->data->x;
-		else if (current->data->x < minX) minX = current->data->x;
+		if (current->pData->x > maxX) maxX = current->pData->x;
+		else if (current->pData->x < minX) minX = current->pData->x;
 
 		// Y boundary
-		if (current->data->y > maxY) maxY = current->data->y;
-		else if (current->data->y < minY) minY = current->data->y;
+		if (current->pData->y > maxY) maxY = current->pData->y;
+		else if (current->pData->y < minY) minY = current->pData->y;
 
 		// Update current node
-		current = current->next;
+		current = current->pNext;
 	}
 
 	// Calculate center
@@ -387,7 +412,7 @@ Vector2I getBlobCenter(Blob* blob)
 Vector3F getBlobStdDeviation(Blob* blob, Image* image)
 {
 	if (!blob) return;
-	if (!blob->first) return;
+	if (!blob->pHead) return;
 
 	Vector3F stdDeviation, mean;
 	Pixel* pixel;
@@ -396,9 +421,9 @@ Vector3F getBlobStdDeviation(Blob* blob, Image* image)
 	stdDeviation.x = stdDeviation.y = stdDeviation.z = 0;
 	
 	// Calculate blob's mean
-	for (Vector2INode* node = blob->first; node; node = node->next)
+	for (Vector2INode* node = blob->pHead; node; node = node->pNext)
 	{
-		pixel = getPixelFromVector2I(image, node->data->x, node->data->y);
+		pixel = GetPixelFromVector2I(image, node->pData->x, node->pData->y);
 		
 		mean.x += pixel->red;
 		mean.y += pixel->green;
@@ -410,9 +435,9 @@ Vector3F getBlobStdDeviation(Blob* blob, Image* image)
 	mean.z /= blob->count;
 
 	// Calculate Std. Deviation
-	for (Vector2INode* node = blob->first; node; node = node->next)
+	for (Vector2INode* node = blob->pHead; node; node = node->pNext)
 	{
-		pixel = getPixelFromVector2I(image, node->data->x, node->data->y);
+		pixel = GetPixelFromVector2I(image, node->pData->x, node->pData->y);
 
 		stdDeviation.x += pow(pixel->red - (double)mean.x, 2);
 		stdDeviation.y += pow(pixel->green - (double)mean.y, 2);
@@ -438,8 +463,8 @@ BlobNode* createBlobNode()
 
 	if (!node) return NULL;
 
-	node->next = NULL;
-	node->data = NULL;
+	node->pNext = NULL;
+	node->pData = NULL;
 
 	return node;
 }
@@ -448,7 +473,7 @@ void freeBlobNode(BlobNode* node)
 {
 	if (!node) return;
 
-	freeBloob(node->data);
+	freeBloob(node->pData);
 
 	free(node);
 }
@@ -463,7 +488,7 @@ BlobList* createBlobList()
 
 	if (!list) return NULL;
 
-	list->first = list->last = NULL;
+	list->pHead = list->pTail = NULL;
 	list->count = 0;
 
 	return list;
@@ -475,11 +500,11 @@ void freeBlobList(BlobList* list)
 
 	BlobNode* current, * next;
 
-	current = list->first;
+	current = list->pHead;
 
 	while (current)
 	{
-		next = current->next;
+		next = current->pNext;
 
 		freeBlobNode(current);
 
@@ -495,18 +520,18 @@ void blobListAddStart(BlobList* list, Blob* blob) {
 
 	BlobNode* node = createBlobNode();
 
-	node->data = blob;
+	node->pData = blob;
 
-	if (list->first == NULL)
+	if (list->pHead == NULL)
 	{
-		list->first = list->last = node;
+		list->pHead = list->pTail = node;
 		list->count++;
 
 		return;
 	}
 
-	node->next = list->first;
-	list->first = node;
+	node->pNext = list->pHead;
+	list->pHead = node;
 
 	list->count++;
 }
@@ -515,7 +540,7 @@ void blobListAddEnd(BlobList* list, Blob* blob) {
 	if (!list) return;
 	if (!blob) return;
 
-	if (list->first == NULL)
+	if (list->pHead == NULL)
 	{
 		blobListAddStart(list, blob);
 		return;
@@ -523,10 +548,10 @@ void blobListAddEnd(BlobList* list, Blob* blob) {
 
 	BlobNode* node = createBlobNode();
 
-	node->data = blob;
+	node->pData = blob;
 
-	list->last->next = node;
-	list->last = node;
+	list->pTail->pNext = node;
+	list->pTail = node;
 
 	list->count++;
 }
@@ -535,7 +560,7 @@ void blobListAddSorted(BlobList* list, Blob* blob) {
 	if (!list) return;
 	if (!blob) return;
 
-	if (!list->first)
+	if (!list->pHead)
 	{
 		blobListAddStart(list, blob);
 
@@ -544,19 +569,19 @@ void blobListAddSorted(BlobList* list, Blob* blob) {
 
 	BlobNode* newBlob;
 	BlobNode* previous = NULL;
-	BlobNode* current = list->first;
+	BlobNode* current = list->pHead;
 	char stop = 0;
 
 	while (current && !stop)
 	{
-		if (blob->count > current->data->count)
+		if (blob->count > current->pData->count)
 		{
 			stop = 1;
 		}
 		else
 		{
 			previous = current;
-			current = current->next;
+			current = current->pNext;
 		}
 	}
 
@@ -567,11 +592,11 @@ void blobListAddSorted(BlobList* list, Blob* blob) {
 	else
 	{
 		newBlob = createBlobNode();
-		newBlob->data = blob;
+		newBlob->pData = blob;
 
-		newBlob->next = current;
+		newBlob->pNext = current;
 
-		previous->next = newBlob;
+		previous->pNext = newBlob;
 
 		list->count++;
 	}

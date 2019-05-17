@@ -1,112 +1,112 @@
 #include "analyzer.h"
 
-void analyzeImage(Image* image, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
+void AnalyzeImage(Image* pImage, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
 {
-	if (!image) return;
+	if (!pImage) return;
 
-	Pixel *currentPixel = image->pixels;
-	Blob *blob;
+	Pixel* pCurrentPixel = pImage->pPixels;
+	Blob* pBlob;
 	clock_t start, end;
 
-	image->blobs = createBlobList();
+	pImage->pBlobs = createBlobList();
 
-	printInfo("Analyzing %s", image->fileName);
+	PrintInfo("Analyzing %s", pImage->fileName);
 
 	start = clock();
 
 	// Go through pixel matrix to find blobs
-	for (int i = 0; i < image->height; ++i)									// Lines
+	for (int i = 0; i < pImage->height; ++i)									// Lines
 	{
-		for (int j = 0; j < image->width; ++j, ++currentPixel)				// Columns
+		for (int j = 0; j < pImage->width; ++j, ++pCurrentPixel)				// Columns
 		{
 			// If pixels was already analyzed go to next pixel
-			if (currentPixel->analysed) continue;
+			if (pCurrentPixel->analysed) continue;
 
-			currentPixel->analysed = 1;
+			pCurrentPixel->analysed = 1;
 
-			if (pixelInRange(currentPixel, r, g, b, t))
+			if (PixelInRange(pCurrentPixel, r, g, b, t))
 			{
-				blob = createBlob();
+				pBlob = createBlob();
 
-				blobAddEnd(blob, createVector2I(j, i));
+				blobAddEnd(pBlob, CreateVector2I(j, i));
 
-				findBlob(image, blob, r, g, b, t);
+				FindBlob(pImage, pBlob, r, g, b, t);
 
 				// Blob needs to have at least 5 pixels to be a Blob
-				if (blob->count < 5)				// TODO: Variable
+				if (pBlob->count < 5)				// TODO: Variable
 				{
-					freeBloob(blob);
+					freeBloob(pBlob);
 					continue;
 				}
 
-				blobListAddSorted(image->blobs, blob);
+				blobListAddSorted(pImage->pBlobs, pBlob);
 			}
 		}
 	}
 
 	end = clock();
 
-	printInfo("%s analyzed in %f seconds", image->fileName, executionTime(start, end));
+	PrintInfo("%s analyzed in %f seconds", pImage->fileName, ExecutionTime(start, end));
 }
 
-void findBlob(Image *image, Blob *blob, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
+void FindBlob(Image *pImage, Blob *pBlob, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
 {
-	Vector2IQueue *toAnalyse = createVector2IQueue();
-	Vector2I *current = blob->first->data;
-	Pixel *pixel;
+	Vector2IQueue* pToAnalyse = createVector2IQueue();
+	Vector2I* pCurrent = pBlob->pHead->pData;
+	Pixel* pPixel;
 
-	addNeighbors(image, toAnalyse, *current);
+	AddNeighbors(pImage, pToAnalyse, *pCurrent);
 
-	while (toAnalyse->count > 0)
+	while (pToAnalyse->count > 0)
 	{
-		current = vector2IDequeue(toAnalyse);
+		pCurrent = vector2IDequeue(pToAnalyse);
 
-		pixel = getPixelFromVector2I(image, current->x, current->y);
+		pPixel = GetPixelFromVector2I(pImage, pCurrent->x, pCurrent->y);
 
-		if (pixel->analysed)
+		if (pPixel->analysed)
 		{
-			freeVector2I(current);
+			FreeVector2I(pCurrent);
 
 			continue;
 		}
 
-		pixel->analysed = 1;
+		pPixel->analysed = 1;
 
-		if (pixelInRange(pixel, r, g, b, t))
+		if (PixelInRange(pPixel, r, g, b, t))
 		{
-			blobAddEnd(blob, current);
+			blobAddEnd(pBlob, pCurrent);
 
-			addNeighbors(image, toAnalyse, *current);
+			AddNeighbors(pImage, pToAnalyse, *pCurrent);
 		}
 		else
 		{
-			freeVector2I(current);
+			FreeVector2I(pCurrent);
 		}
 	}
 
-	freeVector2IQueue(toAnalyse);
+	freeVector2IQueue(pToAnalyse);
 }
 
-void addNeighbors(Image *image, Vector2IQueue *destination, Vector2I coord)
+void AddNeighbors(Image *pImage, Vector2IQueue *pDestination, Vector2I coord)
 {
 	// Top
-	if (coord.y > 0 && !getPixelFromVector2I(image, coord.x, coord.y - 1)->analysed)
-		vector2IEnqueue(destination, createVector2I(coord.x, coord.y - 1));
+	if (coord.y > 0 && !GetPixelFromVector2I(pImage, coord.x, coord.y - 1)->analysed)
+		vector2IEnqueue(pDestination, CreateVector2I(coord.x, coord.y - 1));
 
 	// Bottom
-	if (coord.y < image->height - 1 && !getPixelFromVector2I(image, coord.x, coord.y + 1)->analysed)
-		vector2IEnqueue(destination, createVector2I(coord.x, coord.y + 1));
+	if (coord.y < pImage->height - 1 && !GetPixelFromVector2I(pImage, coord.x, coord.y + 1)->analysed)
+		vector2IEnqueue(pDestination, CreateVector2I(coord.x, coord.y + 1));
 
 	// Left
-	if (coord.x > 0 && !getPixelFromVector2I(image, coord.x - 1, coord.y)->analysed)
-		vector2IEnqueue(destination, createVector2I(coord.x - 1, coord.y));
+	if (coord.x > 0 && !GetPixelFromVector2I(pImage, coord.x - 1, coord.y)->analysed)
+		vector2IEnqueue(pDestination, CreateVector2I(coord.x - 1, coord.y));
 
 	// Right
-	if (coord.x < image->width - 1 && !getPixelFromVector2I(image, coord.x + 1, coord.y)->analysed)
-		vector2IEnqueue(destination, createVector2I(coord.x + 1, coord.y));
+	if (coord.x < pImage->width - 1 && !GetPixelFromVector2I(pImage, coord.x + 1, coord.y)->analysed)
+		vector2IEnqueue(pDestination, CreateVector2I(coord.x + 1, coord.y));
 }
 
-int pixelInRange(Pixel* pixel, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
+int PixelInRange(Pixel *pPixel, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
 {
-	return inRange(r - t, r + t, pixel->red) && inRange(g - t, g + t, pixel->green) && inRange(b - t, b + t, pixel->blue);
+	return InRange(r - t, r + t, pPixel->red) && InRange(g - t, g + t, pPixel->green) && InRange(b - t, b + t, pPixel->blue);
 }

@@ -19,14 +19,15 @@
 #define FM_WBP "wb+"
 #define FM_ABP "ab+"
 
+#define FILE_INCORRECT_MESSAGE "Incorrect file specification!"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 #include "utils.h"
-#include "functions.h"
 #include "../structs.h"
 
-Image *readImageDefaultFormat(FILE *f);
+Image* ReadImageDefaultFormat(FILE* pFile);
 
-#endif // !FILES_H_
+#endif

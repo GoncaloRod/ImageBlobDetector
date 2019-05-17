@@ -1,67 +1,67 @@
 #include "utils.h"
 
-void printError(const char *message, ...)
+void PrintError(const char *pMessage, ...)
 {
 	va_list vargs;
 
-	va_start(vargs, message);
+	va_start(vargs, pMessage);
 
 	printf("[ERROR]: ");
 
-	vprintf(message, vargs);
+	vprintf(pMessage, vargs);
 
 	printf("\n");
 
 	va_end(vargs);
 }
 
-void printInfo(const char *message, ...)
+void PrintInfo(const char *pMessage, ...)
 {
 	va_list vargs;
 
-	va_start(vargs, message);
+	va_start(vargs, pMessage);
 
 	printf("[INFO]: ");
 
-	vprintf(message, vargs);
+	vprintf(pMessage, vargs);
 
 	printf("\n");
 
 	va_end(vargs);
 }
 
-void printDanger(const char* message, ...)
+void PrintWarning(const char* pMessage, ...)
 {
 	va_list vargs;
 
-	va_start(vargs, message);
+	va_start(vargs, pMessage);
 
-	printf("[DANGER]: ");
+	printf("[WARNING]: ");
 
-	vprintf(message, vargs);
+	vprintf(pMessage, vargs);
 
 	printf("\n");
 
 	va_end(vargs);
 }
 
-bool isNumeric(char *num)
+int IsNumeric(char* pNum)
 {
-	bool numeric = true;
+	int numeric = 1;
 
-	for (int i = 0; i < (int)strlen(num) && numeric; ++i)
-		if (num[i] < '0' || num[i] > '9')
-			numeric = false;
+	for (int i = 0; i < (int)strlen(pNum) && numeric; ++i)
+		if (pNum[i] < '0' || pNum[i] > '9')
+			numeric = 0;
 
 	return numeric;
 }
 
-bool inRange(int min, int max, int value)
+int InRange(int min, int max, int value)
 {
 	return value >= min && value <= max;
 }
 
-double executionTime(clock_t start, clock_t end)
+double ExecutionTime(clock_t start, clock_t end)
 {
-	return ((double)(end - start)) / CLOCKS_PER_SEC;
+	return ((double)end - (double)start) / CLOCKS_PER_SEC;
 }

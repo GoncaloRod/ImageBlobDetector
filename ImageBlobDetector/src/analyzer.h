@@ -3,19 +3,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 
 #include "structs.h"
 #include "utils/functions.h"
 #include "utils/utils.h"
 
-void analyzeImage(Image* image, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
+void AnalyzeImage(Image* pImage, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
 
-void findBlob(Image *image, Blob *blob, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
+void FindBlob(Image *pImage, Blob *pBlob, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
 
-void addNeighbors(Image *image, Vector2IQueue *destination, Vector2I coord);
+void AddNeighbors(Image *pImage, Vector2IQueue *pDestination, Vector2I coord);
 
-int pixelInRange(Pixel *pixel, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
+int PixelInRange(Pixel *pPixel, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
 
 #endif

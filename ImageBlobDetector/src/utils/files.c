@@ -1,44 +1,57 @@
 #include "files.h"
 
-Image *readImageDefaultFormat(FILE *f)
+Image* ReadImageDefaultFormat(FILE* pFile)
 {
-	if (!f) return NULL;
-	if (feof(f)) return NULL;
+	if (!pFile) return NULL;
+	if (feof(pFile)) return NULL;
 
-	Pixel *pixelsMat;
-
-	// Used to measure file loading time
-	clock_t start, end;
-
-	Image *image = createImage();
+	Pixel* pPixelsMatrix;
+	clock_t start, end;					// Used to measure file loading time
+	Image* pImage = CreateImage();
+	int red, green, blue;
 
 	// Read filename, height, width and channels from file
-	fscanf(f, "%s\n", image->fileName);
-	fscanf(f, "%d %d %d", &image->height, &image->width, &image->channels);
+	if (fscanf(pFile, "%s\n", pImage->fileName) != 1)
+	{
+		PrintError(FILE_INCORRECT_MESSAGE);
+		exit(EXIT_FAILURE);
+	}
+
+	if (fscanf(pFile, "%d %d %d", &pImage->height, &pImage->width, &pImage->channels) != 3)
+	{
+		PrintError(FILE_INCORRECT_MESSAGE);
+		exit(EXIT_FAILURE);
+	}
 
 	// Allocate pixels matrix
-	pixelsMat = image->pixels = createPixelMatrix(image->height, image->width);
+	pPixelsMatrix = pImage->pPixels = CreatePixelMatrix(pImage->height, pImage->width);
 
-	printInfo("Reading %s", image->fileName);
-	
+	PrintInfo("Reading %s", pImage->fileName);
+
 	// Start loading file
 	start = clock();
 
-	for (int i = 0; i < image->height; ++i)
+	for (int i = 0; i < pImage->height; ++i)
 	{
-		for (int j = 0; j < image->width; ++j, ++pixelsMat)
+		for (int j = 0; j < pImage->width; ++j, ++pPixelsMatrix)
 		{
-			// '%hhu' to read unsigned char
-			fscanf(f, "%hhu\n%hhu\n%hhu\n", &pixelsMat->red, &pixelsMat->green, &pixelsMat->blue);
+			if (fscanf(pFile, "%d\n%d\n%d\n", &red, &green, &blue) != 3)
+			{
+				PrintError(FILE_INCORRECT_MESSAGE);
+				exit(EXIT_FAILURE);
+			}
 
-			pixelsMat->analysed = 0;
+			pPixelsMatrix->red		= red;
+			pPixelsMatrix->green	= green;
+			pPixelsMatrix->blue		= blue;
+			pPixelsMatrix->analysed = 0;
 		}
 	}
-	
+
 	end = clock();
 
 	// Ended loading file
-	printInfo("%s read in %f seconds", image->fileName, executionTime(start, end));
+	PrintInfo("%s read in %f seconds", pImage->fileName, ExecutionTime(start, end));
 
-	return image;
+	return pImage;
 }

@@ -22,31 +22,31 @@ typedef struct _vector2I
 
 typedef struct _vector2INode
 {
-	struct _vector2INode* next;
-	Vector2I* data;
+	struct _vector2INode* pNext;
+	Vector2I* pData;
 } Vector2INode;
 
 typedef struct _vector2IQueue
 {
-	Vector2INode* first, * last;
+	Vector2INode* pHead, * pTail;
 	int count;
 } Vector2IQueue;
 
 typedef struct _blob
 {
-	Vector2INode* first, * last;
+	Vector2INode* pHead, * pTail;
 	int count;
 } Blob;
 
 typedef struct _blobNode
 {
-	struct _blobNode* next;
-	Blob* data;
+	struct _blobNode* pNext;
+	Blob* pData;
 } BlobNode;
 
 typedef struct _blobList
 {
-	BlobNode* first, * last;
+	BlobNode* pHead, * pTail;
 	int count;
 } BlobList;
 
@@ -59,21 +59,21 @@ typedef struct _image
 {
 	char fileName[IMAGE_NAME_SIZE];
 	int width, height, channels;
-	Pixel* pixels;
-	BlobList* blobs;
+	Pixel* pPixels;
+	BlobList* pBlobs;
 	Vector3F minStdDeviation;
 	Vector2I minStdDeviationCenter;
 } Image;
 
 typedef struct _imageNode
 {
-	struct _imageNode* next;
-	Image* data;
+	struct _imageNode* pNext;
+	Image* pData;
 } ImageNode;
 
 typedef struct _imageList
 {
-	ImageNode* first, * last;
+	ImageNode* pHead, * pTail;
 	int count;
 } ImageList;
 
@@ -83,53 +83,53 @@ typedef struct _imageList
 
 #pragma region Pixel
 
-Pixel* createPixelMatrix(int heigth, int width);
+Pixel* CreatePixelMatrix(int heigth, int width);
 
-void freePixelMatrix(Pixel* matrix);
+void FreePixelMatrix(Pixel* matrix);
 
 #pragma endregion Pixel
 
 #pragma region Image
 
-Image* createImage();
+Image* CreateImage();
 
-void freeImage(Image* image);
+void FreeImage(Image* pImage);
 
 #pragma endregion Image
 
 #pragma region ImageNode
 
-ImageNode* createImageNode();
+ImageNode* CreateImageNode();
 
-void freeImageNode(ImageNode* node);
+void FreeImageNode(ImageNode* pNode);
 
 #pragma endregion ImageNode
 
 #pragma region ImageList
 
-ImageList* createImageList();
+ImageList* CreateImageList();
 
-void freeImageList(ImageList* list);
+void FreeImageList(ImageList* pList);
 
-void imageListAddStart(ImageList* list, Image* image);
+void ImageListAddStart(ImageList* pList, Image* pImage);
 
-void imageListAddEnd(ImageList* list, Image* image);
+void pImageListAddEnd(ImageList* pList, Image* pImage);
 
 #pragma endregion ImageList
 
 #pragma region Vector2I
 
-Vector2I* createVector2I(int x, int y);
+Vector2I* CreateVector2I(int x, int y);
 
-void freeVector2I(Vector2I* vector);
+void FreeVector2I(Vector2I* pVector);
 
 #pragma endregion Vector2I
 
 #pragma region Vector2INode
 
-Vector2INode* createVector2INode();
+Vector2INode* CreateVector2INode();
 
-void freeVector2INode(Vector2INode* node);
+void FreeVector2INode(Vector2INode* pNode);
 
 #pragma endregion Vector2INode
 

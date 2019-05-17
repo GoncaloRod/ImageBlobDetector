@@ -2,23 +2,22 @@
 #define UTILS_H_
 
 #include <stdio.h>
-#include <stdbool.h>
 #include <string.h>
 #include <stdarg.h>
 #include <time.h>
 
 #include "../structs.h"
 
-void printError(const char *message, ...);
+void PrintError(const char *pMessage, ...);
 
-void printInfo(const char *message, ...);
+void PrintInfo(const char *message, ...);
 
-void printDanger(const char* message, ...);
+void PrintWarning(const char* message, ...);
 
-bool isNumeric(char* num);
+int IsNumeric(char* pNum);
 
-bool inRange(int min, int max, int value);
+int InRange(int min, int max, int value);
 
-double executionTime(clock_t start, clock_t end);
+double ExecutionTime(clock_t start, clock_t end);
 
 #endif

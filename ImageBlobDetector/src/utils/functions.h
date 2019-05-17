@@ -3,22 +3,22 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
-#include <stdbool.h>
 #include <string.h>
 
 #include "../structs.h"
 #include "utils.h"
 #include "files.h"
 
-void printUsageMessage(char *programName);
+void PrintUsageMessage(char *pProgramName);
 
-int validateArguments(int argc, char **argv, char *fileName, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *t, char *mode);
+int ValidateArguments(int argc, char **argv, char *pFileName, unsigned char *pR, unsigned char *pG, unsigned char *pB, unsigned char *pT, char *pMode);
 
-Pixel *getPixelFromVector2I(Image *image, int x, int y);
+Pixel* GetPixelFromVector2I(Image *pImage, int X, int Y);
 
-void printImageInformation(Image* image);
+void PrintImageInformation(Image* pImage);
 
-Image* getImageWithMoreBlobs(ImageList* images);
+Image* GetImageMoreBlobs(ImageList* pImages);
 
-int compareBlobStdDeviation(Vector3F value1, Vector3F value2);
+int CompareStdDeviation(Vector3F value1, Vector3F value2);
+
 #endif

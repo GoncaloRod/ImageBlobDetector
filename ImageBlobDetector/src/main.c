@@ -18,69 +18,69 @@ int main(int argc, char* argv[])
 	FILE* pInputFile;
 	ImageList* pImages;
 	Image* pImage;
-	char FileName[50];
-	unsigned char Red, Green, Blue, Tolerance;
-	char Mode[5];
-	unsigned char MemTest;
+	char fileName[50];
+	unsigned char red, green, blue, tolerance;
+	char mode[5];
+	int memTest;
 
-	if (!validateArguments(argc, argv, FileName, &Red, &Green, &Blue, &Tolerance, Mode))
+	if (!ValidateArguments(argc, argv, fileName, &red, &green, &blue, &tolerance, mode))
 	{
-		printUsageMessage(argv[0]);
+		PrintUsageMessage(argv[0]);
 		return 0;
 	}
 
 	// If mode is in 'MEM' mode the program should run in infinite mode to test memory
-	MemTest = strcmp(Mode, "MEM") == 0;
+	memTest = strcmp(mode, "MEM") == 0;
 
 	do
 	{
-		pInputFile = fopen(FileName, FM_R);
+		pInputFile = fopen(fileName, FM_R);
 
 		if (!pInputFile)
 		{
-			printError("File %s doesn't exist", FileName);
+			PrintError("File %s doesn't exist", fileName);
 			return 0;
 		}
 
-		pImages = createImageList();
+		pImages = CreateImageList();
 
 		while (!feof(pInputFile))
 		{
 			// Read image from file to memory
-			pImage = readImageDefaultFormat(pInputFile);
+			pImage = ReadImageDefaultFormat(pInputFile);
 
 			// Analyze image
-			analyzeImage(pImage, Red, Green, Blue, Tolerance);
+			AnalyzeImage(pImage, red, green, blue, tolerance);
 
 			// Show all blobs found
-			printImageInformation(pImage);
+			PrintImageInformation(pImage);
 
 			// Free pixel matrix from image
-			freePixelMatrix(pImage->pixels);
-			pImage->pixels = NULL;
+			FreePixelMatrix(pImage->pPixels);
+			pImage->pPixels = NULL;
 
 			// Add image to images list
-			imageListAddEnd(pImages, pImage);
+			pImageListAddEnd(pImages, pImage);
 		}
 
 		// Find image with more blobs
-		pImage = getImageWithMoreBlobs(pImages);
+		pImage = GetImageMoreBlobs(pImages);
 		
 		if (pImage)
-			printInfo("Image with more blobs: %s with %d blobs", pImage->fileName, pImage->blobs->count);
+			PrintInfo("Image with more blobs: %s with %d blobs", pImage->fileName, pImage->pBlobs->count);
 		
 		// Find image with less std. deviation
-		pImage = getImageWithMoreBlobs(pImages);
+		pImage = GetImageMoreBlobs(pImages);
 		
 		if (pImage)
-			printInfo("Image with less std. deviation: %s | (%d, %d) | (%f, %f, %f)", pImage->fileName, pImage->minStdDeviationCenter.x, pImage->minStdDeviationCenter.y, pImage->minStdDeviation.x, pImage->minStdDeviation.y, pImage->minStdDeviation.z);
+			PrintInfo("Image with less std. deviation: %s | (%d, %d) | (%f, %f, %f)", pImage->fileName, pImage->minStdDeviationCenter.x, pImage->minStdDeviationCenter.y, pImage->minStdDeviation.x, pImage->minStdDeviation.y, pImage->minStdDeviation.z);
 
 		// Free all images
-		freeImageList(pImages);
+		FreeImageList(pImages);
 
 		// Close input file
 		fclose(pInputFile);
-	} while (MemTest);
+	} while (memTest);
 
 	getchar();
 
