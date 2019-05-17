@@ -3,8 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <crtdbg.h>	
-#include <stdbool.h>
+#include <crtdbg.h>
 #include <time.h>
 
 #include "utils/utils.h"
