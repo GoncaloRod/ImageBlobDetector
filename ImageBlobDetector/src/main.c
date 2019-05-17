@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 
 	FILE* inputFile;
 	ImageList* images;
-	Image* image, * topImage, * minStdDeviationImage; // TODO: Rename this variables
+	Image* image, * topImage; // TODO: Rename this
 	char fileName[50];
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
@@ -65,8 +65,15 @@ int main(int argc, char* argv[])
 
 		// Find image with more blobs
 		topImage = getImageWithMoreBlobs(images);
-
-		if (topImage) printInfo("Image with more blobs: %s with %d blobs", topImage->fileName, topImage->blobs->count);
+		
+		if (topImage)
+			printInfo("Image with more blobs: %s with %d blobs", topImage->fileName, topImage->blobs->count);
+		
+		// Find image with less std. deviation
+		topImage = getImageWithMoreBlobs(images);
+		
+		if (topImage)
+			printInfo("Image with less std. deviation: %s | (%d, %d) | (%f, %f, %f)", topImage->fileName, topImage->minStdDeviationCenter.x, topImage->minStdDeviationCenter.y, topImage->minStdDeviation.x, topImage->minStdDeviation.y, topImage->minStdDeviation.z);
 
 		// Free all images
 		freeImageList(images);

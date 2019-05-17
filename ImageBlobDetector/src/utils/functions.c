@@ -100,17 +100,17 @@ Image* getImageWithMoreBlobs(ImageList* images)
 	if (!images) return NULL;
 	if (!images->first) return NULL;
 
-	ImageNode* topImage = images->first;
+	ImageNode* topNode = images->first;
 
-	for (ImageNode* node = images->first; node; node = node->next)
+	for (ImageNode* node = topNode->next; node; node = node->next)
 	{
-		if (node->data->blobs->count > topImage->data->blobs->count)
+		if (node->data->blobs->count > topNode->data->blobs->count)
 		{
-			topImage = node;
+			topNode = node;
 		}
 	}
 
-	return topImage->data;
+	return topNode->data;
 }
 
 Image* getImageWithLessStdDeviation(ImageList* images)
@@ -118,9 +118,17 @@ Image* getImageWithLessStdDeviation(ImageList* images)
 	if (!images) return NULL;
 	if (!images->first) return NULL;
 
-	// TODO: This function
+	ImageNode* topNode = images->first;
 
-	return NULL;
+	for (ImageNode* node = topNode->next; node; node = node->next)
+	{
+		if (compareBlobStdDeviation(node->data->minStdDeviation, topNode->data->minStdDeviation) < 0)
+		{
+			topNode = node;
+		}
+	}
+
+	return topNode->data;
 }
 
 int compareBlobStdDeviation(Vector3F value1, Vector3F value2)

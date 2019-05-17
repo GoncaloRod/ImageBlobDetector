@@ -19,5 +19,6 @@ Pixel *getPixelFromVector2I(Image *image, int x, int y);
 void printImageInformation(Image* image);
 
 Image* getImageWithMoreBlobs(ImageList* images);
+
 int compareBlobStdDeviation(Vector3F value1, Vector3F value2);
 #endif
