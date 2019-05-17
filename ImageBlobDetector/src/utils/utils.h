@@ -13,7 +13,9 @@ void printError(const char *message, ...);
 
 void printInfo(const char *message, ...);
 
-bool isNumeric(char *num);
+void printDanger(const char* message, ...);
+
+bool isNumeric(char* num);
 
 bool inRange(int min, int max, int value);
 
