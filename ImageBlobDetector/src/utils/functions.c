@@ -133,11 +133,15 @@ Image* GetImageLessStdDeviation(ImageList* pImages)
 
 int CompareStdDeviation(Vector3F value1, Vector3F value2)
 {
-	// TODO: Find a better way to compare std. deviation
-	if (value1.x < value2.x && value1.y < value2.y && value1.z < value2.z)
-		return -1;
-	else if (value1.x > value2.x && value1.y > value2.y && value1.z > value2.z)
+	float real1, real2;
+
+	real1 = sqrt(pow(value1.x, 2) + pow(value1.y, 2) + pow(value1.z, 2));
+	real2 = sqrt(pow(value2.x, 2) + pow(value2.y, 2) + pow(value2.z, 2));
+
+	if (real1 > real2)
 		return 1;
+	else if (real1 < real2)
+		return -1;
 	else
 		return 0;
 }
