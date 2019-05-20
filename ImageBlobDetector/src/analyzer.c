@@ -1,6 +1,6 @@
 #include "analyzer.h"
 
-void AnalyzeImage(Image* pImage, unsigned char r, unsigned char g, unsigned char b, unsigned char t)
+void AnalyzeImage(Image* pImage, unsigned char r, unsigned char g, unsigned char b, unsigned char t, int minimum)
 {
 	if (!pImage) return;
 
@@ -33,7 +33,7 @@ void AnalyzeImage(Image* pImage, unsigned char r, unsigned char g, unsigned char
 				FindBlob(pImage, pBlob, r, g, b, t);
 
 				// Blob needs to have at least 5 pixels to be a Blob
-				if (pBlob->count < 5)				// TODO: Variable
+				if (pBlob->count < minimum)
 				{
 					FreeBloob(pBlob);
 					continue;

@@ -9,7 +9,7 @@
 #include "utils/functions.h"
 #include "utils/utils.h"
 
-void AnalyzeImage(Image* pImage, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
+void AnalyzeImage(Image* pImage, unsigned char r, unsigned char g, unsigned char b, unsigned char t, int minimum);
 
 void FindBlob(Image *pImage, Blob *pBlob, unsigned char r, unsigned char g, unsigned char b, unsigned char t);
 

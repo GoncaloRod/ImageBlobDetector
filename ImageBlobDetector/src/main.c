@@ -21,12 +21,47 @@ int main(int argc, char* argv[])
 	char fileName[50];
 	unsigned char red, green, blue, tolerance;
 	char mode[5];
+	int minimimPixelCount = MINIMUM_PIXEL_COUNT;
 	int memTest;
 
+	// Required arguments
 	if (!ValidateArguments(argc, argv, fileName, &red, &green, &blue, &tolerance, mode))
 	{
 		PrintUsageMessage(argv[0]);
 		return 0;
+	}
+
+	// Options
+	for (int i = 8; i < argc; ++i)
+	{
+		if (strcmp(argv[i], "-m") == 0)
+		{
+			if (argc < i + 2)
+			{
+				PrintUsageMessage(argv[0]);
+				exit(EXIT_FAILURE);
+			}
+
+			if (!IsNumeric(argv[i + 1]))
+			{
+				PrintUsageMessage(argv[0]);
+				exit(EXIT_FAILURE);
+			}
+
+			minimimPixelCount = atoi(argv[i + 1]);
+			++i;
+
+			if (minimimPixelCount <= 0)
+			{
+				PrintUsageMessage(argv[0]);
+				exit(EXIT_FAILURE);
+			}
+		}
+		else
+		{
+			PrintUsageMessage(argv[0]);
+			exit(EXIT_FAILURE);
+		}
 	}
 
 	// If mode is in 'MEM' mode the program should run in infinite mode to test memory
@@ -50,7 +85,7 @@ int main(int argc, char* argv[])
 			pImage = ReadImageDefaultFormat(pInputFile);
 
 			// Analyze image
-			AnalyzeImage(pImage, red, green, blue, tolerance);
+			AnalyzeImage(pImage, red, green, blue, tolerance, minimimPixelCount);
 
 			// Show all blobs found
 			PrintImageInformation(pImage);

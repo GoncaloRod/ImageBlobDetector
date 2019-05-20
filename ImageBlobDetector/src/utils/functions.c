@@ -2,7 +2,7 @@
 
 void PrintUsageMessage(char *pProgramName)
 {
-	printf("\nUsage: %s tests input_file red green blue tolerance mode\n\n", pProgramName);
+	printf("\nUsage: %s tests input_file red green blue tolerance mode [-m count]\n\n", pProgramName);
 	
 	printf("    %-15sFile to be precessed\n", "input_file:");
 	printf("    %-15sDesired red value of color to find\n", "red:");
@@ -10,12 +10,15 @@ void PrintUsageMessage(char *pProgramName)
 	printf("    %-15sDesired blue value of color to find\n", "blue:");
 	printf("    %-15sTolerance in red, green and blue values to find\n", "tolerance:");
 	printf("    %-15sMode in which program will execute. Can be MENU, ALL or MEM\n", "mode:");
+
+	printf("\nOptions:\n");
+	printf("    %-15sMinimum number of pixels to be considered blob. Should be a number greater than 0\n", "-m count");
 }
 
 int ValidateArguments(int argc, char **argv,char *pFileName, unsigned char *pR, unsigned char *pG, unsigned char *pB, unsigned char *pT, char *pMode)
 {
 	// Validate arguments count
-	if (argc != 8) return 0;
+	if (argc < 8) return 0;
 
 	// Validate required 'tests' flag (doesn't really do anything but it's required by teacher)
 	if (strcmp(argv[1], "tests") != 0)
