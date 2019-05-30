@@ -10,9 +10,11 @@
 
 int main(int argc, char* argv[])
 {
+#ifdef _DEBUG
 #if 0
 	// Find memory leak, set to 1 to use
 	_CrtSetBreakAlloc(99);
+#endif
 #endif
 
 	FILE* pInputFile;
@@ -117,7 +119,7 @@ int main(int argc, char* argv[])
 		fclose(pInputFile);
 	} while (memTest);
 
-	getchar();
-
+#ifdef _DEBUG
 	_CrtDumpMemoryLeaks();
+#endif
 }
