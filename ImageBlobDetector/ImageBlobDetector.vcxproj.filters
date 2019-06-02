@@ -18,12 +18,6 @@
     <ClCompile Include="src\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\functions.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utils\files.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,15 +27,15 @@
     <ClCompile Include="src\structs.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\files.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\functions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\functions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utils\files.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\utils.h">
@@ -51,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\files.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

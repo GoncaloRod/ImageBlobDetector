@@ -9,7 +9,7 @@
 #include <time.h>
 
 #include "utils/utils.h"
-#include "utils/functions.h"
-#include "utils/files.h"
+#include "functions.h"
+#include "files.h"
 #include "analyzer.h"
 #include "structs.h"

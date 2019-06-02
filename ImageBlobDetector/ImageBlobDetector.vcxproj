@@ -134,8 +134,8 @@
   <ItemGroup>
     <ClCompile Include="src\analyzer.c" />
     <ClCompile Include="src\main.c" />
-    <ClCompile Include="src\utils\files.c" />
-    <ClCompile Include="src\utils\functions.c" />
+    <ClCompile Include="src\files.c" />
+    <ClCompile Include="src\functions.c" />
     <ClCompile Include="src\utils\utils.c" />
     <ClCompile Include="src\structs.c" />
   </ItemGroup>
@@ -143,8 +143,8 @@
     <ClInclude Include="src\analyzer.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\structs.h" />
-    <ClInclude Include="src\utils\files.h" />
-    <ClInclude Include="src\utils\functions.h" />
+    <ClInclude Include="src\files.h" />
+    <ClInclude Include="src\functions.h" />
     <ClInclude Include="src\utils\utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

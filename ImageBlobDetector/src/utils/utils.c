@@ -1,14 +1,14 @@
 #include "utils.h"
 
-void PrintError(const char *pMessage, ...)
+void PrintError(const char *message, ...)
 {
 	va_list vargs;
 
-	va_start(vargs, pMessage);
+	va_start(vargs, message);
 
 	printf("[ERROR]: ");
 
-	vprintf(pMessage, vargs);
+	vprintf(message, vargs);
 
 	printf("\n");
 

@@ -1,3 +1,9 @@
+/**
+ * @file structs.h
+ *
+ * @brief Contains stucts and functions to handle them.
+ */
+
 #ifndef STRUCTS_H_
 #define STRUCTS_H_
 
@@ -83,8 +89,19 @@ typedef struct _imageList
 
 #pragma region Pixel
 
+/**
+ * @brief Allocates a pixel matrix.
+ *
+ * @param height Height of the matrix.
+ * @param width Width of the matrix.
+ */
 Pixel* CreatePixelMatrix(int heigth, int width);
 
+/**
+ * @brief Free a previously allocated pixel matrix.
+ *
+ * @param matrix Pointer to the pixel matrix to free.
+ */
 void FreePixelMatrix(Pixel* matrix);
 
 #pragma endregion Pixel

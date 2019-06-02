@@ -1,3 +1,9 @@
+/**
+ * @file files.h
+ *
+ * @brief Contains some useful macros and function to handle files.
+ */
+
 #ifndef FILES_H_
 #define FILES_H_
 
@@ -25,9 +31,16 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "utils.h"
-#include "../structs.h"
+#include "utils/utils.h"
+#include "structs.h"
 
+/**
+ * @brief Function to read a file from the default image format.
+ *
+ * @param pFile Pointer to the input file.
+ *
+ * @return Pointer to a Image struct containing every image's information.
+ */
 Image* ReadImageDefaultFormat(FILE* pFile);
 
 #endif
