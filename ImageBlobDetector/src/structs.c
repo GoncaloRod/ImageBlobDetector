@@ -121,7 +121,7 @@ void FreeImageList(ImageList* pList)
 	free(pList);
 }
 
-void ImageListAddStart(ImageList* pList, Image* pImage)
+void ImageListAddHead(ImageList* pList, Image* pImage)
 {
 	if (!pList) return;
 	if (!pImage) return;
@@ -144,14 +144,14 @@ void ImageListAddStart(ImageList* pList, Image* pImage)
 	pList->count++;
 }
 
-void pImageListAddEnd(ImageList* pList, Image* pImage)
+void pImageListAddTail(ImageList* pList, Image* pImage)
 {
 	if (!pList) return;
 	if (!pImage) return;
 
 	if (!pList->pHead)
 	{
-		ImageListAddStart(pList, pImage);
+		ImageListAddHead(pList, pImage);
 		return;
 	}
 
@@ -256,13 +256,13 @@ void FreeVector2IQueue(Vector2IQueue* pQueue)
 	free(pQueue);
 }
 
-void Vector2IEnqueue(Vector2IQueue* pQueue, Vector2I* pCoord)
+void Vector2IEnqueue(Vector2IQueue* pQueue, Vector2I* pVector)
 {
 	if (!pQueue) return;
-	if (!pCoord) return;
+	if (!pVector) return;
 
 	Vector2INode* node = CreateVector2INode();
-	node->pData = pCoord;
+	node->pData = pVector;
 
 	if (pQueue->pHead == NULL)
 	{

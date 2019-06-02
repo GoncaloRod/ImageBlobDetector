@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
 			pImage->pPixels = NULL;
 
 			// Add image to images list
-			pImageListAddEnd(pImages, pImage);
+			pImageListAddTail(pImages, pImage);
 		}
 
 		// Find image with more blobs
