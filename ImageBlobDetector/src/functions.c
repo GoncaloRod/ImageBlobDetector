@@ -135,8 +135,8 @@ int CompareStdDeviation(Vector3F value1, Vector3F value2)
 {
 	float real1, real2;
 
-	real1 = sqrt(pow(value1.x, 2) + pow(value1.y, 2) + pow(value1.z, 2));
-	real2 = sqrt(pow(value2.x, 2) + pow(value2.y, 2) + pow(value2.z, 2));
+	real1 = (float)sqrt(pow(value1.x, 2) + pow(value1.y, 2) + pow(value1.z, 2));
+	real2 = (float)sqrt(pow(value2.x, 2) + pow(value2.y, 2) + pow(value2.z, 2));
 
 	if (real1 > real2)
 		return 1;

@@ -14,6 +14,8 @@
 #include <string.h>
 #include <math.h>
 
+#include "utils/utils.h"
+
 #pragma region Structs
 
 typedef struct _vector3F
@@ -254,38 +256,113 @@ Vector2I* Vector2IDequeue(Vector2IQueue* pQueue);
 
 #pragma region Blob
 
+/**
+ * @brief Allocates a blob.
+ * 
+ * @return Pointer to the allocated blob.
+ */
 Blob* CreateBlob();
 
+/**
+ * @brief Free a previously allocated blob.
+ *
+ * @param pBlob Pointer to the blob to free.
+ */
 void FreeBloob(Blob* pBlob);
 
-void BlobAddStart(Blob* blob, Vector2I* coord);
+/**
+ * @brief Adds a coordinate to the head of the blob.
+ *
+ * @param pBlob Pointer to the blob to add the coordinate.
+ * @param pCoord Pointer to the coordinate to add to the blob.
+ */
+void BlobAddHead(Blob* pBlob, Vector2I* pCoord);
 
-void BlobAddEnd(Blob* pBlob, Vector2I* pCoord);
+/**
+ * @brief Adds a coordinate to the tail of the blob.
+ *
+ * @param pBlob Pointer to the blob to add the coordinate.
+ * @param pCoord Pointer to the coordinate to add to the blob.
+ */
+void BlobAddTail(Blob* pBlob, Vector2I* pCoord);
 
+/**
+ * @brief Calculate the center of a blob.
+ *
+ * @param pBlob Pointer to the blob to calculate the center.
+ *
+ * @return 2 dimensional vector of integers with the center coordinates.
+ */
 Vector2I GetBlobCenter(Blob* pBlob);
 
+/**
+ * @brief Calculates blob's standard deviation.
+ *
+ * @param pBlob Pointer to the blob to calculate standard deviation.
+ * @param pImage Pointer to the blob's image.
+ *
+ * @param 3 dimensional vector of floats with standard deviation value.
+ */
 Vector3F GetBlobStdDeviation(Blob* pBlob, Image* pImage);
 
 #pragma endregion Blob
 
 #pragma region BlobNode
 
+/**
+ * @brief Allocates a blob node.
+ *
+ * @return Pointer to the allocated blob node.
+ */
 BlobNode* CreateBlobNode();
 
+/**
+ * @brief Free a previously allocated blob node.
+ *
+ * @param pNode Pointer to the blob node to free.
+ */
 void FreeBlobNode(BlobNode* pNode);
 
 #pragma endregion BlobNode
 
 #pragma region BlobList
 
+/**
+ * @brief Allocates a blob list.
+ *
+ * @return Pointer to the allocated blob list.
+ */
 BlobList* CreateBlobList();
 
+/**
+ * @brief Free a previously allocated  blob list.
+ *
+ * @param pList Pointer to the blob list to free.
+ */
 void FreeBlobList(BlobList* pList);
 
-void BlobListAddStart(BlobList* pList, Blob* pBlob);
+/**
+ * @brief Adds a blob to the head of the list.
+ *
+ * @param pList Pointer to the list to add the blob.
+ * @param pBlob Pointer to the blob to add to the list.
+ */
+void BlobListAddHead(BlobList* pList, Blob* pBlob);
 
-void BlobListAddEnd(BlobList* pList, Blob* pBlob);
+/**
+ * @brief Adds a blob to the tail of the list.
+ *
+ * @param pList Pointer to the list to add the blob.
+ * @param pBlob Pointer to the blob to add to the list.
+ */
+void BlobListAddTail(BlobList* pList, Blob* pBlob);
 
+/**
+ * @brief Adds a blob to the list with sorting.
+ *
+ * @param pList Pointer to the list to add the blob.
+ * @param pBlob Pointer to the blob to add to the list.
+ */
 void BlobListAddSorted(BlobList* pList, Blob* pBlob);
 
 #pragma endregion BlobList

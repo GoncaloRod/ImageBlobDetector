@@ -28,7 +28,7 @@ void AnalyzeImage(Image* pImage, unsigned char r, unsigned char g, unsigned char
 			{
 				pBlob = CreateBlob();
 
-				BlobAddEnd(pBlob, CreateVector2I(j, i));
+				BlobAddTail(pBlob, CreateVector2I(j, i));
 
 				FindBlob(pImage, pBlob, r, g, b, t);
 
@@ -74,7 +74,7 @@ void FindBlob(Image *pImage, Blob *pBlob, unsigned char r, unsigned char g, unsi
 
 		if (PixelInRange(pPixel, r, g, b, t))
 		{
-			BlobAddEnd(pBlob, pCurrent);
+			BlobAddTail(pBlob, pCurrent);
 
 			AddNeighbors(pImage, pToAnalyse, *pCurrent);
 		}

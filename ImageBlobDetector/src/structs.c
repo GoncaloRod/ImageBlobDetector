@@ -336,7 +336,7 @@ void FreeBloob(Blob* pBlob)
 	free(pBlob);
 }
 
-void BlobAddStart(Blob* pBlob, Vector2I* pCoord)
+void BlobAddHead(Blob* pBlob, Vector2I* pCoord)
 {
 	if (!pBlob) return;
 	if (!pCoord) return;
@@ -359,14 +359,14 @@ void BlobAddStart(Blob* pBlob, Vector2I* pCoord)
 	pBlob->count++;
 }
 
-void BlobAddEnd(Blob* pBlob, Vector2I* pCoord)
+void BlobAddTail(Blob* pBlob, Vector2I* pCoord)
 {
 	if (!pBlob) return;
 	if (!pCoord) return;
 
 	if (pBlob->pHead == NULL)
 	{
-		BlobAddStart(pBlob, pCoord);
+		BlobAddHead(pBlob, pCoord);
 		return;
 	}
 
@@ -448,14 +448,14 @@ Vector3F GetBlobStdDeviation(Blob * pBlob, Image * pImage)
 	{
 		pPixel = GetPixelFromVector2I(pImage, pNode->pData->x, pNode->pData->y);
 
-		stdDeviation.x += pow(pPixel->red - (double)mean.x, 2);
-		stdDeviation.y += pow(pPixel->green - (double)mean.y, 2);
-		stdDeviation.z += pow(pPixel->blue - (double)mean.z, 2);
+		stdDeviation.x += (float)pow(pPixel->red - (double)mean.x, 2);
+		stdDeviation.y += (float)pow(pPixel->green - (double)mean.y, 2);
+		stdDeviation.z += (float)pow(pPixel->blue - (double)mean.z, 2);
 	}
 
-	stdDeviation.x = sqrt(stdDeviation.x / pBlob->count);
-	stdDeviation.y = sqrt(stdDeviation.y / pBlob->count);
-	stdDeviation.z = sqrt(stdDeviation.z / pBlob->count);
+	stdDeviation.x = (float)sqrt(stdDeviation.x / pBlob->count);
+	stdDeviation.y = (float)sqrt(stdDeviation.y / pBlob->count);
+	stdDeviation.z = (float)sqrt(stdDeviation.z / pBlob->count);
 
 	return stdDeviation;
 }
@@ -531,7 +531,7 @@ void FreeBlobList(BlobList * pList)
 	free(pList);
 }
 
-void BlobListAddStart(BlobList* pList, Blob* pBlob)
+void BlobListAddHead(BlobList* pList, Blob* pBlob)
 {
 	if (!pList) return;
 	if (!pBlob) return;
@@ -554,14 +554,14 @@ void BlobListAddStart(BlobList* pList, Blob* pBlob)
 	pList->count++;
 }
 
-void BlobListAddEnd(BlobList* pList, Blob* pBlob)
+void BlobListAddTail(BlobList* pList, Blob* pBlob)
 {
 	if (!pList) return;
 	if (!pBlob) return;
 
 	if (pList->pHead == NULL)
 	{
-		BlobListAddStart(pList, pBlob);
+		BlobListAddHead(pList, pBlob);
 		return;
 	}
 
@@ -582,7 +582,7 @@ void BlobListAddSorted(BlobList* pList, Blob* pBlob)
 
 	if (!pList->pHead)
 	{
-		BlobListAddStart(pList, pBlob);
+		BlobListAddHead(pList, pBlob);
 
 		return;
 	}
@@ -607,7 +607,7 @@ void BlobListAddSorted(BlobList* pList, Blob* pBlob)
 
 	if (!pPrevious)
 	{
-		BlobListAddStart(pList, pBlob);
+		BlobListAddHead(pList, pBlob);
 	}
 	else
 	{
