@@ -9,7 +9,7 @@ void PrintUsageMessage(char *pProgramName)
 	printf("    %-15sDesired green value of color to find\n", "green:");
 	printf("    %-15sDesired blue value of color to find\n", "blue:");
 	printf("    %-15sTolerance in red, green and blue values to find\n", "tolerance:");
-	printf("    %-15sMode in which program will execute. Can be MENU, ALL or MEM\n", "mode:");
+	printf("    %-15sMode in which program will execute. Can be ALL or MEM\n", "mode:");
 
 	printf("\nOptions:\n");
 	printf("    %-15sMinimum number of pixels to be considered blob. Should be a number greater than 0\n", "-m count");
